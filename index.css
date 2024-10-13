@@ -55,13 +55,13 @@ nav a{
   color: gray;
 
 }
-main{
+
+.catalog{
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap:wrap;
   justify-content:center;
-  
 }
 
 .content {
@@ -123,7 +123,30 @@ main{
   transition: opacity 0.3s ease;
   z-index: 1;
 }
+.form-section input[type="submit"]{
+  background-color: #000000;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 15px 5px 0px 0px;
+  border: none;
+  border-radius: 5px;
+}
+.form-section input[type="submit"]:hover{
+  background-color: #333;
+}
 
+.form-section input[type="reset"]{
+  background-color: #545353;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 15px 5px 0px 0px;
+  border: none;
+  border-radius: 5px;
+}
 
 /* .heart input{
   display: none;

@@ -1,0 +1,50 @@
+<!DOCTYPE html> 
+<html lang="uk"> 
+  <head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="form.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title></title> 
+    <script src="https://kit.fontawesome.com/00b53ffda2.js" crossorigin="anonymous"></script>
+  </head> 
+  <body> 
+   
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html">Головна</a></li>
+        <li><a href="#">Про нас</a></li>
+        <li><a href="#">Контакти</a></li>
+        <li><a href="#">Уподобане</a></li>
+        <li><a href="form.html">Запропонувати рецепт</a></li>
+        <li><a href="enter.html">Вхід</a></li>
+      </ul>
+    </nav>
+</header>
+
+
+<main>
+
+    <form action="https://httpbin.org/post" method="post">
+        
+      <label>Назва рецепту: <input type="text" name="name"></label>
+      
+      <label><textarea></textarea></label>
+      <label for="images">Завантажити фото рецепта:</label>
+            <input type="file" id="images" name="images[]" multiple>
+      <br>
+      <input type="submit" value="Надіслати">
+      <input type="reset" value="Очистити"> 
+    </form>
+
+</main>
+
+<footer>
+
+</footer>
+
+  </body> 
+</html>
