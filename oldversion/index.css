@@ -65,7 +65,7 @@ nav a{
 }
 
 .content {
-  position: relative;   
+  position: relative;
   margin: 10px;
   background-color: #fff;
   border-radius: 10px;
@@ -123,31 +123,40 @@ nav a{
   transition: opacity 0.3s ease;
   z-index: 1;
 }
-.form-section input[type="submit"]{
-  background-color: #000000;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 15px 5px 0px 0px;
-  border: none;
-  border-radius: 5px;
+
+@media (max-width: 767px) {
+.navbar li{
+  text-align: center;
+  font-size: small;
 }
-.form-section input[type="submit"]:hover{
-  background-color: #333;
+.content{
+  width: 90%;
+  height: auto;
+  text-align: left;
+}
+.content img{
+  width: 40%;
+  height: auto;
+  float: right;
+}
+.content p{
+  float:none;
+  clear: right;
+}
+.content button{
+
+}
+.heart{
+  position: relative;
+  bottom: 0px;
+  right: 10px;
+  opacity: 1;
+
 }
 
-.form-section input[type="reset"]{
-  background-color: #545353;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 15px 5px 0px 0px;
-  border: none;
-  border-radius: 5px;
-}
 
+
+}
 /* .heart input{
   display: none;
 }
