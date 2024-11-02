@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Щоденник кухаря</title>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" type="image/png" sizes="16x16"  href="favicons/favicon-16x16.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/00b53ffda2.js" crossorigin="anonymous" ></script>
+    <script src="index.js" defer></script>
+</head>
+<body>
+<nav>
+    <div style="position: relative">
+        <img src="favicons/frying-pan.png" alt="logo">
+    </div>
+    <ul>
+        <li>Головна</li>
+        <li>Про нас</li>
+        <li>Уподобане</li>
+        <li>Вхід</li>
+    </ul>
+</nav>
+
+<main>
+    <div class="content">
+        <div class="heart-container"><i class="fa-regular fa-heart regular heart"></i></div>
+        <img src="1_recipe/title.webp" alt="Картопля фрі">
+        <h2>Картопля фрі</h2>
+        <div class= "description">
+            <p class="time">30 хв</p>
+            <div class="difficulty">
+                <div class="circle easy"></div>
+                <span class="difficulty_label"> Легко</span>
+            </div>
+        </div>
+        <button data="recipe1" class="recipe-button">Детальнішe</button>
+    </div>
+    <div class="content">
+        <div class="heart-container"><i class="fa-regular fa-heart regular heart"></i></div>
+        <img src="2_recipe/title.webp" alt="Українські цибуляники">
+        <h2>Українські цибуляники</h2>
+        <div class= "description">
+            <p class="time">20 хв</p>
+            <div class="difficulty">
+                <div class="circle easy"></div>
+                <span class="difficulty_label"> Легко</span>
+            </div>
+        </div>
+        <button data="recipe2" class="recipe-button">Детальнішe</button>
+    </div>
+    <div class="content">
+        <div class="heart-container"><i class="fa-regular fa-heart regular heart"></i></div>
+        <img src="3_recipe/title.jpg" alt="Яблучний пиріг">
+        <h2>Яблучний пиріг</h2>
+        <div class= "description">
+            <p class="time">1 год 10 хв</p>
+            <div class="difficulty">
+                <div class="circle medium"></div>
+                <span class="difficulty_label"> Середньо</span>
+            </div>
+        </div>
+        <button data="recipe3" class="recipe-button">Детальнішe</button>
+    </div>
+    <div class="content">
+        <div class="heart-container"><i class="fa-regular fa-heart regular heart"></i></div>
+        <img src="4_recipe/title.jpg" alt="Крем суп">
+        <h2>Крем суп з індичкою</h2>
+        <div class= "description">
+            <p class="time">1 год</p>
+            <div class="difficulty">
+                <div class="circle easy"></div>
+                <span class="difficulty_label"> Легко</span>
+            </div>
+        </div>
+        <button data="recipe4" class="recipe-button">Детальніше</button>
+    </div>
+    <section>
+        <div class = "recipe-wrapper" id="recipe1">
+            <div class = "recipe-block">
+                <button class="close-btn">&times;</button>
+
+                <img src="1_recipe/title.webp" alt="Картопля фрі">
+                <h1>Картопля фрі</h1>
+                <p> <b>Час приготування:</b> 30хв</p>
+                <p> <b>Складність приготування:</b> Легко </p>
+                <p> <b>Кількість порцій:</b> 2 порції</p>
+                <h1>Інгредієнти</h1>
+                <uL class="ingredient-list">
+                    <li>500г картоплі</li>
+                    <li>Сіль за смаком</li>
+                    <li>1 літр олії(для смаження)</li>
+                    <li>Спеції (за бажанням): паприка, часниковий порошок, чорний перець</li>
+                </uL>
+                <div class="recipe-steps">
+                    <h1>Покроковий рецепт</h1>
+                    <ol>
+                        <li>
+                            <h3>Підготовка картоплі</h3>
+                            <p>Очистьте картоплю від шкірки, ретельно промийте її під водою.</p>
+                            <p>Наріжте картоплю на тонкі смужки завтовшки близько 0,5-1 см. Намагайтеся, щоб усі шматочки були однаковими, щоб вони рівномірно просмажилися.</p>
+                            <div class = "recipe-img-block">
+                                <img src="1_recipe/first.webp" alt="нарізання картоплі">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Видалення крохмалю</h3>
+                            <p>Помістіть нарізану картоплю в миску з холодною водою і залиште на 30 хвилин. Це допоможе видалити зайвий крохмаль, завдяки чому картопля стане хрусткішою.</p>
+                            <p>Якщо маєте час, залиште картоплю у воді на годину або більше.</p>
+                        </li>
+                        <li>
+                            <h3>Підсушування картоплі та додаємо спеції</h3>
+                            <p>Злийте воду і викладіть картоплю на чистий кухонний рушник. Обсушіть її ретельно, адже зайва волога під час смаження може викликати бризки олії і зробити картоплю м'якою.</p>
+                            <p>Додайте всі спеції та перемішайте</p>
+                            <div class = "recipe-img-block">
+                                <img src="1_recipe/second.webp" alt="Додаємо спеції">
+                                <img src="1_recipe/third.webp" alt="Перемішування спецій">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Смаження картоплі</h3>
+                            <p>Налийте олію в каструлю або фритюрницю і розігрійте до температури 160°C. Якщо у вас немає термометра, перевірте, чи достатньо гаряча олія, кинувши маленький шматочок картоплі: якщо навколо нього з’являться бульбашки, то можна смажити.</p>
+                            <p> Смажте картоплю невеликими порціями протягом 4-5 хвилин. Картопля має стати трохи прозорою, але не золотистою. Дістаньте картоплю і викладіть на паперові рушники для видалення зайвої олії.</p>
+                            <div class = "recipe-img-block">
+                                <img src="1_recipe/fourth.png" alt="жарення картоплі">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Подача страви</h3>
+                            <p>Подавайте картоплю фрі гарячою з улюбленими соусами: кетчупом, майонезом, сирним соусом або соусом із часником.</p>
+                            <div class = "recipe-img-block">
+                                <img src="1_recipe/fifth.webp" alt="подача">
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class = "recipe-wrapper" id="recipe2">
+            <div class = "recipe-block">
+                <button class="close-btn">&times;</button>
+                <img src="2_recipe/title.webp" alt="Українські цибуляники">
+                <h1>Українські цибуляники</h1>
+                <p> <b>Час приготування:</b>20 хв</p>
+                <p> <b>Складність приготування:</b>Легко</p>
+                <p> <b>Кількість порцій:</b>2 порції</p>
+                <h1>Інгредієнти</h1>
+                <uL class="ingredient-list">
+                    <li>250 г цибулі ріпчастої</li>
+                    <li>1 яйце куряче (одне велике яйце або 2 маленьких)</li>
+                    <li>3-4 ст.л. пшеничного борошна</li>
+                    <li>40 г олії рослинної</li>
+                    <li>Перець мелений (за смаком)</li>
+                    <li>Сіль (за смаком)</li>
+                </uL>
+                <div class="recipe-steps">
+                    <h1>Покроковий рецепт</h1>
+                    <ol>
+                        <li>
+                            <h3>Підготовка інгредієнтів</h3>
+                            <p>Підготуйте всі інгредієнти</p>
+                            <div class = "recipe-img-block">
+                                <img src="2_recipe/first.webp" alt="підготуйте інгредієнти">
+                            </div>
+
+                        </li>
+                        <li>
+                            <h3>Нарізанння цибулі та додання інгредієнтів</h3>
+                            <p>Цибулю наріжте невеликими кубиками та складіть у глибоку миску, в якій вам буде зручно замішувати тісто для цибульників.</p>
+                            <p>Вбийте яйце</p>
+                            <p>Додайте сіль і перець за смаком</p>
+                            <p>Додайте пшеничне борошно</p>
+                            <div class = "recipe-img-block">
+                                <img src="2_recipe/second.webp" alt="нарізання цибулі">
+                                <img src="2_recipe/third.webp" alt="вбивання яйця">
+                                <img src="2_recipe/fourth.webp" alt="додання спецій">
+                                <img src="2_recipe/fifth.webp" alt="додання пшениці">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Перемішування інгредієнтів</h3>
+                            <p>Добре перемішайте тісто для цибулевих котлет, щоб не було грудочок. Тісто має бути як на оладки - густуватим.</p>
+                            <div class ="recipe-img-block">
+                                <img src="2_recipe/sixth.webp" alt="перемішування інгредієнтів">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Жарення  цибульників</h3>
+                            <p>Розігрійте сковороду, додайте олію. Викладіть цибулеві оладки ложкою. Смажте 2-3 хвилини на середньому вогні.</p>
+                            <p>Потім переверніть цибуляники і смажте ще пару хвилин.</p>
+                            <div class = "recipe-img-block">
+                                <img src="2_recipe/seventh.webp" alt="жарення з однієї сторони">
+                                <img src="2_recipe/eighth.webp" alt="жарення з іншої сторони">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Подача страви</h3>
+                            <p>Смачні цибульники з рум'яною скоринкою готові! Прикрасьте їх свіжою зеленню та подавайте до столу.</p>
+                            <div class = "recipe-img-block">
+                                <img src="2_recipe/ninth.webp" alt="подача на стіл">
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class = "recipe-wrapper" id="recipe3">
+            <div class = "recipe-block">
+                <button class="close-btn">&times;</button>
+
+                <img src="3_recipe/title.jpg" alt="Яблучний пиріг">
+                <h1>Яблучний пиріг</h1>
+                <p> <b>Час приготування:</b>1 год 10 хв</p>
+                <p> <b>Складність приготування:</b> Середньо</p>
+                <p> <b>Кількість порцій:</b>1</p>
+                <h1>Інгредієнти</h1>
+                <uL class="ingredient-list">
+                    <li>1,5 кілограма яблук</li>
+                    <li>1 стакан муки</li>
+                    <li>1 стакан манної крупи</li>
+                    <li>1 стакан цукру</li>
+                    <li>1 ч.л. цукру</li>
+                    <li>2 ч. л. розпушувуча</li>
+                    <li>150-180г вершкового масла</li>
+                </uL>
+                <div class="recipe-steps">
+                    <h1>Покроковий рецепт</h1>
+                    <ol>
+                        <li>
+                            <h3>Підготовка сухого тіста</h3>
+                            <p>У миску насипаємо склянку борошна, манної крупи й цукру.</p>
+                            <p>Додаємо ванільний цукор(для аромату) і розпушувач. Добре перемішуємо сухим вінчиком</p>
+                            <div class = "recipe-img-block">
+                                <img src="3_recipe/first.jpg" alt="Змішування сухого тіста">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Підготовка яблук</h3>
+                            <p>Яблука миємо, чистимо та натираємо на великій тертці. Для насипного пирога яблука обов'язково повинні бути соковитими, оскільки яблучний сік має добре просочити сухе тісто.</p>
+                            <div class = "recipe-img-block">
+                                <img src="3_recipe/second.jpg" alt="Натирання яблук">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Збирання пирога</h3>
+                            <p>Беремо форму. На дно форми рівномірно насипаємо шар сухого тіста.</p>
+                            <p>Зверху викладаємо шар тертих яблук. Знову посипаємо сухим тістом.</p>
+                            <p>Таким чином чергуємо тісто з яблуками до верху форми. Останнім шаром має бути сухе тісто.</p>
+                            <p>Сверху трем на крупній тертці охолоджене вершкове масло.</p>
+                            <div class = "recipe-img-block">
+                                <img src="3_recipe/third.jpg" alt="Перший слой">
+                                <img src="3_recipe/fourth.jpg" alt="Другий слой">
+                                <img src="3_recipe/fifth.jpg" alt="Третій слой">
+                                <img src="3_recipe/sixth.jpg" alt="Натирання масла">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Запікання пирога</h3>
+                            <p>Випікаємо пиріг при температурі 180°C приблизно 50 хвилин, до красивого золотистого кольору</p>
+                            <div class = "recipe-img-block">
+                                <img src="3_recipe/seventh.jpg" alt="Запечений пирог">
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class = "recipe-wrapper" id="recipe4">
+            <div class = "recipe-block">
+                <button class="close-btn">&times;</button>
+
+                <img src="4_recipe/title.jpg" alt="Крем суп">
+                <h1>Крем суп з індичкою</h1>
+                <p> <b>Час приготування:</b> 1 год</p>
+                <p> <b>Складність приготування:</b> Легко</p>
+                <p> <b>Кількість порцій:</b> 8 </p>
+                <h1>Інгредієнти</h1>
+                <uL class="ingredient-list">
+                    <li>600 г індички(бедро)</li>
+                    <li>4-5 шт картоплі</li>
+                    <li>50 г  фунчозної вермішелі</li>
+                    <li>4 плавлених сирки</li>
+                    <li>1 морква</li>
+                    <li>1 цибуля</li>
+                    <li>Олія для смаження </li>
+                    <li>Сіль, перець, лавровий лист за смаком</li>
+                    <li>Зелень кропу та петрушки за смаком</li>
+                    <li>3 літри води</li>
+                    <li>Варені курячі яйця для подачі</li>
+                </uL>
+                <div class="recipe-steps">
+                    <h1>Покроковий рецепт</h1>
+                    <ol>
+                        <li>
+                            <h3>Підготовка м'яса</h3>
+                            <p>Мию бедро індички і нарізую на невеликі шматочки.</p>
+                            <p><i>Порада:</i> Якщо не вживаєте шкірку, зріжте її перед нарізанням м’яса.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/1.jpg" alt="Нарізане м'ясо індички">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Підготовка бульйону</h3>
+                            <p>Перекладаю шматочки м’яса в каструлю з холодною водою і ставлю на середній вогонь варитися.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/2.jpg" alt="М'ясо індички у каструлі">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Підготовка овочів</h3>
+                            <p>Моркву натираю на крупній тертці, а цибулю нарізую кубиком.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/3.jpg" alt="Нарізана морква та цибуля">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Збирання накипу</h3>
+                            <p>Коли в каструлі з’являється накип, збираю його ложкою або шумівкою.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/5.jpg" alt="Збирання накипу">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Обсмажування овочів</h3>
+                            <p>На пательню наливаю трохи соняшникової олії та обсмажую моркву й цибулю на невеликому вогні, постійно помішуючи, приблизно 5 хвилин.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/6.jpg" alt="Обсмажування овочів">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Додавання картоплі</h3>
+                            <p>Коли м’ясо індички готове, додаю до каструлі порізану на шматочки картоплю.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/7.jpg" alt="Додавання картоплі">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Підготовка сирків</h3>
+                            <p>Плавлені сирки натираю на тертці.</p>
+                            <p><i>Порада:</i> Щоб легше було натерти сирки, попередньо трохи потримайте їх у морозильній камері.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/8.jpg" alt="Натерті плавлені сирки">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Додавання сирків у суп</h3>
+                            <p>Коли картопля звариться, додаю в каструлю натерті сирки і продовжую варити, поки сир повністю не розчиниться.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/9.jpg" alt="Додавання сирків у суп">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Приправи</h3>
+                            <p>Додаю сіль, перець і лавровий лист.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/10.jpg" alt="Додавання спецій">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Додавання піджарки</h3>
+                            <p>Відправляю обсмажені овочі в суп.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/11.jpg" alt="Додавання піджарки в суп">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Завершення супу</h3>
+                            <p>Додаю фунчозу та рублену зелень, проварюю 2-3 хвилини, після чого вимикаю вогонь.Готовому супу даю постояти 30 хвилин</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/12.jpg" alt="Додавання фунчозу">
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Подача супу</h3>
+                            <p>Розливаю по тарілках і додаю половинку вареного яйця в кожну порцію.</p>
+                            <div class="recipe-img-block">
+                                <img src="4_recipe/13.jpg" alt="Готовий сирний суп з індичкою">
+                                <img src="4_recipe/14.jpg" alt="Готовий сирний суп з індичкою">
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
