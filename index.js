@@ -1,4 +1,3 @@
-// <i class="fa-solid fa-heart"></i>
 //Зміна сердечка
 const hearts = document.querySelectorAll(".heart");
 
