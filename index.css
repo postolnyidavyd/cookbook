@@ -7,19 +7,24 @@
     font-family: "Roboto", serif;
     font-weight: normal;
 }
+body{
+    margin: 0;
+}
 /*Панель навігації*/
 nav {
+    width: 100%;
     text-decoration: none;
     position: sticky;
     top: 0;
     z-index: 10;
     background-color: white;
+    margin: 0;
 
 }
 img[alt="logo"]{
     position: absolute;
     top: -5px;
-    left: 0;
+    left: 5px;
     height: 40px;
     width: 40px;
 }
@@ -28,16 +33,44 @@ nav ul{
     display: flex;
     justify-content: right;
     border-bottom: solid black 1px;
+    margin-bottom: 0;
+    margin-right:10px;
 }
 nav li{
     margin: 5px;
     cursor: pointer;
+    transition: color 0.3s ease;
 }
 nav li:hover{
     color: gray;
 }
-/*Каталог*/
-main{
+/*Блок категорій рецептів*/
+.recipe-categories{
+    margin-bottom: 10px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5,20fr);
+    border: solid black 1px;
+    border-top: none;
+}
+.recipe-categories .categories{
+    text-decoration: none;
+    color: inherit;
+    font-size: large;
+    text-align: center;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+.recipe-categories .categories:hover{
+    cursor: pointer;
+    color: #525151;
+}
+.recipe-categories .selected{
+    background-color: #dadada;
+    color: #525151;
+}
+/*Блок рецепту*/
+.recipe-blocks-wrapper{
     display: flex;
     flex-wrap: wrap;
     justify-content:center;
@@ -66,7 +99,7 @@ main{
     text-align: center;
     color: #333;
 }
-/*Нижній блок рецепту*/
+/*Нижня частина блоку рецепту*/
 .content .time{
     color: #888888;
     font-size: 15px;
@@ -118,6 +151,7 @@ main{
     position: absolute;
     bottom: 0;
     right: 0;
+    transition: background-color 0.3s ease;
 }
 .content .recipe-button:hover {
     background-color: #333;
@@ -232,9 +266,13 @@ main{
     color: #333333;
     font-weight: 500;
 }
+.recipe-steps li p{
+    text-indent: 20px;
+    margin-left: 5px;
+
+}
 .recipe-block .recipe-steps .recipe-img-block{
     display: flex;
-
     flex-wrap: nowrap;
     overflow-x: auto;
     justify-content:left;
