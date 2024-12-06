@@ -65,8 +65,9 @@ nav li:hover{
     color: #525151;
 }
 .recipe-categories .selected{
-    background-color: #bdbdbd; /* Активний фон */
-    /*transform: scale(1.0); !* Збільшення для ефекту *!*/
+    background-color: #F5F5F5;
+    color: #525151;
+
 }
 .recipe-blocks-wrapper .hidden-recipe {
     z-index: 0;
