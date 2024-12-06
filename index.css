@@ -19,7 +19,7 @@ nav {
     z-index: 10;
     background-color: white;
     margin: 0;
-
+    border-bottom: solid black 1px;
 }
 img[alt="logo"]{
     position: absolute;
@@ -32,7 +32,6 @@ nav ul{
     list-style: none;
     display: flex;
     justify-content: right;
-    border-bottom: solid black 1px;
     margin-bottom: 0;
     margin-right:10px;
 }
@@ -49,7 +48,7 @@ nav li:hover{
     margin-bottom: 10px;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(5,20fr);
+    grid-template-columns: repeat(5,1fr);
     border: solid black 1px;
     border-top: none;
 }
@@ -59,17 +58,35 @@ nav li:hover{
     font-size: large;
     text-align: center;
     padding: 10px;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 .recipe-categories .categories:hover{
     cursor: pointer;
     color: #525151;
 }
 .recipe-categories .selected{
-    background-color: #dadada;
-    color: #525151;
+    background-color: #bdbdbd; /* Активний фон */
+    /*transform: scale(1.0); !* Збільшення для ефекту *!*/
+}
+.recipe-blocks-wrapper .hidden-recipe {
+    z-index: 0;
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    position: absolute;
+
+}
+
+.recipe-blocks-wrapper .visible-recipe {
+    z-index: 1;
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    position: relative;
 }
 /*Блок рецепту*/
+
 .recipe-blocks-wrapper{
     display: flex;
     flex-wrap: wrap;
@@ -226,7 +243,7 @@ nav li:hover{
     top: 0;
 }
 .close-btn:hover {
-    background-color: #333; /* Трохи світліший відтінок при наведенні */
+    background-color: #333;
 }
 .recipe-block img{
     object-fit: cover;
@@ -287,6 +304,16 @@ nav li:hover{
 }
 
 @media (max-width: 767px) {
+   /*Категорії рецепту*/
+   .recipe-categories{
+   }
+    .recipe-categories .categories{
+        font-size: medium;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /*Блок рецепту*/
     .content {
         width: 90%;
     }
