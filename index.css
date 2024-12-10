@@ -10,6 +10,16 @@
 body{
     margin: 0;
 }
+/*Сайт ще знаходиться в роботі*/
+.work_in_progress{
+    display: grid;
+    grid-template-columns: 1fr;
+    box-sizing: border-box;
+    margin: 0;
+    grid-template-rows:40px 40px;
+    place-items: center;
+    height: 60px;
+}
 /*Панель навігації*/
 nav {
     width: 100%;
