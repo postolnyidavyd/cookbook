@@ -6,7 +6,13 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'cypress/**', 'backend/**', 'husky/**'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'cypress/**',
+      'backend/**',
+      'husky/**',
+    ],
   },
 
   //Базові правила ESLint
@@ -41,7 +47,8 @@ export default [
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       // Власні правила
-      'react/react-in-jsx-scope': 'off',//Щоб не ругалося що не імпортується реакт в кожному файлі
+      'react/react-in-jsx-scope': 'off', //Щоб не ругалося що не імпортується реакт в кожному файлі
+      'react/prop-types': 0,
       'no-unused-vars': [
         'error',
         { varsIgnorePattern: '^[A-Z_]', args: 'none' }, // ігнор невикористаних компонентів та приватних змінних
