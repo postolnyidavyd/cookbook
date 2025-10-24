@@ -3,17 +3,26 @@ import { RecipeFilter } from './RecipeFilter.jsx';
 import { PlayListFilter } from './PlayListFilter.jsx';
 import { Tags } from './Tags.jsx';
 import { RecipeCard } from '../Cards/RecipeCard.jsx';
+import { PlaylistCard } from '../Cards/PlaylistCard.jsx';
 import styled, { css } from 'styled-components';
 import refreshIcon from '../../assets/Refresh cw.svg';
 import { Wrapper } from '../../ui/Wrapper.jsx';
 import leftArrow from '../../assets/ArrowLeft.svg';
 import rightArrow from '../../assets/ArrowRight.svg';
+
 const BrowserLayout = ({
   type,
   maxNumberOfCards,
-  recipes,
+  recipes = [],
+  playlists = [],
   showPageNavigation,
+  onRecipeSelect,
+  onPlaylistSelect,
+  playlistVariant = 'grid',
 }) => {
+  const items = type === 'recipe' ? recipes : playlists;
+  const limit = Math.max(1, maxNumberOfCards ?? items.length || 0);
+
   return (
     <Container $padding="5rem">
       {type === 'recipe' ? <RecipeFilter /> : <PlayListFilter />}
@@ -24,14 +33,19 @@ const BrowserLayout = ({
             : ['Швидко', 'Святкова', 'Вечірка']
         }
       />
-      <RecipeFeed
-        recipes={recipes}
-        maxNumberOfCards={maxNumberOfCards}
+      <CardFeed
+        type={type}
+        items={items}
+        limit={limit}
         showPageNavigation={showPageNavigation}
-      ></RecipeFeed>
+        onRecipeSelect={onRecipeSelect}
+        onPlaylistSelect={onPlaylistSelect}
+        playlistVariant={playlistVariant}
+      />
     </Container>
   );
 };
+
 function PageNavigation({ pageCount }) {
   return (
     <Wrapper>
@@ -39,14 +53,17 @@ function PageNavigation({ pageCount }) {
         <img src={leftArrow} alt="Ліва стрілка" />
       </PageNavigationButton>
       {Array.from({ length: pageCount }).map((_, i) => (
-        <PageNavigationButton key={i}> {i}</PageNavigationButton>
+        <PageNavigationButton key={i} $main={i === 0}>
+          {i + 1}
+        </PageNavigationButton>
       ))}
       <PageNavigationButton>
-        <img src={rightArrow} alt="Ліва стрілка" />
+        <img src={rightArrow} alt="Права стрілка" />
       </PageNavigationButton>
     </Wrapper>
   );
 }
+
 const PageNavigationButton = styled.button`
   width: 2.75rem;
   height: 2.75rem;
@@ -68,27 +85,50 @@ const PageNavigationButton = styled.button`
           }
         `}
 `;
-const RecipeFeed = ({
-  recipes,
-  maxNumberOfCards,
+
+const CardFeed = ({
+  type,
+  items,
+  limit,
   showPageNavigation = true,
+  onRecipeSelect,
+  onPlaylistSelect,
+  playlistVariant,
 }) => {
+  const pageCount = Math.max(1, Math.ceil(items.length / limit));
+
+  const showLoadMore = items.length > limit;
+
   return (
     <>
-      <RecipeGrid>
-        {recipes.slice(0, maxNumberOfCards).map((recipe) => (
-          <RecipeCard key={recipe.title} recipe={recipe} />
-        ))}
-      </RecipeGrid>
-      <ShowMoreButton>
-        <img src={refreshIcon} alt="Завантажити" /> <p>Показати більше</p>
-      </ShowMoreButton>
-      {showPageNavigation && (
-        <PageNavigation pageCount={recipes / maxNumberOfCards} />
+      <CardGrid>
+        {items.slice(0, limit).map((item) =>
+          type === 'recipe' ? (
+            <RecipeCard
+              key={item.title}
+              recipe={item}
+              onSelect={() => onRecipeSelect?.(item)}
+            />
+          ) : (
+            <PlaylistCard
+              key={item.title}
+              playlist={item}
+              variant={playlistVariant}
+              onOpen={() => onPlaylistSelect?.(item)}
+            />
+          ),
+        )}
+      </CardGrid>
+      {showLoadMore && (
+        <ShowMoreButton>
+          <img src={refreshIcon} alt="Завантажити" /> <p>Показати більше</p>
+        </ShowMoreButton>
       )}
+      {showPageNavigation && <PageNavigation pageCount={pageCount} />}
     </>
   );
 };
+
 const ShowMoreButton = styled.button`
   display: flex;
   gap: 0.25rem;
@@ -101,10 +141,12 @@ const ShowMoreButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
-const RecipeGrid = styled.div`
+
+const CardGrid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 `;
+
 export default BrowserLayout;
