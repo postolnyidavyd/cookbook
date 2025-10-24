@@ -6,19 +6,23 @@ import filledHeart from '../../assets/filledheart.svg';
 import star from '../../assets/star.svg';
 import clock from '../../assets/clock.svg';
 
-export const RecipeCard = ({ recipe }) => {
+export const RecipeCard = ({ recipe, onSelect }) => {
+  const handleCardClick = () => {
+    onSelect?.(recipe);
+  };
+
   return (
-    <Card>
+    <Card onClick={handleCardClick}>
       <ImageWrapper>
         <Image src={recipe.image} alt={recipe.title} />
         <ActionButtons>
-          <IconButton>
+          <IconButton type="button" onClick={(event) => event.stopPropagation()}>
             <img
               src={recipe.liked ? filledHeart : hollowHeart}
               alt="Уподобати"
             />
           </IconButton>
-          <IconButton>
+          <IconButton type="button" onClick={(event) => event.stopPropagation()}>
             <img
               src={recipe.saved ? filledBookmark : hollowBookmark}
               alt="Зберегти"
@@ -106,7 +110,6 @@ const IconButton = styled.button`
   border: none;
   cursor: pointer;
   display: flex;
-  //align-items: center;
   justify-content: center;
 `;
 const CardContent = styled.div`
@@ -127,7 +130,4 @@ const MetaInfo = styled.div`
   align-items: center;
   gap: 1.25rem;
   font-size: 0.9rem;
-`;
-const Time = styled.span`
-  color: #666;
 `;
