@@ -1,0 +1,24 @@
+/* CarouselItem styles */
+.carouselItem {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 40rem;
+    background-color: #b2bba2;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+
+    border-radius: 1.25rem;
+    overflow: hidden;
+    align-items: center;
+}
+.carouselItem > div {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    gap: 3rem;
+}
+.carouselItem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

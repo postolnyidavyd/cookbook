@@ -1,0 +1,27 @@
+.navbar {
+  width: 100%;
+  height: 5rem;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  background: rgba(250, 244, 225, 0.25);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px #a59d92 solid;
+  z-index: 100;
+  padding: 1rem 1rem;
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 30px;
+  transition: transform 0.5s ease-in-out;
+  transform: translateY(0);
+}
+.navbar.hidden {
+  transform: translateY(-100%);
+}
+.navbar img {
+  width: 3rem;
+}

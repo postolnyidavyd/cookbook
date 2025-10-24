@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# run lint-staged for staged files
+npx lint-staged || exit 1
+
