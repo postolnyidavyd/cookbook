@@ -2,7 +2,7 @@ import BrowserLayout from '../components/BrowserLayout/BrowserLayout.jsx';
 import { PLAYLISTS_MOCK } from '../shared/utils/mockData.js';
 import styled from 'styled-components';
 
-const PlaylistsPage = ({ onNavigate }) => {
+const PlaylistsPage = () => {
   return (
     <Page>
       <Header>
@@ -19,7 +19,6 @@ const PlaylistsPage = ({ onNavigate }) => {
         maxNumberOfCards={9}
         playlists={PLAYLISTS_MOCK}
         showPageNavigation={true}
-        onPlaylistSelect={() => onNavigate?.('playlistDetail')}
         playlistVariant="grid"
       />
     </Page>

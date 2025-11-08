@@ -17,8 +17,8 @@ const RegisterPage = () => {
               <StyledInput type="text" placeholder="Вкажіть прізвище" />
             </Field>
             <Field>
-              <Label>Ім'я</Label>
-              <StyledInput type="text" placeholder="Вкажіть ім'я" />
+              <Label>Ім&apos;я</Label>
+              <StyledInput type="text" placeholder="Вкажіть ім&apos;я" />
             </Field>
           </FieldGroup>
           <Field>

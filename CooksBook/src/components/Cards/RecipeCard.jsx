@@ -16,17 +16,11 @@ export const RecipeCard = ({ recipe, onSelect }) => {
       <ImageWrapper>
         <Image src={recipe.image} alt={recipe.title} />
         <ActionButtons>
-          <IconButton type="button" onClick={(event) => event.stopPropagation()}>
-            <img
-              src={recipe.liked ? filledHeart : hollowHeart}
-              alt="Уподобати"
-            />
+          <IconButton type="button">
+            <img src={recipe.liked ? filledHeart : hollowHeart} alt="Уподобати" />
           </IconButton>
-          <IconButton type="button" onClick={(event) => event.stopPropagation()}>
-            <img
-              src={recipe.saved ? filledBookmark : hollowBookmark}
-              alt="Зберегти"
-            />
+          <IconButton type="button">
+            <img src={recipe.saved ? filledBookmark : hollowBookmark} alt="Зберегти" />
           </IconButton>
         </ActionButtons>
       </ImageWrapper>

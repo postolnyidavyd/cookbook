@@ -16,12 +16,10 @@ const BrowserLayout = ({
   recipes = [],
   playlists = [],
   showPageNavigation,
-  onRecipeSelect,
-  onPlaylistSelect,
   playlistVariant = 'grid',
 }) => {
   const items = type === 'recipe' ? recipes : playlists;
-  const limit = Math.max(1, maxNumberOfCards ?? items.length || 0);
+  const limit = Math.max(1, maxNumberOfCards ?? (items.length || 0));
 
   return (
     <Container $padding="5rem">
@@ -38,8 +36,6 @@ const BrowserLayout = ({
         items={items}
         limit={limit}
         showPageNavigation={showPageNavigation}
-        onRecipeSelect={onRecipeSelect}
-        onPlaylistSelect={onPlaylistSelect}
         playlistVariant={playlistVariant}
       />
     </Container>
@@ -86,15 +82,7 @@ const PageNavigationButton = styled.button`
         `}
 `;
 
-const CardFeed = ({
-  type,
-  items,
-  limit,
-  showPageNavigation = true,
-  onRecipeSelect,
-  onPlaylistSelect,
-  playlistVariant,
-}) => {
+const CardFeed = ({ type, items, limit, showPageNavigation = true, playlistVariant }) => {
   const pageCount = Math.max(1, Math.ceil(items.length / limit));
 
   const showLoadMore = items.length > limit;
@@ -104,18 +92,9 @@ const CardFeed = ({
       <CardGrid>
         {items.slice(0, limit).map((item) =>
           type === 'recipe' ? (
-            <RecipeCard
-              key={item.title}
-              recipe={item}
-              onSelect={() => onRecipeSelect?.(item)}
-            />
+            <RecipeCard key={item.title} recipe={item} />
           ) : (
-            <PlaylistCard
-              key={item.title}
-              playlist={item}
-              variant={playlistVariant}
-              onOpen={() => onPlaylistSelect?.(item)}
-            />
+            <PlaylistCard key={item.title} playlist={item} variant={playlistVariant} />
           ),
         )}
       </CardGrid>

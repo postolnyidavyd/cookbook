@@ -13,13 +13,11 @@ const MainPage = ({ onNavigate }) => {
         maxNumberOfCards={6}
         recipes={RECIPES_MOCK}
         showPageNavigation={false}
-        onRecipeSelect={() => onNavigate?.('recipeDetail')}
       />
       <PlaylistCarousel
         title="Популярні плейлисти"
         playlists={PLAYLISTS_MOCK}
         visibleCount={4}
-        onOpenPlaylist={() => onNavigate?.('playlistDetail')}
       />
     </>
   );
