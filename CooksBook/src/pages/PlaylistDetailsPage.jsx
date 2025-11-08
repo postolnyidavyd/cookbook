@@ -136,7 +136,7 @@ const StatsList = styled.div`
 
 const StatCard = styled.div`
   min-width: 10rem;
-  background: #d4d9ca;
+background: #d4d9ca;
   border-radius: 1.25rem;
   padding: 1.1rem 1.5rem;
   display: flex;

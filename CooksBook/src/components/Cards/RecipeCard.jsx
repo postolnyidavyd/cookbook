@@ -6,9 +6,13 @@ import filledHeart from '../../assets/filledheart.svg';
 import star from '../../assets/star.svg';
 import clock from '../../assets/clock.svg';
 
-export const RecipeCard = ({ recipe }) => {
+export const RecipeCard = ({ recipe, onSelect }) => {
+  const handleCardClick = () => {
+    onSelect?.(recipe);
+  };
+
   return (
-    <Card>
+    <Card onClick={handleCardClick}>
       <ImageWrapper>
         <Image src={recipe.image} alt={recipe.title} />
         <ActionButtons>

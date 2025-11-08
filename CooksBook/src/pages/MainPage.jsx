@@ -4,7 +4,7 @@ import BrowserLayout from '../components/BrowserLayout/BrowserLayout.jsx';
 import { PlaylistCarousel } from '../components/Carousel/PlaylistCarousel.jsx';
 import { PLAYLISTS_MOCK, RECIPES_MOCK } from '../shared/utils/mockData.js';
 
-const MainPage = () => {
+const MainPage = ({ onNavigate }) => {
   return (
     <>
       <Carousel />
