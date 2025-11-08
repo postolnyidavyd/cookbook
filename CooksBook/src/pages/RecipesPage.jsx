@@ -2,7 +2,7 @@ import BrowserLayout from '../components/BrowserLayout/BrowserLayout.jsx';
 import { RECIPES_MOCK } from '../shared/utils/mockData.js';
 import styled from 'styled-components';
 
-const RecipesPage = ({ onNavigate }) => {
+const RecipesPage = () => {
   return (
     <Page>
       <Header>
@@ -28,7 +28,6 @@ const RecipesPage = ({ onNavigate }) => {
         maxNumberOfCards={12}
         recipes={RECIPES_MOCK}
         showPageNavigation={true}
-        onRecipeSelect={() => onNavigate?.('recipeDetail')}
       />
     </Page>
   );

@@ -35,26 +35,10 @@ const PAGE_COMPONENTS = {
 };
 
 function App() {
-  const [activePage, setActivePage] = useState('home');
-  const [activeNav, setActiveNav] = useState('home');
-
-  const PageComponent = useMemo(() => PAGE_COMPONENTS[activePage] || MainPage, [activePage]);
-
-  const handleNavigate = (target) => {
-    const page = NAVIGATION_MAP[target] || target;
-    setActivePage(page);
-    setActiveNav(PAGE_TO_NAV[page] || 'home');
-  };
-
-  const handleDirectNavigate = (page) => {
-    setActivePage(page);
-    setActiveNav(PAGE_TO_NAV[page] || activeNav);
-  };
-
   return (
     <>
-      <Navbar activeNav={activeNav} onNavigate={handleNavigate} />
-      <PageComponent onNavigate={handleDirectNavigate} />
+      <Navbar />
+      <MainPage />
       <Footer />
     </>
   );

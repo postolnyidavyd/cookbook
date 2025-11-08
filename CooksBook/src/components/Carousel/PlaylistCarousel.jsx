@@ -6,12 +6,7 @@ import leftArrow from '../../assets/ArrowLeft.svg';
 import rightArrow from '../../assets/ArrowRight.svg';
 import { NavButton } from '../../ui/buttons/NavButton.jsx';
 
-export const PlaylistCarousel = ({
-  title,
-  playlists,
-  visibleCount = 3,
-  onOpenPlaylist,
-}) => {
+export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
   const [index, setIndex] = useState(0);
   const maxIndex = Math.max(0, playlists.length - visibleCount);
 
@@ -42,10 +37,7 @@ export const PlaylistCarousel = ({
           <Track style={{ transform: `translateX(-${(100 / visibleCount) * index}%)` }}>
             {playlists.map((playlist) => (
               <Slide key={playlist.title} $visibleCount={visibleCount}>
-                <PlaylistCard
-                  playlist={playlist}
-                  onOpen={() => onOpenPlaylist?.(playlist)}
-                />
+                <PlaylistCard playlist={playlist} />
               </Slide>
             ))}
           </Track>

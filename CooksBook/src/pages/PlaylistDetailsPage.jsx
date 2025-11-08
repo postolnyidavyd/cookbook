@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PLAYLIST_DETAIL_MOCK, PLAYLIST_RECIPE_LIST } from '../shared/utils/mockData.js';
 import { RecipeCard } from '../components/Cards/RecipeCard.jsx';
 
-const PlaylistDetailsPage = ({ onNavigate }) => {
+const PlaylistDetailsPage = () => {
   const { title, subtitle, description, cover, curator, stats, tags } = PLAYLIST_DETAIL_MOCK;
 
   return (
@@ -54,11 +54,7 @@ const PlaylistDetailsPage = ({ onNavigate }) => {
         </SectionHeader>
         <RecipeGrid>
           {PLAYLIST_RECIPE_LIST.map((recipe) => (
-            <RecipeCard
-              key={recipe.title}
-              recipe={recipe}
-              onSelect={() => onNavigate?.('recipeDetail')}
-            />
+            <RecipeCard key={recipe.title} recipe={recipe} />
           ))}
         </RecipeGrid>
       </RecipesSection>
@@ -140,7 +136,7 @@ const StatsList = styled.div`
 
 const StatCard = styled.div`
   min-width: 10rem;
-  background: #d4d9ca;
+background: #d4d9ca;
   border-radius: 1.25rem;
   padding: 1.1rem 1.5rem;
   display: flex;

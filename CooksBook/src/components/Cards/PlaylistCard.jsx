@@ -1,21 +1,11 @@
 import styled, { css } from 'styled-components';
 import filledHeart from '../../assets/filledheart.svg';
 
-export const PlaylistCard = ({ playlist, variant = 'carousel', onOpen }) => {
+export const PlaylistCard = ({ playlist, variant = 'carousel' }) => {
   const { title, cover, author, authorAvatar, recipeCount, isFavorite } = playlist;
-  const isClickable = typeof onOpen === 'function';
-
-  const handleOpen = (event) => {
-    event.stopPropagation();
-    onOpen?.(playlist);
-  };
 
   return (
-    <Card
-      $variant={variant}
-      $clickable={isClickable}
-      onClick={isClickable ? () => onOpen(playlist) : undefined}
-    >
+    <Card $variant={variant}>
       <CoverImage src={cover} alt={title} />
       <Overlay $variant={variant}>
         <FavoriteButton
@@ -37,7 +27,7 @@ export const PlaylistCard = ({ playlist, variant = 'carousel', onOpen }) => {
           </AuthorInfo>
           <Footer>
             <RecipesCount $variant={variant}>{recipeCount} рецептів</RecipesCount>
-            <ViewButton type="button" onClick={handleOpen} $variant={variant}>
+            <ViewButton type="button" $variant={variant}>
               Переглянути
             </ViewButton>
           </Footer>
@@ -59,7 +49,6 @@ const Card = styled.article`
   overflow: hidden;
   min-height: 22rem;
   background: ${({ $variant }) => cardBackground[$variant] || cardBackground.carousel};
-  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
   transition: transform 0.3s ease;
 
   &:hover {
