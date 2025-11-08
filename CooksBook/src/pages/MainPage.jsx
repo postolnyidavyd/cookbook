@@ -1,14 +1,24 @@
 import React from 'react';
 import Carousel from '../components/Carousel/Carousel.jsx';
 import BrowserLayout from '../components/BrowserLayout/BrowserLayout.jsx';
-import {RECIPES_MOCK} from '../shared/utils/mockData.js';
+import { PlaylistCarousel } from '../components/Carousel/PlaylistCarousel.jsx';
+import { PLAYLISTS_MOCK, RECIPES_MOCK } from '../shared/utils/mockData.js';
 
 const MainPage = () => {
   return (
     <>
       <Carousel />
-      <BrowserLayout type="recipe" maxNumberOfCards="6" recipes={RECIPES_MOCK} showPageNavigation={false}/>
-
+      <BrowserLayout
+        type="recipe"
+        maxNumberOfCards={6}
+        recipes={RECIPES_MOCK}
+        showPageNavigation={false}
+      />
+      <PlaylistCarousel
+        title="Популярні плейлисти"
+        playlists={PLAYLISTS_MOCK}
+        visibleCount={4}
+      />
     </>
   );
 };

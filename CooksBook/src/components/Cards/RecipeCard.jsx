@@ -12,17 +12,11 @@ export const RecipeCard = ({ recipe }) => {
       <ImageWrapper>
         <Image src={recipe.image} alt={recipe.title} />
         <ActionButtons>
-          <IconButton>
-            <img
-              src={recipe.liked ? filledHeart : hollowHeart}
-              alt="Уподобати"
-            />
+          <IconButton type="button">
+            <img src={recipe.liked ? filledHeart : hollowHeart} alt="Уподобати" />
           </IconButton>
-          <IconButton>
-            <img
-              src={recipe.saved ? filledBookmark : hollowBookmark}
-              alt="Зберегти"
-            />
+          <IconButton type="button">
+            <img src={recipe.saved ? filledBookmark : hollowBookmark} alt="Зберегти" />
           </IconButton>
         </ActionButtons>
       </ImageWrapper>
@@ -106,7 +100,6 @@ const IconButton = styled.button`
   border: none;
   cursor: pointer;
   display: flex;
-  //align-items: center;
   justify-content: center;
 `;
 const CardContent = styled.div`
@@ -127,7 +120,4 @@ const MetaInfo = styled.div`
   align-items: center;
   gap: 1.25rem;
   font-size: 0.9rem;
-`;
-const Time = styled.span`
-  color: #666;
 `;
