@@ -6,4 +6,5 @@ export const Container = styled.div`
   position: relative;
   overflow: hidden;
   padding: ${({ $padding }) => $padding || '0'};
+    margin: ${({ $margin }) => $margin || '0'};
 `;

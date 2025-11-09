@@ -1,5 +1,3 @@
-import { useMemo, useState } from 'react';
-import './App.css';
 import Navbar from './components/Navbar/Navbar.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import MainPage from './pages/MainPage.jsx';
@@ -35,10 +33,16 @@ const PAGE_COMPONENTS = {
 };
 
 function App() {
+  console.log(document.querySelector(".hszXKr").offsetHeight);
   return (
     <>
       <Navbar />
       <MainPage />
+      <PlaylistsPage/>
+      <RecipesPage/>
+      <PlaylistDetailsPage/>
+      <RecipeDetailPage/>
+      <RegisterPage/>
       <Footer />
     </>
   );

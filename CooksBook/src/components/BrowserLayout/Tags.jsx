@@ -1,7 +1,7 @@
 import { Wrapper } from '../../ui/Wrapper.jsx';
 import SmallText from '../../ui/texts/SmallText.jsx';
 import styled, { css } from 'styled-components';
-import closeIcon from '../../assets/closeicon.svg';
+import closeIcon from '../../assets/close.svg';
 export const Tags = ({ tags }) => {
   return (
     <Wrapper $gap="0.75" style={{ margin: '1rem 0rem', flexWrap: 'wrap' }}>
