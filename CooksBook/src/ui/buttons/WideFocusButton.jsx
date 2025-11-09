@@ -13,8 +13,8 @@ export const WideFocusButton = styled.button`
   color: #ffffff;
   border: none;
   cursor: pointer;
-    transition: color 160ms ease;
-    font-size: 1rem;
+  transition: color 160ms ease;
+  font-size: 1rem;
   &:hover {
     background-color: #1e331f;
   }

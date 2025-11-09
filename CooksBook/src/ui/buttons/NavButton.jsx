@@ -40,7 +40,10 @@ export const NavButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
   transform: ${baseTransform};
 
   &:focus-visible {
@@ -73,7 +76,9 @@ export const NavButton = styled.button`
     background-color: ${({ $variant = 'default' }) =>
       variantStyles[$variant]?.hoverBackground};
     box-shadow: ${({ $variant = 'default' }) =>
-      $variant === 'ghost' ? '0px 16px 32px rgba(30, 51, 31, 0.22)' : variantStyles[$variant]?.shadow};
+      $variant === 'ghost'
+        ? '0px 16px 32px rgba(30, 51, 31, 0.22)'
+        : variantStyles[$variant]?.shadow};
     transform: ${hoverTransform};
   }
 

@@ -18,12 +18,15 @@ const RegisterPage = () => {
             </Field>
             <Field>
               <Label>Ім&apos;я</Label>
-              <StyledInput type="text" placeholder="Вкажіть ім&apos;я" />
+              <StyledInput type="text" placeholder="Вкажіть ім'я" />
             </Field>
           </FieldGroup>
           <Field>
             <Label>Пароль</Label>
-            <StyledInput type="password" placeholder="Вигадайте надійний пароль" />
+            <StyledInput
+              type="password"
+              placeholder="Вигадайте надійний пароль"
+            />
           </Field>
           <SubmitButton type="button">Зареєструватися</SubmitButton>
           <HelperText>

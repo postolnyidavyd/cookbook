@@ -39,7 +39,8 @@ export const PlaylistCard = ({ playlist }) => {
                 <p>{author}</p>
               </MetaItemWrapper>
               <MetaItemWrapper>
-                <MetaImg src={book} alt="Книга" /> <p>{recipeCount} рецептів</p>{' '}
+                <MetaImg src={book} alt="Книга" />{' '}
+                <p>{recipeCount} рецептів</p>{' '}
               </MetaItemWrapper>
               <MetaItemWrapper>
                 <MetaImg src={eye} alt="Око" /> <p>{views} переглядів</p>

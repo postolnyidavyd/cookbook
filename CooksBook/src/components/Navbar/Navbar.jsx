@@ -56,8 +56,8 @@ export const LogoLink = styled(Link)`
   text-decoration: none;
   color: inherit;
   transition: color 160ms ease;
-  &:hover{
-    color: #1e1e1e
+  &:hover {
+    color: #1e1e1e;
   }
 `;
 export const TextLink = styled(NavLink)`

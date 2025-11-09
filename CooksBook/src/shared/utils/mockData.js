@@ -133,7 +133,6 @@ export const RECIPES_MOCK = [
   },
 ];
 
-
 export const PLAYLISTS_MOCK = [
   {
     id: 1,
@@ -333,7 +332,6 @@ export const RECIPE_DETAIL_MOCK = {
     },
   ],
 };
-
 
 export const PLAYLIST_DETAIL_MOCK = {
   title: 'Здорове меню',

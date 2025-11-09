@@ -21,7 +21,7 @@ const DotsWrapper = styled.div`
   gap: 0.6rem;
   align-items: center;
   justify-content: center;
-  margin: 1rem 0 ; /* Відступ зверху від карусельки */
+  margin: 1rem 0; /* Відступ зверху від карусельки */
 `;
 
 const Dot = styled.button`

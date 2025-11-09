@@ -32,5 +32,11 @@ const uiSlice = createSlice({
   },
 });
 
-export const {toggleLoginModal, setLoginModal, toggleSaveRecipeModal, setSaveRecipeModal, setNotification} = uiSlice.actions;
+export const {
+  toggleLoginModal,
+  setLoginModal,
+  toggleSaveRecipeModal,
+  setSaveRecipeModal,
+  setNotification,
+} = uiSlice.actions;
 export default uiSlice.reducer;

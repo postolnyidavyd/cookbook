@@ -27,13 +27,17 @@ export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
     <Section>
       <InnerContainer $padding="0 5rem">
         <Header>
-            <Title>{title}</Title>
+          <Title>{title}</Title>
         </Header>
         <Viewport>
-          <Track style={{ transform: `translateX(-${(100 / visibleCount) * index}%)` }}>
+          <Track
+            style={{
+              transform: `translateX(-${(100 / visibleCount) * index}%)`,
+            }}
+          >
             {playlists.map((playlist) => (
               <Slide key={playlist.title} $visibleCount={visibleCount}>
-                <PlaylistCard playlist={playlist} key={playlist.id}/>
+                <PlaylistCard playlist={playlist} key={playlist.id} />
               </Slide>
             ))}
           </Track>
@@ -77,8 +81,8 @@ const Header = styled.div`
   margin-bottom: 2.5rem;
 `;
 const Title = styled.h2`
-font-size:3rem;
-`
+  font-size: 3rem;
+`;
 
 const Subtitle = styled.p`
   margin: 0;
@@ -106,5 +110,5 @@ const Slide = styled.div`
   flex: 0 0 calc(100% / ${({ $visibleCount }) => $visibleCount});
   padding: 0 0.75rem;
   box-sizing: border-box;
-    width: 20rem;
+  width: 20rem;
 `;

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import refresh from '../../assets/refresh.svg';
-import plus from "../../assets/plus.svg"
-import minus from "../../assets/minus.svg"
+import plus from '../../assets/plus.svg';
+import minus from '../../assets/minus.svg';
 const Ingredients = ({ ingredients, defaultServings = 1 }) => {
   const [servings, setServings] = useState(defaultServings);
 
@@ -19,11 +19,11 @@ const Ingredients = ({ ingredients, defaultServings = 1 }) => {
 
         <ServingsControls>
           <CircleButton type="button" onClick={increase}>
-            <Icon src={plus} alt="Додати порції"/>
+            <Icon src={plus} alt="Додати порції" />
           </CircleButton>
           <ServingsBadge>{servingsLabel}</ServingsBadge>
           <CircleButton type="button" onClick={decrease}>
-            <Icon src={minus} alt="Відняти порції"/>
+            <Icon src={minus} alt="Відняти порції" />
           </CircleButton>
           <CircleButton type="button" onClick={reset}>
             <Icon src={refresh} alt="Скинути порції" />

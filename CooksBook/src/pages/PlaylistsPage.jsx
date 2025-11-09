@@ -5,7 +5,7 @@ import { Container } from '../ui/Container.jsx';
 
 const PlaylistsPage = () => {
   return (
-    <Container >
+    <Container>
       <BrowserLayout
         type="playlist"
         maxNumberOfCards={9}
@@ -16,6 +16,5 @@ const PlaylistsPage = () => {
     </Container>
   );
 };
-
 
 export default PlaylistsPage;

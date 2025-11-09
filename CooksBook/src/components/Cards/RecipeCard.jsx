@@ -14,11 +14,12 @@ import {
   ImageWrapper,
   CardContent,
   MetaInfo,
-  MetaItemWrapper
+  MetaItemWrapper,
 } from './SharedComponents.jsx';
 
 export const RecipeCard = ({ recipe }) => {
-  const { id, title, image, time, difficulty, rating,isLiked, isSaved } = recipe;
+  const { id, title, image, time, difficulty, rating, isLiked, isSaved } =
+    recipe;
   return (
     <Card>
       <CardLink to={`/recipes/${id}`}>

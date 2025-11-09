@@ -26,7 +26,7 @@ const ErrorPage = () => {
         <Display>{title}</Display>
         <ErrorParagraph>{message}</ErrorParagraph>
       </ErrorContainer>
-      <Footer/>
+      <Footer />
     </>
   );
 };

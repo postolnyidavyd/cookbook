@@ -38,10 +38,10 @@ const Footer = () => {
   );
 };
 const Icon = styled.img`
-  width:1.5rem;
-  height:1.5rem;
-`
- const OutLink = styled.a`
+  width: 1.5rem;
+  height: 1.5rem;
+`;
+const OutLink = styled.a`
   border: none;
   background-color: transparent;
   text-decoration: none;

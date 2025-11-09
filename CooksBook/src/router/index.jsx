@@ -2,8 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '../pages/MainPage.jsx';
 import RecipesPage from '../pages/RecipesPage.jsx';
 import PlaylistsPage from '../pages/PlaylistsPage.jsx';
-import PlaylistDetailsPage, {playlistDetailLoader} from '../pages/PlaylistDetailsPage.jsx';
-import RecipeDetailPage, {recipeDetailLoader} from '../pages/RecipeDetailPage.jsx';
+import PlaylistDetailsPage, {
+  playlistDetailLoader,
+} from '../pages/PlaylistDetailsPage.jsx';
+import RecipeDetailPage, {
+  recipeDetailLoader,
+} from '../pages/RecipeDetailPage.jsx';
 import RegisterPage from '../pages/RegisterPage.jsx';
 import RootLayout from './root/RootLayout.jsx';
 import RequireAuth from './auth/RequireAuth.jsx';
@@ -21,8 +25,16 @@ const router = createBrowserRouter([
       { index: true, element: <MainPage /> },
       { path: 'recipes', element: <RecipesPage /> },
       { path: 'playlists', element: <PlaylistsPage /> },
-      { path: 'playlists/:playlistId', element: <PlaylistDetailsPage />, loader: playlistDetailLoader },
-      { path: 'recipes/:recipeId', element: <RecipeDetailPage />, loader:recipeDetailLoader},
+      {
+        path: 'playlists/:playlistId',
+        element: <PlaylistDetailsPage />,
+        loader: playlistDetailLoader,
+      },
+      {
+        path: 'recipes/:recipeId',
+        element: <RecipeDetailPage />,
+        loader: recipeDetailLoader,
+      },
       { path: 'register', element: <RegisterPage /> },
       {
         path: 'profile',
@@ -36,5 +48,3 @@ const router = createBrowserRouter([
   },
 ]);
 export default router;
-
-
