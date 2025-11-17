@@ -48,7 +48,7 @@ const IngredientGroup = ({ title, items, servings }) => {
       <GroupTitle>{title}</GroupTitle>
       <List>
         {items.map((item, index) => (
-          <IngredientItem key={item.label} label={item} />
+          <IngredientItem key={index} label={item} />
         ))}
       </List>
     </GroupWrapper>
