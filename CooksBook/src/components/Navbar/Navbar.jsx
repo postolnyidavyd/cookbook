@@ -6,6 +6,10 @@ import { HollowButton } from '../../ui/buttons/HollowButton.jsx';
 import useScrollDirection from '../../shared/hooks/useScrollDirection.js';
 import styled, { css } from 'styled-components';
 import { Link, NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleLoginModal } from '../../store/uiSlice.js';
+import { logout } from '../../store/authSlice.js';
+import { AvatarImage, BigAvatarImage } from '../RecipePlaylistDetailComponents/SharedComponents/SharedComponents.jsx';
 
 const NAV_ITEMS = [
   { key: '', label: 'Головна' },
@@ -15,10 +19,16 @@ const NAV_ITEMS = [
 ];
 
 const Navbar = () => {
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const avatar = useSelector(state=> state.auth.user.avatar);
+  const dispatch = useDispatch();
   const scrollDirection = useScrollDirection();
+
   let navbarClasses = `${navbar.navbar}`;
   if (scrollDirection === 'down') navbarClasses += ` ${navbar.hidden}`;
 
+  const handleLogin = () => dispatch(toggleLoginModal());
+  const handleLogout = ()=> dispatch(logout());
   return (
     <nav className={navbarClasses}>
       <LogoLink to="/">
@@ -37,12 +47,28 @@ const Navbar = () => {
           </TextLink>
         ))}
       </Wrapper>
-      <Wrapper $gap="1.25">
-        <HollowButton type="button">Зареєструватися</HollowButton>
-        <HollowButton $isMain={true} type="button">
-          Ввійти
-        </HollowButton>
-      </Wrapper>
+      {isAuth ? (
+        <Wrapper $gap='1.25'>
+          <HollowButton type="button" $isMain={true} onClick={handleLogout} title="Вийти у вікно">
+            Вийти
+          </HollowButton>
+          <LogoLink to="/profile"><BigAvatarImage src={avatar} alt="Аватар"/></LogoLink>
+
+        </Wrapper>
+      ) : (
+        <Wrapper $gap="1.25">
+          <HollowButton type="button">Зареєструватися</HollowButton>
+          <HollowButton $isMain={true} type="button" onClick={handleLogin}>
+            Ввійти
+          </HollowButton>
+        </Wrapper>
+      )}
+      {/*<Wrapper $gap="1.25">*/}
+      {/*  <HollowButton type="button">Зареєструватися</HollowButton>*/}
+      {/*  <HollowButton $isMain={true} type="button" onClick={handleLogin}>*/}
+      {/*    Ввійти*/}
+      {/*  </HollowButton>*/}
+      {/*</Wrapper>*/}
     </nav>
   );
 };
@@ -58,6 +84,10 @@ export const LogoLink = styled(Link)`
   transition: color 160ms ease;
   &:hover {
     color: #1e1e1e;
+  }
+  & img{
+    width: 3rem;
+    height: 3rem;
   }
 `;
 export const TextLink = styled(NavLink)`

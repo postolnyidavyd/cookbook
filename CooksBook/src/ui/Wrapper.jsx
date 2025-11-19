@@ -7,4 +7,5 @@ export const Wrapper = styled.div`
   align-items: center;
   display: inline-flex;
   ${({ $gap }) => `gap: ${$gap || 2}rem;`}
+  margin: ${({ $margin }) => $margin || '0'};
 `;

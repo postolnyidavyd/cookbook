@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoginModal } from '../../store/uiSlice.js';
-import { login } from '../../store/authSlice.js';
+// import { login } from '../../store/authSlice.js';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import {
   validate,
@@ -43,7 +43,7 @@ const LoginModal = () => {
     if (Object.keys(errors).length > 0) {
       return { values: formValues, errors };
     }
-    dispatch(login({ email: formValues.email }));
+    // dispatch(login({ email: formValues.email }));
     dispatch(setLoginModal(false));
 
     if (location.state?.from) {

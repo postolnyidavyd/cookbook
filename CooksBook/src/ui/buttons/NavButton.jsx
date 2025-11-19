@@ -5,7 +5,7 @@ const variantStyles = {
     background: '#d9d9d9',
     border: 'none',
     hoverBackground: '#a7b098',
-    shadow: 'none',
+    shadow: '0px 12px 30px rgba(30, 51, 31, 0.18)',
   },
   ghost: {
     background: 'rgba(244, 246, 239, 0.92)',
@@ -86,7 +86,7 @@ export const NavButton = styled.button`
     cursor: default;
     background-color: rgba(228, 231, 220, 0.9);
     opacity: 0.7;
-    pointer-events: none;
+    //pointer-events: none;
     box-shadow: none;
     transform: ${baseTransform};
   }

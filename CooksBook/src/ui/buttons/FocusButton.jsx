@@ -5,7 +5,7 @@ export const FocusButton = styled.button`
   font-size: 1rem;
   padding: 1.25rem 0.75rem;
   cursor: pointer;
-  transition: color 160ms ease;
+  transition: background-color 160ms ease;
   background-color: #2d4a2f;
   color: #ffffff;
   border: none;

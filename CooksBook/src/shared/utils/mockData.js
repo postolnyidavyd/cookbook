@@ -336,22 +336,16 @@ export const RECIPE_DETAIL_MOCK = {
 export const PLAYLIST_DETAIL_MOCK = {
   title: 'Здорове меню',
   subtitle: 'Збірка здорових рецептів для всіх',
-  description:
-    'Плануйте збалансований раціон без зайвих зусиль. Ми підібрали швидкі страви, поживні сніданки та легкі вечері для всієї родини.',
   cover:
     'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1600&q=80',
-  curator: {
+  author: {
     name: 'Катерина Орлова',
-    role: 'Нутріціологиня',
     avatar:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&w=160&h=160&q=80',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDZpV4gpnnm2admzRGvoI28YkPxjT1RBb41A&s',
   },
-  stats: [
-    { label: 'У плейлисті', value: '100 рецептів' },
-    { label: 'Середній рейтинг', value: '4.8' },
-    { label: 'Час приготування', value: 'до 30 хв' },
-  ],
-  tags: ['Всі', 'Основні страви', 'Сніданки', 'Корисні снеки', 'Напої'],
+  recipeCount: 10,
+  views: 100,
+  tags: ['Сніданок', 'Снеки', 'Напої'],
 };
 
 export const PLAYLIST_RECIPE_LIST = RECIPES_MOCK.slice(0, 9);

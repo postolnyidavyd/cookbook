@@ -10,16 +10,14 @@ import { FocusButton } from '../ui/buttons/FocusButton.jsx';
 import { useEffect, useState } from 'react';
 import { TextButton } from '../ui/buttons/TextButton.jsx';
 import { WideFocusButton } from '../ui/buttons/WideFocusButton.jsx';
+import { DIFFICULTIES } from '../shared/utils/selectInputsValues.js';
 
-const DIFFICULTIES = ['Легко', 'Помірно', 'Складно'];
+
 const CATEGORIES = [
   {
     id: 1,
     name: 'Для основної страви',
-    items: [
-      { amount: '100г', name: 'курятина' },
-      { amount: '200г', name: 'ананас' },
-    ],
+    items: [],
   },
   { id: 2, name: 'Для соусу', items: [] },
 ];
@@ -28,8 +26,8 @@ const STEPS = [
   { name: '', description: '' },
 ];
 
-const MineNewRecipePage = () => {
-  // -------- Загальна інфа
+const NewRecipePage = () => {
+  // -------- Загальна інформація
   const [recipeName, setRecipeName] = useState('');
   const [cookingTime, setCookingTime] = useState('');
   const [difficulty, setDifficulty] = useState(DIFFICULTIES[0]);
@@ -52,49 +50,62 @@ const MineNewRecipePage = () => {
   const handleAddCategory = () => {
     const n = categoryName.trim();
     if (!n) return;
-    setCategories(prev => [...prev, { id: Date.now(), name: n, items: [] }]);
+    setCategories((prev) => [...prev, { id: Date.now(), name: n, items: [] }]);
     setCategoryName('');
   };
 
   const handleRemoveCategory = (categoryId) => {
-    setCategories(prev => prev.filter(c => c.id !== categoryId));
+    setCategories((prev) => prev.filter((c) => c.id !== categoryId));
   };
 
   const handleAddIngredient = (categoryId, item) => {
     if (!item?.name?.trim()) return;
-    setCategories(prev => prev.map(c =>
-      c.id === categoryId
-        ? { ...c, items: [...(c.items ?? []), { name: item.name.trim(), amount: (item.amount ?? '').trim() }] }
-        : c
-    ));
+    setCategories((prev) =>
+      prev.map((c) =>
+        c.id === categoryId
+          ? {
+              ...c,
+              items: [
+                ...(c.items ?? []),
+                { name: item.name.trim(), amount: (item.amount ?? '').trim() },
+              ],
+            }
+          : c
+      )
+    );
   };
 
   const handleEditIngredient = (categoryId, idx, patch) => {
-    setCategories(prev => prev.map(c => {
-      if (c.id !== categoryId) return c;
-      const copy = [...(c.items ?? [])];
-      copy[idx] = { ...copy[idx], ...patch };
-      return { ...c, items: copy };
-    }));
+    setCategories((prev) =>
+      prev.map((c) => {
+        if (c.id !== categoryId) return c;
+        const copy = [...(c.items ?? [])];
+        copy[idx] = { ...copy[idx], ...patch };
+        return { ...c, items: copy };
+      })
+    );
   };
 
   const handleDeleteIngredient = (categoryId, idx) => {
-    setCategories(prev => prev.map(c => {
-      if (c.id !== categoryId) return c;
-      const copy = [...(c.items ?? [])];
-      copy.splice(idx, 1);
-      return { ...c, items: copy };
-    }));
+    setCategories((prev) =>
+      prev.map((c) => {
+        if (c.id !== categoryId) return c;
+        const copy = [...(c.items ?? [])];
+        copy.splice(idx, 1);
+        return { ...c, items: copy };
+      })
+    );
   };
 
   // -------- Кроки приготування
   const [steps, setSteps] = useState(STEPS);
   const [stepPreviews, setStepPreviews] = useState({}); // {index: objectUrl}
 
-  const addStep = () => setSteps(prev => [...prev, { name: '', description: '' }]);
+  const addStep = () =>
+    setSteps((prev) => [...prev, { name: '', description: '' }]);
   const removeStep = (index) => {
-    setSteps(prev => prev.filter((_, i) => i !== index));
-    setStepPreviews(prev => {
+    setSteps((prev) => prev.filter((_, i) => i !== index));
+    setStepPreviews((prev) => {
       const url = prev[index];
       if (url) URL.revokeObjectURL(url);
       const next = { ...prev };
@@ -103,13 +114,17 @@ const MineNewRecipePage = () => {
     });
   };
   const updateStepName = (index, value) =>
-    setSteps(prev => prev.map((s, i) => (i === index ? { ...s, name: value } : s)));
+    setSteps((prev) =>
+      prev.map((s, i) => (i === index ? { ...s, name: value } : s))
+    );
   const updateStepDesc = (index, value) =>
-    setSteps(prev => prev.map((s, i) => (i === index ? { ...s, description: value } : s)));
+    setSteps((prev) =>
+      prev.map((s, i) => (i === index ? { ...s, description: value } : s))
+    );
 
   const changeStepImage = (index, file) => {
     if (!file) return;
-    setStepPreviews(prev => {
+    setStepPreviews((prev) => {
       if (prev[index]) URL.revokeObjectURL(prev[index]);
       return { ...prev, [index]: URL.createObjectURL(file) };
     });
@@ -117,7 +132,7 @@ const MineNewRecipePage = () => {
 
   useEffect(() => {
     return () => {
-      Object.values(stepPreviews).forEach(url => URL.revokeObjectURL(url));
+      Object.values(stepPreviews).forEach((url) => URL.revokeObjectURL(url));
     };
   }, [stepPreviews]);
 
@@ -177,7 +192,9 @@ const MineNewRecipePage = () => {
               placeholder="Кількість порцій"
               min={1}
               value={servings}
-              onChange={(e) => setServings(Math.max(1, Number(e.target.value) || 1))}
+              onChange={(e) =>
+                setServings(Math.max(1, Number(e.target.value) || 1))
+              }
             />
           </span>
         </FormWrapper>
@@ -202,7 +219,9 @@ const MineNewRecipePage = () => {
               categ={categorie}
               onRemoveCategory={() => handleRemoveCategory(categorie.id)}
               onAddItem={(item) => handleAddIngredient(categorie.id, item)}
-              onEditItem={(idx, patch) => handleEditIngredient(categorie.id, idx, patch)}
+              onEditItem={(idx, patch) =>
+                handleEditIngredient(categorie.id, idx, patch)
+              }
               onDeleteItem={(idx) => handleDeleteIngredient(categorie.id, idx)}
             />
           ))}
@@ -235,7 +254,15 @@ const ProfilePage = styled(PageContainer)`
 
 /* -------- Steps -------- */
 
-const Steps = ({ steps, onAddStep, onRemoveStep, onChangeName, onChangeDesc, onChangeImage, previews = {} }) => {
+const Steps = ({
+  steps,
+  onAddStep,
+  onRemoveStep,
+  onChangeName,
+  onChangeDesc,
+  onChangeImage,
+  previews = {},
+}) => {
   return (
     <CardsLayout>
       {steps.map((step, index) => (
@@ -338,7 +365,13 @@ const CardsLayout = styled.div`
 
 /* -------- Ingredient Category -------- */
 
-const IngredientCategory = ({ categ, onRemoveCategory, onAddItem, onEditItem, onDeleteItem }) => {
+const IngredientCategory = ({
+  categ,
+  onRemoveCategory,
+  onAddItem,
+  onEditItem,
+  onDeleteItem,
+}) => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
 
@@ -350,7 +383,8 @@ const IngredientCategory = ({ categ, onRemoveCategory, onAddItem, onEditItem, on
   const add = () => {
     if (!name.trim()) return;
     onAddItem({ name, amount });
-    setName(''); setAmount('');
+    setName('');
+    setAmount('');
   };
 
   const startEdit = (idx, item) => {
@@ -372,15 +406,23 @@ const IngredientCategory = ({ categ, onRemoveCategory, onAddItem, onEditItem, on
   };
 
   const onEditKey = (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); saveEdit(); }
-    if (e.key === 'Escape') { e.preventDefault(); cancelEdit(); }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      saveEdit();
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      cancelEdit();
+    }
   };
 
   return (
     <BorderCard>
       <Header>
         <h5>{categ.name}</h5>
-        <DeleteButton type="button" onClick={onRemoveCategory}>Видалити</DeleteButton>
+        <DeleteButton type="button" onClick={onRemoveCategory}>
+          Видалити
+        </DeleteButton>
       </Header>
 
       <IngredientsInputsGrid>
@@ -398,7 +440,9 @@ const IngredientCategory = ({ categ, onRemoveCategory, onAddItem, onEditItem, on
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
-        <FormFocusButton type="button" onClick={add}>Додати</FormFocusButton>
+        <FormFocusButton type="button" onClick={add}>
+          Додати
+        </FormFocusButton>
       </IngredientsInputsGrid>
 
       <IngredientsList>
@@ -423,13 +467,20 @@ const IngredientCategory = ({ categ, onRemoveCategory, onAddItem, onEditItem, on
                   />
                 </InlineEdit>
                 <Wrapper $gap="1">
-                  <TextButton type="button" onClick={saveEdit}>Зберегти</TextButton>
-                  <TextButton type="button" onClick={cancelEdit}>Скасувати</TextButton>
+                  <TextButton type="button" onClick={saveEdit}>
+                    Зберегти
+                  </TextButton>
+                  <TextButton type="button" onClick={cancelEdit}>
+                    Скасувати
+                  </TextButton>
                 </Wrapper>
               </>
             ) : (
               <>
-                <p>{item.amount ? `${item.amount} ` : ''}{item.name}</p>
+                <p>
+                  {item.amount ? `${item.amount} ` : ''}
+                  {item.name}
+                </p>
                 <Wrapper $gap="1">
                   <button type="button" onClick={() => startEdit(idx, item)}>
                     <img src={editIcon} alt="Редагувати" />
@@ -633,4 +684,4 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-export default MineNewRecipePage;
+export default NewRecipePage;

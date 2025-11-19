@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import searchIcon from '../assets/search.svg';
+import searchIcon from '../../assets/search.svg';
 const SearchBar = () => {
   return (
     <SearchWrapper>

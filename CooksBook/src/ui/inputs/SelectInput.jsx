@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 const SelectInput = ({ options, defaultOption, ...props }) => {
+  console.log(options);
   return (
     <Select {...props}>
-      <option value="">{defaultOption}</option>
       {options.map((option) => (
-        <option value={option} key={option}>
-          {option}
+        <option value={option.value} key={option.value}>
+          {option.label}
         </option>
       ))}
     </Select>

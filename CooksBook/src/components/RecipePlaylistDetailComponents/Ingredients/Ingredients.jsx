@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import refresh from '../../assets/refresh.svg';
-import plus from '../../assets/plus.svg';
-import minus from '../../assets/minus.svg';
+import refresh from '../../../assets/refresh.svg';
+import plus from '../../../assets/plus.svg';
+import minus from '../../../assets/minus.svg';
 const Ingredients = ({ ingredients, defaultServings = 1 }) => {
-  const [servings, setServings] = useState(defaultServings);
-
+  const parsedDefaultServings = Number(defaultServings);
+  const [servings, setServings] = useState(parsedDefaultServings);
   const increase = () => setServings((prev) => prev + 1);
   const decrease = () => setServings((prev) => (prev > 1 ? prev - 1 : prev)); // не менше 1
-  const reset = () => setServings(defaultServings);
+  const reset = () => setServings(parsedDefaultServings);
 
   const servingsLabel = servings === 1 ? '1 порція' : `${servings} порцій`;
 
@@ -99,6 +99,10 @@ const CircleButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: #a7b098;
+  }
 `;
 const Icon = styled.img`
   width: 1.5rem;
