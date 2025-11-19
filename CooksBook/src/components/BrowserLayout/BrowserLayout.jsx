@@ -5,10 +5,10 @@ import { Tags } from './Tags.jsx';
 import { RecipeCard } from '../Cards/RecipeCard.jsx';
 import { PlaylistCard } from '../Cards/PlaylistCard.jsx';
 import styled, { css } from 'styled-components';
-import refreshIcon from '../../assets/Refresh cw.svg';
+import refreshIcon from '../../assets/refresh.svg';
 import { Wrapper } from '../../ui/Wrapper.jsx';
-import leftArrow from '../../assets/ArrowLeft.svg';
-import rightArrow from '../../assets/ArrowRight.svg';
+import leftArrow from '../../assets/arrowLeft.svg';
+import rightArrow from '../../assets/arrowRight.svg';
 
 const BrowserLayout = ({
   type,
@@ -44,7 +44,7 @@ const BrowserLayout = ({
 
 function PageNavigation({ pageCount }) {
   return (
-    <Wrapper>
+    <PageNavigationWrapper>
       <PageNavigationButton>
         <img src={leftArrow} alt="Ліва стрілка" />
       </PageNavigationButton>
@@ -56,10 +56,17 @@ function PageNavigation({ pageCount }) {
       <PageNavigationButton>
         <img src={rightArrow} alt="Права стрілка" />
       </PageNavigationButton>
-    </Wrapper>
+    </PageNavigationWrapper>
   );
 }
-
+const PageNavigationWrapper = styled.div`
+  display: flex; /* або просто прибрати display, бо div і так block */
+  width: fit-content; /* щоб ширина була по контенту */
+  margin: 1rem auto; /* по центру горизонтально */
+  justify-content: center; /* центрує дітей всередині, якщо треба */
+  align-items: center;
+  gap: 1rem;
+`;
 const PageNavigationButton = styled.button`
   width: 2.75rem;
   height: 2.75rem;
@@ -82,7 +89,7 @@ const PageNavigationButton = styled.button`
         `}
 `;
 
-const CardFeed = ({ type, items, limit, showPageNavigation = true, playlistVariant }) => {
+const CardFeed = ({ type, items, limit, showPageNavigation = true }) => {
   const pageCount = Math.max(1, Math.ceil(items.length / limit));
 
   const showLoadMore = items.length > limit;
@@ -90,13 +97,15 @@ const CardFeed = ({ type, items, limit, showPageNavigation = true, playlistVaria
   return (
     <>
       <CardGrid>
-        {items.slice(0, limit).map((item) =>
-          type === 'recipe' ? (
-            <RecipeCard key={item.title} recipe={item} />
-          ) : (
-            <PlaylistCard key={item.title} playlist={item} variant={playlistVariant} />
-          ),
-        )}
+        {items
+          .slice(0, limit)
+          .map((item) =>
+            type === 'recipe' ? (
+              <RecipeCard key={item.title} recipe={item} />
+            ) : (
+              <PlaylistCard key={item.title} playlist={item} />
+            )
+          )}
       </CardGrid>
       {showLoadMore && (
         <ShowMoreButton>
@@ -125,6 +134,7 @@ const CardGrid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  //grid-template-rows: 27.5rem;
   gap: 1.5rem;
 `;
 

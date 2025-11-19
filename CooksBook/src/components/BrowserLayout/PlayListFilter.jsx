@@ -1,8 +1,10 @@
 import SearchBar from '../../ui/SearchInput.jsx';
 import Input from '../../ui/Input.jsx';
 import SortBy from './SortBy.jsx';
-import styled from "styled-components";
-import {FilterBar} from "./FilterBar.jsx";
+import styled from 'styled-components';
+import { FilterBar } from './FilterBar.jsx';
+import SelectInput from '../../ui/SelectInput.jsx';
+import { Wrapper } from '../../ui/Wrapper.jsx';
 
 export const PlayListFilter = () => {
   return (
@@ -11,7 +13,13 @@ export const PlayListFilter = () => {
         <SearchBar />
         <Input placeholder="Введіть тег" />
       </PlayListFilterWrapper>
-      <SortBy />
+
+      <Wrapper>
+        <SelectInput
+          defaultOption="За популярністю"
+          options={['За рейтингом', 'За кількістю відгуків']}
+        />
+      </Wrapper>
     </FilterBar>
   );
 };

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Input = styled.input`
   width: 100%;
@@ -6,6 +6,6 @@ const Input = styled.input`
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #FAF4E1;
+  background-color: #faf4e1;
 `;
 export default Input;

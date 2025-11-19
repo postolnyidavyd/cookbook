@@ -17,7 +17,7 @@ const MainPage = ({ onNavigate }) => {
       <PlaylistCarousel
         title="Популярні плейлисти"
         playlists={PLAYLISTS_MOCK}
-        visibleCount={4}
+        visibleCount={3}
       />
     </>
   );

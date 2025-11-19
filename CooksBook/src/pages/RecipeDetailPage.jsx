@@ -1,147 +1,279 @@
 import styled from 'styled-components';
 import clockIcon from '../assets/clock.svg';
 import starIcon from '../assets/star.svg';
+import starBigUnfilled from '../assets/starBigUnfilled.svg';
+import starBigFilled from '../assets/starBigFilled.svg';
+import whiteHeart from '../assets/heartWhite.svg';
+import filledHeart from '../assets/filledHeart.svg';
+import bookmark from '../assets/bookmarkBig.svg';
+import share from '../assets/share.svg';
 import { RECIPE_DETAIL_MOCK } from '../shared/utils/mockData.js';
+import { Container } from '../ui/Container.jsx';
+import { Display } from '../ui/texts/Display.jsx';
+import { Difficulty } from '../components/Cards/RecipeCard.jsx';
+import { Wrapper } from '../ui/Wrapper.jsx';
+import { FocusButton } from '../ui/buttons/FocusButton.jsx';
+import { WideFocusButton } from '../ui/buttons/WideFocusButton.jsx';
+import Ingredients from '../components/Ingredients/Ingredients.jsx';
+import { useLoaderData } from 'react-router-dom';
 
+export const recipeDetailLoader = async ({ params }) => {
+  const { recipeId } = params;
+  console.log(recipeId);
+  return RECIPE_DETAIL_MOCK;
+};
 const RecipeDetailPage = () => {
   const {
     title,
     cover,
     description,
-    playlist,
     time,
     servings,
     difficulty,
     rating,
     author,
-    badges,
     ingredients,
     steps,
-    reviewPrompt,
     reviews,
-  } = RECIPE_DETAIL_MOCK;
-
-  const servingsNumber = typeof servings === 'string' ? servings.split(' ')[0] : servings;
+  } = useLoaderData();
 
   return (
-    <Page>
-      <Hero>
-        <HeroText>
-          <PlaylistTag>{playlist}</PlaylistTag>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-          <BadgeList>
-            {badges.map((badge) => (
-              <Badge key={badge}>{badge}</Badge>
-            ))}
-          </BadgeList>
-          <MetaList>
-            <MetaItem>
-              <MetaIcon src={clockIcon} alt="Час" />
-              <MetaValue>
-                <strong>{time}</strong>
-                <span>Час приготування</span>
-              </MetaValue>
-            </MetaItem>
-            <MetaItem>
-              <MetaBadge>{servingsNumber}</MetaBadge>
-              <MetaValue>
-                <strong>{servings}</strong>
-                <span>Порції</span>
-              </MetaValue>
-            </MetaItem>
-            <MetaItem>
-              <MetaDot $difficulty={difficulty} />
-              <MetaValue>
-                <strong>{difficulty}</strong>
-                <span>Складність</span>
-              </MetaValue>
-            </MetaItem>
-            <MetaItem>
-              <MetaIcon src={starIcon} alt="Рейтинг" />
-              <MetaValue>
-                <strong>{rating}</strong>
-                <span>Середній рейтинг</span>
-              </MetaValue>
-            </MetaItem>
-          </MetaList>
-          <AuthorBlock>
-            <AuthorAvatar src={author.avatar} alt={author.name} />
-            <div>
-              <AuthorName>{author.name}</AuthorName>
-              <AuthorRole>{author.role}</AuthorRole>
-            </div>
-          </AuthorBlock>
-        </HeroText>
-        <HeroImageWrapper>
-          <HeroImage src={cover} alt={title} />
-        </HeroImageWrapper>
-      </Hero>
-      <ContentSection>
-        <SectionTitle>Інгредієнти</SectionTitle>
-        <IngredientsGrid>
-          {ingredients.map((group) => (
-            <IngredientGroup key={group.title}>
-              <GroupTitle>{group.title}</GroupTitle>
-              <IngredientList>
-                {group.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </IngredientList>
-            </IngredientGroup>
-          ))}
-        </IngredientsGrid>
-      </ContentSection>
-      <ContentSection>
-        <SectionTitle>Приготування</SectionTitle>
-        <StepsList>
-          {steps.map((step, index) => (
-            <StepItem key={step}>
-              <StepNumber>{index + 1}.</StepNumber>
-              <p>{step}</p>
-            </StepItem>
-          ))}
-        </StepsList>
-      </ContentSection>
-      <ReviewSection>
-        <ReviewHeader>
-          <SectionTitle>{reviewPrompt.title}</SectionTitle>
-          <ReviewSubtitle>{reviewPrompt.subtitle}</ReviewSubtitle>
-          <StarRow>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <StarIcon key={i} src={starIcon} alt="Оцінка" />
-            ))}
-          </StarRow>
-          <ReviewTextarea placeholder="Напишіть свій відгук..." />
-          <SubmitButton type="button">Надіслати відгук</SubmitButton>
-        </ReviewHeader>
-      </ReviewSection>
-      <ContentSection>
-        <SectionTitle>Відгуки</SectionTitle>
-        <ReviewsList>
-          {reviews.map((review) => (
-            <ReviewCard key={review.author}>
-              <ReviewHeaderRow>
-                <ReviewerAvatar src={review.avatar || author.avatar} alt={review.author} />
-                <div>
-                  <ReviewerName>{review.author}</ReviewerName>
-                  <ReviewerMeta>Оцінка: {review.rating}/5</ReviewerMeta>
-                </div>
-              </ReviewHeaderRow>
-              <ReviewText>{review.comment}</ReviewText>
-            </ReviewCard>
-          ))}
-        </ReviewsList>
-      </ContentSection>
-    </Page>
+    <Container $padding="0 2rem 0 5rem">
+      <HeroElement title={title} image={cover} description={description}>
+        <RecipeSideBar
+          time={time}
+          avatar={author.avatar}
+          authorName={author.name}
+          rating={rating}
+          difficulty={difficulty}
+        />
+      </HeroElement>
+      <Ingredients ingredients={ingredients} defaultServings={servings} />
+      <Steps steps={steps} />
+      <ReviewForm />
+      <Reviews reviews={reviews} />
+    </Container>
   );
 };
-
-const Page = styled.main`
+const Reviews = ({ reviews }) => {
+  return <div></div>;
+};
+const ReviewForm = () => {
+  return (
+    <Section>
+      <SectionTitle>Залиште відгук</SectionTitle>
+      <ReviewFormLayout>
+        <Rating rating={0} />
+        <Description>Що вам сподобалося?</Description>
+        <ReviewTextArea />
+        <FocusButton>Надіслати відгук</FocusButton>
+      </ReviewFormLayout>
+    </Section>
+  );
+};
+const ReviewTextArea = styled.textarea`
+  width: 100%;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  aspect-ratio: 4/1;
+`;
+const ReviewTextarea = styled.textarea``;
+const ReviewFormLayout = styled.form`
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
-  padding-bottom: 5rem;
+  align-items: flex-start;
+  gap: 40px;
+  flex-shrink: 0;
+  border-radius: 1.25rem;
+  background: #b2bba2;
+  margin: 1.25rem 5rem;
+`;
+
+const Steps = ({ steps }) => {
+  return (
+    <Section>
+      <SectionTitle>Приготування</SectionTitle>
+
+      <StepsList>
+        {steps.map((step, index) => {
+          const { title, text, image } = step;
+          return (
+            <StepItem key={step}>
+              <StepContent>
+                <GroupTitle>
+                  {index + 1}.{title}
+                </GroupTitle>
+
+                {text && <StepText>{text}</StepText>}
+
+                {image && (
+                  <StepImageWrapper>
+                    <StepImage src={image} alt={title} />
+                  </StepImageWrapper>
+                )}
+              </StepContent>
+            </StepItem>
+          );
+        })}
+      </StepsList>
+    </Section>
+  );
+};
+const GroupTitle = styled.h3`
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+`;
+const Section = styled.section`
+  margin-top: 3rem;
+`;
+const StepContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const StepHeaderRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+`;
+
+const StepTitle = styled.h3`
+  font-size: 1.5rem;
+`;
+
+const StepText = styled.p`
+  font-size: 1.25rem;
+`;
+
+const StepImageWrapper = styled.div`
+  margin-top: 1.25rem;
+  overflow: hidden;
+  padding: 0 10rem;
+`;
+
+const StepImage = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 1.25rem;
+  object-fit: cover;
+`;
+
+const HeroElement = ({ image, title, description, children }) => {
+  return (
+    <Container>
+      <Display>{title}</Display>
+      {description && <Description>{description}</Description>}
+      <HeroContainer>
+        <HeroImg src={image} alt={title} />
+        {children}
+      </HeroContainer>
+    </Container>
+  );
+};
+const HeroContainer = styled.section`
+  margin-top: 4rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+`;
+const HeroImg = styled.img`
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 1.25rem;
+`;
+const Description = styled.h2`
+  margin: 1.5rem 0;
+  font-size: 2rem;
+`;
+const RecipeSideBar = ({ rating, avatar, authorName, time, difficulty }) => {
+  return (
+    <SideBarContainer>
+      <MetaContainer>
+        <Rating rating={rating} />
+        <Wrapper $gap="1">
+          <AvatarImage src={avatar} alt={authorName} />
+          <Paragraph>{authorName}</Paragraph>
+        </Wrapper>
+        <Wrapper $gap="1">
+          <MetaImage src={clockIcon} />
+          <Paragraph>{time}</Paragraph>
+        </Wrapper>
+        <Wrapper $gap="1">
+          <DifficultyBigger $level={difficulty} />
+          <Paragraph>{difficulty}</Paragraph>
+        </Wrapper>
+      </MetaContainer>
+      <MetaContainer $gap="0.625rem">
+        <WideFocusButton>
+          <MetaImage src={whiteHeart} />
+          Зберегти рецепт
+        </WideFocusButton>
+        <WideFocusButton $minWidth="100%">
+          <MetaImage src={bookmark} />
+          Додати до плейлиста
+        </WideFocusButton>
+        <WideFocusButton $minWidth="100%">
+          <MetaImage src={share} />
+          Поділитися
+        </WideFocusButton>
+      </MetaContainer>
+    </SideBarContainer>
+  );
+};
+const Paragraph = styled.p`
+  font-size: 1.5rem;
+`;
+const Rating = ({ rating }) => {
+  const filledHeartCount = Math.round(rating);
+  const hollowStarsCount = 5 - filledHeartCount;
+  return (
+    <Wrapper $gap="1">
+      {Array.from({ length: filledHeartCount }).map((_, i) => (
+        <RatingImage key={i} src={starBigFilled} alt="Заповнена зірка" />
+      ))}
+      {Array.from({ length: hollowStarsCount }).map((_, i) => (
+        <RatingImage key={i * 10} src={starBigUnfilled} alt="Пуста зірка" />
+      ))}
+    </Wrapper>
+  );
+};
+const MetaImage = styled.img`
+  width: 2rem;
+  height: 2rem;
+`;
+const RatingImage = styled.img`
+  width: 3rem;
+  height: 3rem;
+`;
+const AvatarImage = styled(MetaImage)`
+  border-radius: 50%;
+  object-fit: cover;
+`;
+const DifficultyBigger = styled(Difficulty)`
+  height: 2rem;
+  width: 2rem;
+`;
+const SideBarContainer = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+const MetaContainer = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: ${({ $gap }) => $gap || '1.5rem'};
 `;
 
 const Hero = styled.section`
@@ -172,11 +304,11 @@ const Title = styled.h1`
   color: #1e331f;
 `;
 
-const Description = styled.p`
-  font-size: 1.1rem;
-  color: #4d5d4e;
-  line-height: 1.7;
-`;
+// const Description = styled.p`
+//   font-size: 1.1rem;
+//   color: #4d5d4e;
+//   line-height: 1.7;
+// `;
 
 const BadgeList = styled.div`
   display: flex;
@@ -301,28 +433,13 @@ const ContentSection = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.1rem;
-  color: #1e331f;
+  font-size: 3rem;
 `;
 
 const IngredientsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   gap: 2rem;
-`;
-
-const IngredientGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background: rgba(212, 217, 202, 0.5);
-  border-radius: 1.25rem;
-  padding: 1.5rem;
-`;
-
-const GroupTitle = styled.h3`
-  font-size: 1.2rem;
-  color: #1e331f;
 `;
 
 const IngredientList = styled.ul`
@@ -345,6 +462,7 @@ const StepsList = styled.ol`
   gap: 1.5rem;
   list-style: none;
   counter-reset: step-counter;
+  margin-top: 1.5rem;
 `;
 
 const StepItem = styled.li`
@@ -352,7 +470,6 @@ const StepItem = styled.li`
   gap: 1rem;
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #3f4d40;
 `;
 
 const StepNumber = styled.span`
@@ -386,16 +503,6 @@ const StarRow = styled.div`
 const StarIcon = styled.img`
   width: 2rem;
   height: 2rem;
-`;
-
-const ReviewTextarea = styled.textarea`
-  min-height: 8rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(30, 51, 31, 0.2);
-  padding: 1rem 1.25rem;
-  font-size: 1rem;
-  background: rgba(244, 246, 239, 0.7);
-  resize: vertical;
 `;
 
 const SubmitButton = styled.button`

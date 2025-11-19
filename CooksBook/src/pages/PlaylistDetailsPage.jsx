@@ -1,9 +1,18 @@
 import styled from 'styled-components';
-import { PLAYLIST_DETAIL_MOCK, PLAYLIST_RECIPE_LIST } from '../shared/utils/mockData.js';
+import {
+  PLAYLIST_DETAIL_MOCK,
+  PLAYLIST_RECIPE_LIST,
+} from '../shared/utils/mockData.js';
 import { RecipeCard } from '../components/Cards/RecipeCard.jsx';
-
+import { useLoaderData } from 'react-router-dom';
+export const playlistDetailLoader = async ({ params }) => {
+  const { playlistId } = params;
+  console.log(playlistId);
+  return PLAYLIST_DETAIL_MOCK;
+};
 const PlaylistDetailsPage = () => {
-  const { title, subtitle, description, cover, curator, stats, tags } = PLAYLIST_DETAIL_MOCK;
+  const { title, subtitle, description, cover, curator, stats, tags } =
+    useLoaderData();
 
   return (
     <Page>
@@ -50,7 +59,9 @@ const PlaylistDetailsPage = () => {
       <RecipesSection>
         <SectionHeader>
           <SectionTitle>Рецепти з плейлиста</SectionTitle>
-          <SectionSubtitle>Від сніданків до вечері — готуйте послідовно або оберіть улюблене.</SectionSubtitle>
+          <SectionSubtitle>
+            Від сніданків до вечері — готуйте послідовно або оберіть улюблене.
+          </SectionSubtitle>
         </SectionHeader>
         <RecipeGrid>
           {PLAYLIST_RECIPE_LIST.map((recipe) => (
@@ -136,7 +147,7 @@ const StatsList = styled.div`
 
 const StatCard = styled.div`
   min-width: 10rem;
-background: #d4d9ca;
+  background: #d4d9ca;
   border-radius: 1.25rem;
   padding: 1.1rem 1.5rem;
   display: flex;
@@ -173,7 +184,11 @@ const HeroImage = styled.img`
 const HeroOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(18, 40, 24, 0.2) 0%, rgba(18, 40, 24, 0.85) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 40, 24, 0.2) 0%,
+    rgba(18, 40, 24, 0.85) 100%
+  );
 `;
 
 const HeroCTA = styled.button`
@@ -187,7 +202,9 @@ const HeroCTA = styled.button`
   color: #1e331f;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 
   &:hover {
     background: #ffffff;
@@ -217,13 +234,17 @@ const TagButton = styled.button`
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  background: ${({ $active }) => ($active ? '#2d4a2f' : 'rgba(30, 51, 31, 0.1)')};
+  background: ${({ $active }) =>
+    $active ? '#2d4a2f' : 'rgba(30, 51, 31, 0.1)'};
   color: ${({ $active }) => ($active ? '#ffffff' : '#1e331f')};
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);
-    background: ${({ $active }) => ($active ? '#1e331f' : 'rgba(30, 51, 31, 0.18)')};
+    background: ${({ $active }) =>
+      $active ? '#1e331f' : 'rgba(30, 51, 31, 0.18)'};
   }
 `;
 
@@ -240,7 +261,9 @@ const OutlineButton = styled.button`
   color: #1e331f;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
     background: rgba(244, 246, 239, 0.95);

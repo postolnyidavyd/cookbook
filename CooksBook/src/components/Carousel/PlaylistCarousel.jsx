@@ -2,8 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Container } from '../../ui/Container.jsx';
 import { PlaylistCard } from '../Cards/PlaylistCard.jsx';
-import leftArrow from '../../assets/ArrowLeft.svg';
-import rightArrow from '../../assets/ArrowRight.svg';
+import leftArrow from '../../assets/arrowLeft.svg';
+import rightArrow from '../../assets/arrowRight.svg';
 import { NavButton } from '../../ui/buttons/NavButton.jsx';
 
 export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
@@ -27,17 +27,17 @@ export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
     <Section>
       <InnerContainer $padding="0 5rem">
         <Header>
-          <div>
-            <Title>{title}</Title>
-            <Subtitle>Натхнення від спільноти для будь-якої нагоди</Subtitle>
-          </div>
-          <Counter>{currentEnd}/{playlists.length}</Counter>
+          <Title>{title}</Title>
         </Header>
         <Viewport>
-          <Track style={{ transform: `translateX(-${(100 / visibleCount) * index}%)` }}>
+          <Track
+            style={{
+              transform: `translateX(-${(100 / visibleCount) * index}%)`,
+            }}
+          >
             {playlists.map((playlist) => (
               <Slide key={playlist.title} $visibleCount={visibleCount}>
-                <PlaylistCard playlist={playlist} />
+                <PlaylistCard playlist={playlist} key={playlist.id} />
               </Slide>
             ))}
           </Track>
@@ -66,7 +66,6 @@ export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
 };
 
 const Section = styled.section`
-  background: #f4ecd0;
   padding: 4rem 0 5rem;
 `;
 
@@ -76,17 +75,13 @@ const InnerContainer = styled(Container)`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
   margin-bottom: 2.5rem;
 `;
-
 const Title = styled.h2`
-  margin: 0 0 0.75rem;
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #1e331f;
+  font-size: 3rem;
 `;
 
 const Subtitle = styled.p`
@@ -98,7 +93,6 @@ const Subtitle = styled.p`
 const Counter = styled.span`
   font-size: 1.05rem;
   font-weight: 600;
-  color: #1e331f;
 `;
 
 const Viewport = styled.div`
@@ -116,4 +110,5 @@ const Slide = styled.div`
   flex: 0 0 calc(100% / ${({ $visibleCount }) => $visibleCount});
   padding: 0 0.75rem;
   box-sizing: border-box;
+  width: 20rem;
 `;
