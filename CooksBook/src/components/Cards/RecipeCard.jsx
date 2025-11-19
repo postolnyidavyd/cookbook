@@ -16,10 +16,19 @@ import {
   MetaInfo,
   MetaItemWrapper,
 } from './SharedComponents.jsx';
+import { useSelector } from 'react-redux';
+import {
+  selectLikedRecipesIdsSet,
+  selectSavedInPlaylistRecipesIdsSet,
+} from '../../store/selectors/authSelectors.js';
 
 export const RecipeCard = ({ recipe }) => {
-  const { id, title, image, time, difficulty, rating, isLiked, isSaved } =
+  const { id, title, image, time, difficulty, rating,} =
     recipe;
+  const likedSet = useSelector(selectLikedRecipesIdsSet);
+  const savedInPlaylist = useSelector(selectSavedInPlaylistRecipesIdsSet);
+  const isLiked = likedSet.has(id);
+  const isSaved = savedInPlaylist.has(id);
   return (
     <Card>
       <CardLink to={`/recipes/${id}`}>

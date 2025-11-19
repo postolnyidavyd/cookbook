@@ -1,10 +1,11 @@
-import SearchBar from '../../ui/SearchInput.jsx';
-import Input from '../../ui/Input.jsx';
-import SelectInput from '../../ui/SelectInput.jsx';
+import SearchBar from '../../ui/inputs/SearchInput.jsx';
+import Input from '../../ui/inputs/Input.jsx';
+import SelectInput from '../../ui/inputs/SelectInput.jsx';
 import SortBy from './SortBy.jsx';
 import styled from 'styled-components';
 import { FilterBar } from './FilterBar.jsx';
 import { Wrapper } from '../../ui/Wrapper.jsx';
+import { DIFFICULTIES, RECIPE_SORT_BY, TIME } from '../../shared/utils/selectInputsValues.js';
 
 export const RecipeFilter = () => {
   return (
@@ -13,18 +14,15 @@ export const RecipeFilter = () => {
         <SearchBar />
         <Input placeholder="Введіть інгредієнт" />
         <SelectInput
-          options={['Легко', 'Помірно', 'Складно']}
-          defaultOption="Складність"
+          options={DIFFICULTIES}
         />
         <SelectInput
-          defaultOption="Час приготування"
-          options={['До 30 хвилин', 'До 1 години', 'Година і більше']}
+          options={TIME}
         />
       </RecipeElementFilterWrapper>
       <Wrapper>
         <SelectInput
-          defaultOption="За популярністю"
-          options={['За рейтингом', 'За кількістю відгуків']}
+          options={RECIPE_SORT_BY}
         />
       </Wrapper>
     </FilterBar>

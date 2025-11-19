@@ -16,13 +16,13 @@ const BrowserLayout = ({
   recipes = [],
   playlists = [],
   showPageNavigation,
-  playlistVariant = 'grid',
+  padding,
 }) => {
   const items = type === 'recipe' ? recipes : playlists;
   const limit = Math.max(1, maxNumberOfCards ?? (items.length || 0));
 
   return (
-    <Container $padding="5rem">
+    <Container $padding={padding}>
       {type === 'recipe' ? <RecipeFilter /> : <PlayListFilter />}
       <Tags
         tags={
@@ -36,7 +36,6 @@ const BrowserLayout = ({
         items={items}
         limit={limit}
         showPageNavigation={showPageNavigation}
-        playlistVariant={playlistVariant}
       />
     </Container>
   );
@@ -60,10 +59,10 @@ function PageNavigation({ pageCount }) {
   );
 }
 const PageNavigationWrapper = styled.div`
-  display: flex; /* або просто прибрати display, бо div і так block */
-  width: fit-content; /* щоб ширина була по контенту */
-  margin: 1rem auto; /* по центру горизонтально */
-  justify-content: center; /* центрує дітей всередині, якщо треба */
+  display: flex;
+  width: fit-content; 
+  margin: 1rem auto; 
+  justify-content: center; 
   align-items: center;
   gap: 1rem;
 `;
