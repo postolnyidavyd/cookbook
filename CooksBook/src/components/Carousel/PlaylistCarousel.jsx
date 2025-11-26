@@ -5,39 +5,47 @@ import { PlaylistCard } from '../Cards/PlaylistCard.jsx';
 import leftArrow from '../../assets/arrowLeft.svg';
 import rightArrow from '../../assets/arrowRight.svg';
 import { NavButton } from '../../ui/buttons/NavButton.jsx';
+import { RecipeCard } from '../Cards/RecipeCard.jsx';
 
-export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
+export const PlaylistCarousel = ({
+  children,
+  items,
+  type = 'playlist',
+  alignChildren = 'space-between',
+}) => {
   const [index, setIndex] = useState(0);
-  const maxIndex = Math.max(0, playlists.length - visibleCount);
+
+  const itemsLength = items.length;
+  const visibleCount = 3;
+  const maxIndex = Math.max(0, items.length - visibleCount);
 
   const handleNext = () => {
-    setIndex((prev) => Math.min(prev + 1, maxIndex));
+    setIndex((prevIndex) => Math.min(prevIndex + 1, maxIndex));
   };
-
   const handlePrev = () => {
-    setIndex((prev) => Math.max(prev - 1, 0));
+    setIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 
-  const disablePrev = index === 0;
-  const disableNext = index >= maxIndex;
-
-  const currentEnd = Math.min(index + visibleCount, playlists.length);
+  const prevDisabled = index === 0;
+  const nextDisabled = index >= maxIndex;
 
   return (
-    <Section>
-      <InnerContainer $padding="0 5rem">
-        <Header>
-          <Title>{title}</Title>
-        </Header>
+    <section>
+      {children && <Header $alignChildren={alignChildren}>{children}</Header>}
+      {itemsLength > 0 ? (
         <Viewport>
           <Track
             style={{
               transform: `translateX(-${(100 / visibleCount) * index}%)`,
             }}
           >
-            {playlists.map((playlist) => (
-              <Slide key={playlist.title} $visibleCount={visibleCount}>
-                <PlaylistCard playlist={playlist} key={playlist.id} />
+            {items.map((item) => (
+              <Slide key={item.id} $visibleCount={visibleCount}>
+                {type === 'playlist' ? (
+                  <PlaylistCard playlist={item} />
+                ) : (
+                  <RecipeCard recipe={item} />
+                )}
               </Slide>
             ))}
           </Track>
@@ -46,7 +54,7 @@ export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
             $left="1.5rem"
             $top="50%"
             onClick={handlePrev}
-            disabled={disablePrev}
+            disabled={prevDisabled}
           >
             <img src={leftArrow} alt="Попередній плейлист" />
           </NavButton>
@@ -55,30 +63,25 @@ export const PlaylistCarousel = ({ title, playlists, visibleCount = 3 }) => {
             $right="1.5rem"
             $top="50%"
             onClick={handleNext}
-            disabled={disableNext}
+            disabled={nextDisabled}
           >
             <img src={rightArrow} alt="Наступний плейлист" />
           </NavButton>
         </Viewport>
-      </InnerContainer>
-    </Section>
+      ) : (
+        <Empty>Немає елементів</Empty>
+      )}
+    </section>
   );
 };
-
-const Section = styled.section`
-  padding: 4rem 0 5rem;
+const Empty = styled.p`
+  text-align: center;
 `;
-
-const InnerContainer = styled(Container)`
-  position: relative;
-`;
-
 const Header = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: ${({ $alignChildren }) => $alignChildren};
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
 `;
 const Title = styled.h2`
   font-size: 3rem;
@@ -99,6 +102,7 @@ const Viewport = styled.div`
   position: relative;
   overflow: hidden;
   margin: 0 -0.75rem;
+  padding: 1rem 0;
 `;
 
 const Track = styled.div`
@@ -110,5 +114,4 @@ const Slide = styled.div`
   flex: 0 0 calc(100% / ${({ $visibleCount }) => $visibleCount});
   padding: 0 0.75rem;
   box-sizing: border-box;
-  width: 20rem;
 `;

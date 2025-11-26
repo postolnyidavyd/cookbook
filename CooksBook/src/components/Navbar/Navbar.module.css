@@ -22,6 +22,3 @@
 .navbar.hidden {
   transform: translateY(-100%);
 }
-.navbar img {
-  width: 3rem;
-}

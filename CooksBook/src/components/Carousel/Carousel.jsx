@@ -13,6 +13,7 @@ const defaultSlides = [
   {
     title: 'Відкрийте світ смачних рецептів',
     buttonText: 'Переглянути рецепти',
+    navigateTo: "/recipes",
     img: carousel1,
     content:
       'Щоденне натхнення для вашої кухні: від простих страв до кулінарних шедеврів. Знаходьте улюблені рецепти та діліться своїми відгуками легко!',
@@ -20,6 +21,7 @@ const defaultSlides = [
   {
     title: 'Переглядайте плейлісти',
     buttonText: 'Переглянути плейлисти',
+    navigateTo: "/playlists",
     img: carousel2,
     content:
       'Відкривайте колекції рецептів від спільности: святкові меню, дієтичні плани чи щоденні ідеї. Натхення від кухарів для вашої творчості!',
@@ -27,6 +29,7 @@ const defaultSlides = [
   {
     title: 'Є що показати на кухні?',
     buttonText: 'Створити рецепт',
+    navigateTo: "/profile/new-recipe",
     img: carousel3,
     content:
       'Ваші рецепти заслуговують на увагу! Діліться улюбленими стравами, знаходьте однодумців та збирайте колекцію відгуків. Від простого сніданку до святкового обіду — всі страви важливі!',
@@ -37,18 +40,18 @@ const Carousel = ({ slides = defaultSlides }) => {
   const carouselContainer = useRef(null);
 
   const slidesCount = slides.length;
-
+  const maxIndex = slidesCount - 1;
   const handleNext = useCallback(() => {
-    setCurrentIndex((prevIndex) => {
-      return prevIndex + 1 >= slidesCount ? 0 : prevIndex + 1;
-    });
-  }, [slidesCount]);
+    setCurrentIndex((prevIndex) =>
+      prevIndex === maxIndex ? 0 : prevIndex + 1
+    );
+  }, [maxIndex]);
 
   const handlePrev = useCallback(() => {
-    setCurrentIndex((prevIndex) => {
-      return prevIndex - 1 < 0 ? slidesCount - 1 : prevIndex - 1;
-    });
-  }, [slidesCount]);
+    setCurrentIndex((prevIndex) =>
+      prevIndex - 1 < 0 ? maxIndex : prevIndex - 1
+    );
+  }, [maxIndex]);
 
   useEffect(() => {
     const timer = setTimeout(handleNext, 5000);
@@ -56,7 +59,7 @@ const Carousel = ({ slides = defaultSlides }) => {
   }, [currentIndex, handleNext]);
 
   return (
-    <Container style={{ marginBottom: '3.75rem' }}>
+    <Container $margin="0 0 3.75rem 0">
       <Container>
         <div className={styles.carouselContainer}>
           <div
@@ -70,6 +73,7 @@ const Carousel = ({ slides = defaultSlides }) => {
                 title={slide.title}
                 buttonText={slide.buttonText}
                 img={slide.img}
+                navigateTo={slide.navigateTo}
               >
                 {slide.content}
               </CarouselItem>

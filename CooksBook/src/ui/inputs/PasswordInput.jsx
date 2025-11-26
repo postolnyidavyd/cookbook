@@ -1,9 +1,9 @@
-import { Wrapper } from './Wrapper.jsx';
+import { Wrapper } from '../Wrapper.jsx';
 import Input from './Input.jsx';
 import { useState } from 'react';
 import styled from 'styled-components';
-import openedEye from '../assets/eye.svg';
-import closedEye from '../assets/eyeClosed.svg';
+import openedEye from '../../assets/eye.svg';
+import closedEye from '../../assets/eyeClosed.svg';
 const PasswordInput = ({ ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => setShowPassword((prevShow) => !prevShow);

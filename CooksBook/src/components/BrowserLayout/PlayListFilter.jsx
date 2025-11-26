@@ -1,10 +1,11 @@
-import SearchBar from '../../ui/SearchInput.jsx';
-import Input from '../../ui/Input.jsx';
+import SearchBar from '../../ui/inputs/SearchInput.jsx';
+import Input from '../../ui/inputs/Input.jsx';
 import SortBy from './SortBy.jsx';
 import styled from 'styled-components';
 import { FilterBar } from './FilterBar.jsx';
-import SelectInput from '../../ui/SelectInput.jsx';
+import SelectInput from '../../ui/inputs/SelectInput.jsx';
 import { Wrapper } from '../../ui/Wrapper.jsx';
+import { PLAYLIST_SORT_BY } from '../../shared/utils/selectInputsValues.js';
 
 export const PlayListFilter = () => {
   return (
@@ -16,8 +17,7 @@ export const PlayListFilter = () => {
 
       <Wrapper>
         <SelectInput
-          defaultOption="За популярністю"
-          options={['За рейтингом', 'За кількістю відгуків']}
+          options={PLAYLIST_SORT_BY}
         />
       </Wrapper>
     </FilterBar>
