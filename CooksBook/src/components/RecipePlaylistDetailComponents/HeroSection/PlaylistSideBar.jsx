@@ -11,9 +11,46 @@ import hash from '../../../assets/hash.svg';
 import styled from 'styled-components';
 import { WideFocusButton } from '../../../ui/buttons/WideFocusButton.jsx';
 import whiteHeart from '../../../assets/heartWhite.svg';
-import bookmark from '../../../assets/bookmarkBig.svg';
 import share from '../../../assets/share.svg';
-const PlaylistSideBar = ({ authorName, avatar, recipeCount, views, tags }) => {
+import { useState } from 'react';
+import { useLikePlaylistMutation } from '../../../store/api/playlistApi.js';
+import { useSelector } from 'react-redux';
+import { selectLikedPlaylistsIdsSet } from '../../../store/selectors/authSelectors.js';
+import useAuthAction from '../../../shared/hooks/useAuthAction.js';
+import filledHeart from '../../../assets/filledHeart.svg';
+const PlaylistSideBar = ({
+  playlistId,
+  authorName,
+  avatar,
+  recipesCount,
+  views,
+  tags,
+}) => {
+  const [shareButtonState, setShareButtonState] = useState('Поділитися');
+  const [likePlaylist] = useLikePlaylistMutation();
+  const likedSet = useSelector(selectLikedPlaylistsIdsSet);
+  const isLiked = likedSet.has(playlistId);
+  const withAuth = useAuthAction();
+
+  const handleLikeButtonCLick = withAuth(() => {
+    likePlaylist({ id: playlistId, like: !isLiked });
+  });
+  const handleShareButtonClick = async () => {
+    try {
+      setShareButtonState('Копіємо...');
+      const text = window.location.href;
+      await navigator.clipboard.writeText(text);
+      setShareButtonState('Скопійовано!');
+      setTimeout(() => {
+        setShareButtonState('Поділитися');
+      }, 2000);
+    } catch {
+      setShareButtonState('Помилка копіювання');
+      setTimeout(() => {
+        setShareButtonState('Поділитися');
+      }, 2000);
+    }
+  };
   return (
     <SideBarContainer>
       <MetaContainer>
@@ -23,7 +60,7 @@ const PlaylistSideBar = ({ authorName, avatar, recipeCount, views, tags }) => {
         </Wrapper>
         <Wrapper $gap="1">
           <MetaImage src={book} alt="Книга" />
-          <MetaParagraph>{recipeCount} рецептів</MetaParagraph>
+          <MetaParagraph>{recipesCount} рецептів</MetaParagraph>
         </Wrapper>
         <Wrapper $gap="1">
           <MetaImage src={eye} alt="Око" />
@@ -32,13 +69,13 @@ const PlaylistSideBar = ({ authorName, avatar, recipeCount, views, tags }) => {
         <TagsList tags={tags} />
       </MetaContainer>
       <MetaContainer $gap="0.625rem">
-        <WideFocusButton>
-          <MetaImage src={whiteHeart} />
-          Зберегти плейлист
+        <WideFocusButton onClick={handleLikeButtonCLick}>
+          <MetaImage src={isLiked ? filledHeart : whiteHeart} />
+          {isLiked ? "Вподобано" : "Вподобати плейлист"}
         </WideFocusButton>
-        <WideFocusButton $minWidth="100%">
+        <WideFocusButton $minWidth="100%" onClick={handleShareButtonClick}>
           <MetaImage src={share} />
-          Поділитися
+          {shareButtonState}
         </WideFocusButton>
       </MetaContainer>
     </SideBarContainer>
@@ -75,7 +112,7 @@ const Tag = styled.span`
   background: #b2bba2;
   color: #1e1e1e;
   font-size: 1.5rem;
-    font-weight: 500;
-    line-height: normal;
+  font-weight: 500;
+  line-height: normal;
 `;
 export default PlaylistSideBar;

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const SelectInput = ({ options, defaultOption, ...props }) => {
-  console.log(options);
   return (
     <Select {...props}>
       {options.map((option) => (

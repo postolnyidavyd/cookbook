@@ -1,27 +1,29 @@
 import styled from 'styled-components';
 import { selectUser } from '../store/selectors/authSelectors.js';
 import { useSelector } from 'react-redux';
+import { generateUrl } from '../shared/utils/generateUrl.js';
 
 import { Container, PageContainer } from '../ui/Container.jsx';
 import { BigAvatarImage } from '../components/RecipePlaylistDetailComponents/SharedComponents/SharedComponents.jsx';
-import { PlaylistCarousel } from '../components/Carousel/PlaylistCarousel.jsx';
 import { Paragraph } from '../ui/texts/Paragraph.jsx';
 import { FocusButton } from '../ui/buttons/FocusButton.jsx';
 import { Wrapper } from '../ui/Wrapper.jsx';
 import { MetaContainer } from '../components/RecipePlaylistDetailComponents/HeroSection/Shared.jsx';
-import { PLAYLISTS_MOCK, RECIPES_MOCK } from '../shared/utils/mockData.js';
 import { TextLink } from '../components/CarouselItem/CarouselItem.jsx';
+
+import RecipeCarouselSection from '../components/Carousel/RecipeCarouselSection.jsx';
+import PlaylistCarouselSection from '../components/Carousel/PlaylistCarouselSection.jsx';
 
 const ProfilePage = () => {
   const user = useSelector(selectUser);
-  const surname = user.userName.split(' ')[0];
-  const name = user.userName.split(' ')[1];
+  const surname = user.username.split(' ')[0];
+  const name = user.username.split(' ')[1];
   return (
     <ProfilePageContainer $padding="0 2rem">
       <HeaderProfileContainer $width="fit-content" $padding="2rem 1.25rem">
         <MetaContainer $gap="1rem">
           <Wrapper>
-            <BigAvatarImage src={user.avatar} alt="Аватар" />
+            <BigAvatarImage src={generateUrl(user.avatar)} alt="Аватар" />
             <NameContainer>
               <Paragraph>{surname}</Paragraph>
               <Paragraph>{name}</Paragraph>
@@ -32,27 +34,27 @@ const ProfilePage = () => {
         <FocusButton>Змінити дані</FocusButton>
       </HeaderProfileContainer>
       <ProfileContainer $padding="1rem 1rem">
-        <PlaylistCarousel visibleCount="3" type="recipe" items={RECIPES_MOCK}>
+        <RecipeCarouselSection queryParams={{ authorId: user.id }}>
           <Title>Мої рецепти</Title>
           <FocusButton>
             <TextLink to="/profile/new-recipe">Додати рецепт</TextLink>
           </FocusButton>
-        </PlaylistCarousel>
+        </RecipeCarouselSection>
       </ProfileContainer>
       <ProfileContainer $padding="1rem 1rem">
-        <PlaylistCarousel visibleCount="45" items={PLAYLISTS_MOCK}>
+        <PlaylistCarouselSection queryParams={{ ownerId: user.id }}>
           <Title>Мої плейлисти</Title>
-        </PlaylistCarousel>
+        </PlaylistCarouselSection>
       </ProfileContainer>
       <ProfileContainer $padding="1rem 1rem">
-        <PlaylistCarousel type="recipe" items={RECIPES_MOCK}>
+        <RecipeCarouselSection queryParams={{ likedBy: user.id }}>
           <Title>Вподобані рецепти</Title>
-        </PlaylistCarousel>
+        </RecipeCarouselSection>
       </ProfileContainer>
       <ProfileContainer $padding="1rem 1rem">
-        <PlaylistCarousel items={PLAYLISTS_MOCK}>
+        <PlaylistCarouselSection queryParams={{ likedBy: user.id }}>
           <Title>Вподобані плейлисти</Title>
-        </PlaylistCarousel>
+        </PlaylistCarouselSection>
       </ProfileContainer>
     </ProfilePageContainer>
   );

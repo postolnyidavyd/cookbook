@@ -21,9 +21,18 @@ const PlaylistSchema = new mongoose.Schema(
       default: '',
     },
 
+
+    tags: {
+      type: [String],
+      default: [],
+      trim: true,
+    },
+
     coverImage: {
       type: String,
+      default: "/uploads/default_img.jpg"
     },
+
     views: {
       type: Number,
       default: 0,
@@ -40,7 +49,9 @@ const PlaylistSchema = new mongoose.Schema(
 );
 
 PlaylistSchema.index({ owner: 1, createdAt: -1 });
-
 PlaylistSchema.index({ createdAt: -1 });
 PlaylistSchema.index({ views: -1 });
+
+PlaylistSchema.index({ tags: 1 });
+
 module.exports = mongoose.model('Playlist', PlaylistSchema);

@@ -67,10 +67,10 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body || {};
   const user = await User.findOne({ email });
-  if (!user) return res.status(401).json({ message: 'Недійсні дані' });
+  if (!user) return res.status(402).json({ message: 'Недійсні дані' });
 
   const ok = await bcrypt.compare(password, user.passwordHash);
-  if (!ok) return res.status(401).json({ message: 'Недійсні дані' });
+  if (!ok) return res.status(402).json({ message: 'Недійсні дані' });
   const accessToken = signAccessToken(user);
   const refreshToken = signRefreshToken(user);
 

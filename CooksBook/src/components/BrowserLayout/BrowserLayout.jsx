@@ -11,44 +11,30 @@ import leftArrow from '../../assets/arrowLeft.svg';
 import rightArrow from '../../assets/arrowRight.svg';
 
 const BrowserLayout = ({
-  type,
-  maxNumberOfCards,
-  recipes = [],
-  playlists = [],
-  showPageNavigation,
+  filterSlot,
+  tagsSlot,
+  endSlot,
   padding,
+  children,
 }) => {
-  const items = type === 'recipe' ? recipes : playlists;
-  const limit = Math.max(1, maxNumberOfCards ?? (items.length || 0));
-
   return (
     <Container $padding={padding}>
-      {type === 'recipe' ? <RecipeFilter /> : <PlayListFilter />}
-      <Tags
-        tags={
-          type === 'recipe'
-            ? ['Курка', 'Цибуля', 'Часник']
-            : ['Швидко', 'Святкова', 'Вечірка']
-        }
-      />
-      <CardFeed
-        type={type}
-        items={items}
-        limit={limit}
-        showPageNavigation={showPageNavigation}
-      />
+      {filterSlot}
+      {tagsSlot}
+      <CardGrid>{children}</CardGrid>
+      {endSlot}
     </Container>
   );
 };
 
-function PageNavigation({ pageCount }) {
+export function PageNavigation({ pageCount, activePage }) {
   return (
     <PageNavigationWrapper>
       <PageNavigationButton>
         <img src={leftArrow} alt="Ліва стрілка" />
       </PageNavigationButton>
       {Array.from({ length: pageCount }).map((_, i) => (
-        <PageNavigationButton key={i} $main={i === 0}>
+        <PageNavigationButton key={i} $main={i + 1 === 0}>
           {i + 1}
         </PageNavigationButton>
       ))}
@@ -60,9 +46,9 @@ function PageNavigation({ pageCount }) {
 }
 const PageNavigationWrapper = styled.div`
   display: flex;
-  width: fit-content; 
-  margin: 1rem auto; 
-  justify-content: center; 
+  width: fit-content;
+  margin: 1rem auto;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
 `;
@@ -106,16 +92,18 @@ const CardFeed = ({ type, items, limit, showPageNavigation = true }) => {
             )
           )}
       </CardGrid>
-      {showLoadMore && (
-        <ShowMoreButton>
-          <img src={refreshIcon} alt="Завантажити" /> <p>Показати більше</p>
-        </ShowMoreButton>
-      )}
+      {showLoadMore && <ShowMore />}
       {showPageNavigation && <PageNavigation pageCount={pageCount} />}
     </>
   );
 };
-
+const ShowMore = ({ children, ...props }) => {
+  return (
+    <ShowMoreButton {...props}>
+      <img src={refreshIcon} alt="Завантажити" /> <p>Показати більше</p>
+    </ShowMoreButton>
+  );
+};
 const ShowMoreButton = styled.button`
   display: flex;
   gap: 0.25rem;
@@ -127,9 +115,14 @@ const ShowMoreButton = styled.button`
   border: 0;
   background-color: transparent;
   cursor: pointer;
+  transition: color 160ms ease;
+  &:hover {
+    color: #1e1e1e;
+  }
 `;
 
 const CardGrid = styled.div`
+  margin-top: 1rem;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);

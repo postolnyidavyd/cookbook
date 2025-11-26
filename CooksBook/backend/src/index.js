@@ -20,7 +20,10 @@ async function main() {
   const app = express();
 
   //Для заголовків формування
-  app.use(helmet());
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+    }
+  ));
   //Для логування http запитів
   app.use(morgan('dev'));
   app.use(express.json());

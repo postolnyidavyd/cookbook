@@ -1,15 +1,3 @@
-import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLoginModal } from '../../store/uiSlice.js';
-// import { login } from '../../store/authSlice.js';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
-import {
-  validate,
-  required,
-  validEmail,
-  minLengthHelper,
-} from '../../shared/utils/validation.js';
-
 import Modal from './Modal.jsx';
 import { Card } from '../../ui/ContentCard.jsx';
 import {
@@ -20,14 +8,30 @@ import {
 } from '../../ui/inputs/index.js';
 import { WideFocusButton } from '../../ui/buttons/WideFocusButton.jsx';
 import { StyledLink } from '../../ui/StyledLink.jsx';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoginModal } from '../../store/uiSlice.js';
+import { useLocation, useNavigate } from 'react-router-dom';
+import {
+  validate,
+  required,
+  validEmail,
+  minLengthHelper,
+} from '../../shared/utils/validation.js';
 import { useActionState } from 'react';
+import { useLoginMutation } from '../../store/api/authApi.js';
+import { Heading, Paragraph } from './SharedModalComponents.js';
 
 const LoginModal = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [login] = useLoginMutation();
   const showLoginModal = useSelector((state) => state.ui.showLoginModal);
   const dispatch = useDispatch();
-  const submitAction = (prevState, formData) => {
+
+  const redirectLocation = location.state?.from || location;
+
+  const submitAction = async (prevState, formData) => {
     const formValues = Object.fromEntries(formData.entries());
     const errors = validate(formValues, {
       email: [
@@ -43,22 +47,34 @@ const LoginModal = () => {
     if (Object.keys(errors).length > 0) {
       return { values: formValues, errors };
     }
-    // dispatch(login({ email: formValues.email }));
-    dispatch(setLoginModal(false));
+    try {
+      await login(formValues).unwrap();
 
-    if (location.state?.from) {
-      navigate(location.state?.from);
+      dispatch(setLoginModal(false));
+
+      if (location.state?.from) {
+        navigate(location.state?.from);
+      }
+      return { values: {}, errors: null };
+    } catch (err) {
+      if (err.data?.message) {
+        errors.server = err.data?.message;
+      } else {
+        errors.server = 'Невідома помилка спробуйте пізніше';
+      }
+      return { values: formValues, errors };
     }
-    return { values: {}, errors: null };
   };
-  const [{ values, errors }, formAction] = useActionState(submitAction, {
-    values: {},
-    errors: null,
-  });
+  const [{ values, errors }, formAction, isPending] = useActionState(
+    submitAction,
+    {
+      values: {},
+      errors: null,
+    }
+  );
   const handleClose = () => {
     dispatch(setLoginModal(false));
   };
-  const redirectLocation = location.state?.from || location;
 
   return (
     <Modal isOpen={showLoginModal} onClose={handleClose}>
@@ -86,7 +102,14 @@ const LoginModal = () => {
             />
             {errors?.password && <InputError>{errors.password}</InputError>}
           </Field>
-          <WideFocusButton>Увійти</WideFocusButton>
+          {errors?.server && (
+            <Field>
+              <InputError>{errors?.server}</InputError>
+            </Field>
+          )}
+          <WideFocusButton type="submit" disabled={isPending}>
+            {isPending ? 'Входимо...' : 'Увійти'}
+          </WideFocusButton>
         </LoginForm>
         <Paragraph>
           Ще немає акаунту?
@@ -102,21 +125,6 @@ const LoginModal = () => {
     </Modal>
   );
 };
-const Paragraph = styled.p`
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  text-decoration: none;
-  text-align: center;
-  margin-top: 1rem;
-`;
-const Heading = styled.h3`
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 600;
-  margin-bottom: 3.25rem;
-`;
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;

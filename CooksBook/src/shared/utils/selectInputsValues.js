@@ -44,10 +44,6 @@ export const PLAYLIST_SORT_BY = [
     value: 'popularity',
   },
   {
-    label: 'За рейтингом',
-    value: 'rating',
-  },
-  {
     label: 'За кількістю переглядів',
     value: 'viewsAmount',
   },

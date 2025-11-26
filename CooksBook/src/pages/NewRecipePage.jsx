@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { PageContainer } from '../ui/Container.jsx';
 import { Card } from '../ui/ContentCard.jsx';
 import cameraIcon from '../assets/camera.svg';
@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react';
 import { TextButton } from '../ui/buttons/TextButton.jsx';
 import { WideFocusButton } from '../ui/buttons/WideFocusButton.jsx';
 import { DIFFICULTIES } from '../shared/utils/selectInputsValues.js';
-
+import { useNavigate } from 'react-router-dom';
+import { useCreateRecipeMutation } from '../store/api/recipesApi.js';
 
 const CATEGORIES = [
   {
@@ -27,14 +28,18 @@ const STEPS = [
 ];
 
 const NewRecipePage = () => {
+  const navigate = useNavigate();
+  const [createRecipe, {isLoading}] = useCreateRecipeMutation();
   // -------- Загальна інформація
   const [recipeName, setRecipeName] = useState('');
+  const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState('');
   const [difficulty, setDifficulty] = useState(DIFFICULTIES[0]);
   const [servings, setServings] = useState(1);
 
   // Обкладинка з превʼю
   const [coverFile, setCoverFile] = useState(null);
+  console.log(coverFile);
   const [coverPreview, setCoverPreview] = useState('');
   useEffect(() => {
     if (!coverFile) return;
@@ -67,7 +72,11 @@ const NewRecipePage = () => {
               ...c,
               items: [
                 ...(c.items ?? []),
-                { name: item.name.trim(), amount: (item.amount ?? '').trim() },
+                {
+                  name: item.name.trim(),
+                  amount: (item.amount ?? '').trim(),
+                  unit: (item.unit.trim() ?? '').trim(),
+                },
               ],
             }
           : c
@@ -161,6 +170,14 @@ const NewRecipePage = () => {
               onChange={(e) => setRecipeName(e.target.value)}
             />
             <InputField
+              id="recipe-description"
+              type="textarea"
+              label="Опис рецепту"
+              width="100%"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <InputField
               id="cooking-time"
               type="text"
               label="Час приготування"
@@ -252,7 +269,7 @@ const ProfilePage = styled(PageContainer)`
   gap: 3.75rem;
 `;
 
-/* -------- Steps -------- */
+
 
 const Steps = ({
   steps,
@@ -363,7 +380,7 @@ const CardsLayout = styled.div`
   gap: 1.5rem;
 `;
 
-/* -------- Ingredient Category -------- */
+
 
 const IngredientCategory = ({
   categ,
@@ -374,34 +391,37 @@ const IngredientCategory = ({
 }) => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
-
-  // --- inline edit state ---
+  const [unit , setUnit] = useState('');
+  // інлайн редагування інгредієнтів
   const [editIdx, setEditIdx] = useState(null);
   const [editName, setEditName] = useState('');
   const [editAmount, setEditAmount] = useState('');
-
+  const [editUnit,setEditUnit] = useState('');
   const add = () => {
     if (!name.trim()) return;
-    onAddItem({ name, amount });
+    onAddItem({ name, amount, unit});
     setName('');
     setAmount('');
+    setUnit('');
   };
 
   const startEdit = (idx, item) => {
     setEditIdx(idx);
     setEditName(item.name);
     setEditAmount(item.amount ?? '');
+    setEditUnit(item.unit?? '');
   };
 
   const cancelEdit = () => {
     setEditIdx(null);
     setEditName('');
     setEditAmount('');
+    setEditUnit('');
   };
 
   const saveEdit = () => {
     if (!editName.trim()) return;
-    onEditItem(editIdx, { name: editName.trim(), amount: editAmount.trim() });
+    onEditItem(editIdx, { name: editName.trim(), amount: editAmount.trim(), unit: editUnit });
     cancelEdit();
   };
 
@@ -435,10 +455,17 @@ const IngredientCategory = ({
         />
         <InputField
           id={`${categ.id}-recipe-amount`}
-          label="Кількість (г/мг)"
+          label="Кількість"
           type="text"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
+        />
+        <InputField
+          id={`${categ.id}-recipe-unit`}
+          label="Од. вим. (г/мл)"
+          type="text"
+          value={unit}
+          onChange={(e) => setUnit(e.target.value)}
         />
         <FormFocusButton type="button" onClick={add}>
           Додати
@@ -465,6 +492,13 @@ const IngredientCategory = ({
                     onKeyDown={onEditKey}
                     placeholder="Кількість"
                   />
+                  <Input
+                    type="text"
+                    value={editUnit}
+                    onChange={(e) => setEditUnit(e.target.value)}
+                    onKeyDown={onEditKey}
+                    placeholder="Од."
+                  />
                 </InlineEdit>
                 <Wrapper $gap="1">
                   <TextButton type="button" onClick={saveEdit}>
@@ -479,6 +513,7 @@ const IngredientCategory = ({
               <>
                 <p>
                   {item.amount ? `${item.amount} ` : ''}
+                  {item.unit ? `${item.unit} `: '' }
                   {item.name}
                 </p>
                 <Wrapper $gap="1">
@@ -498,10 +533,10 @@ const IngredientCategory = ({
   );
 };
 const InlineEdit = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 0.5rem;
-  width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.8fr;
+    gap: 0.5rem;
+    width: 100%;
 `;
 
 const IngredientsList = styled.ul`
@@ -530,10 +565,10 @@ const IngredientsList = styled.ul`
 `;
 
 const IngredientsInputsGrid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 1rem;
-  align-items: end;
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.8fr 1fr;
+    gap: 0.75rem;
+    align-items: end;
 `;
 
 const DeleteButton = styled.button`
@@ -626,11 +661,17 @@ const GeneralInfoGrid = styled.div`
   align-items: center;
 `;
 
-const ImageInput = ({ img, onAdd }) => {
+export const ImageInput = ({ img, onAdd, onRemove, size }) => {
+  const handleClick = (event) => {
+    if (img && onRemove) {
+      event.preventDefault();
+      onRemove();
+    }
+  };
   return (
-    <ImageCover>
+    <ImageCover onClick={handleClick} $size={size}>
       {img ? (
-        <img src={img} alt="Прев'ю зображення" />
+        <img src={img} alt="Прев'ю зображення" title="Натисніть щоб видалити" />
       ) : (
         <img src={cameraIcon} className="icon" alt="Додати рецепт" />
       )}
@@ -642,8 +683,16 @@ const ImageInput = ({ img, onAdd }) => {
 const ImageCover = styled.label`
   display: grid;
   place-items: center;
-  width: 11.25rem;
-  height: 11.25rem;
+  ${({ $size }) =>
+    $size
+      ? css`
+          width: ${$size};
+          height: ${$size};
+        `
+      : css`
+          width: 11.25rem;
+          height: 11.25rem;
+        `}
   background: #faf4e1;
   cursor: pointer;
   overflow: hidden;

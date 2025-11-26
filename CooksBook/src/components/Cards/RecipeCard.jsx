@@ -16,24 +16,40 @@ import {
   MetaInfo,
   MetaItemWrapper,
 } from './SharedComponents.jsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectLikedRecipesIdsSet,
   selectSavedInPlaylistRecipesIdsSet,
 } from '../../store/selectors/authSelectors.js';
+import { generateUrl } from '../../shared/utils/generateUrl.js';
+import useAuthAction from '../../shared/hooks/useAuthAction.js';
+import { useLikeRecipeMutation } from '../../store/api/recipesApi.js';
+import { setSaveRecipeModal } from '../../store/uiSlice.js';
 
 export const RecipeCard = ({ recipe }) => {
-  const { id, title, image, time, difficulty, rating,} =
-    recipe;
+
+  const { id, title, image, time, difficulty, rating } = recipe;
+
+  const withAuth = useAuthAction();
+  const dispatch = useDispatch();
+  const [likeRecipe] = useLikeRecipeMutation();
   const likedSet = useSelector(selectLikedRecipesIdsSet);
   const savedInPlaylist = useSelector(selectSavedInPlaylistRecipesIdsSet);
+
   const isLiked = likedSet.has(id);
   const isSaved = savedInPlaylist.has(id);
+
+  const handleLikeButtonClick =withAuth(()=>{
+    likeRecipe({id, like: !isLiked});
+  })
+  const handleSaveButtonClick  = withAuth(()=>{
+    dispatch(setSaveRecipeModal({isOpen:true, recipeId:id}));
+  })
   return (
     <Card>
       <CardLink to={`/recipes/${id}`}>
         <ImageWrapper>
-          <Image src={image} alt={title} />
+          <Image src={generateUrl(image)} alt={title} />
         </ImageWrapper>
         <CardContent>
           <Title>{title}</Title>
@@ -52,10 +68,10 @@ export const RecipeCard = ({ recipe }) => {
         </CardContent>
       </CardLink>
       <ActionButtons>
-        <IconButton type="button">
+        <IconButton type="button" onClick={handleLikeButtonClick}>
           <img src={isLiked ? filledHeart : hollowHeart} alt="Уподобати" />
         </IconButton>
-        <IconButton type="button">
+        <IconButton type="button" onClick={handleSaveButtonClick}>
           <img src={isSaved ? filledBookmark : hollowBookmark} alt="Зберегти" />
         </IconButton>
       </ActionButtons>
