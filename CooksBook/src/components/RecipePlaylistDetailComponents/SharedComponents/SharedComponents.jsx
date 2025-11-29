@@ -44,7 +44,8 @@ const RatingImage = styled.img`
 export const MetaImage = styled.img`
   width: 2rem;
   height: 2rem;
-  object-fit: cover;
+  object-fit: contain;
+  
 `;
 
 export const AvatarImage = styled(MetaImage)`

@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    avatar: { type: String , default:'/uploads/default-avatar.png'},
+    avatar: { type: String , default:'/uploads/default_avatar.png'},
 
     tokenVersion: { type: Number, default: 0 },
 

@@ -3,6 +3,7 @@ import {
   SectionTitle,
 } from '../SharedComponents/SharedComponents.jsx';
 import styled from 'styled-components';
+import { generateUrl } from '../../../shared/utils/generateUrl.js';
 
 const CookingSteps = ({ steps }) => {
   return (
@@ -11,9 +12,9 @@ const CookingSteps = ({ steps }) => {
 
       <StepsList>
         {steps.map((step, index) => {
-          const { title, text, image } = step;
+          const { title, text, imageUrl } = step;
           return (
-            <StepItem key={step}>
+            <StepItem key={step.title}>
               <StepContent>
                 <GroupTitle>
                   {index + 1}.{title}
@@ -21,9 +22,9 @@ const CookingSteps = ({ steps }) => {
 
                 {text && <StepText>{text}</StepText>}
 
-                {image && (
+                {imageUrl && (
                   <StepImageWrapper>
-                    <StepImage src={image} alt={title} />
+                    <StepImage src={generateUrl(imageUrl)} alt={title} />
                   </StepImageWrapper>
                 )}
               </StepContent>

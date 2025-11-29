@@ -3,6 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   showLoginModal: false,
   showSaveRecipeModal: false,
+  saveRecipeModal:{
+    isOpen:false,
+    recipeId:null
+  },
   notification: {
     message: '',
     type: '', // 'success' | 'error' | 'info'
@@ -19,10 +23,12 @@ const uiSlice = createSlice({
       state.showLoginModal = show;
     },
     toggleSaveRecipeModal(state) {
-      state.showSaveRecipeModal = !state.showSaveRecipeModal;
+      state.saveRecipeModal.isOpen = !state.saveRecipeModal.isOpen;
     },
-    setSaveRecipeModal(state, { payload: show }) {
-      state.showSaveRecipeModal = show;
+    setSaveRecipeModal(state, action) {
+      const {isOpen,recipeId} = action.payload;
+      state.saveRecipeModal.isOpen = isOpen
+      state.saveRecipeModal.recipeId = recipeId;
     },
     setNotification(state, { payload }) {
       const { message, type } = payload;

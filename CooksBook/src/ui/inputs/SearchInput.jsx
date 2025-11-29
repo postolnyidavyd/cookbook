@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import searchIcon from '../../assets/search.svg';
-const SearchBar = () => {
+const SearchBar = ({squared, ...props}) => {
   return (
     <SearchWrapper>
-      <SearchInput placeholder="Пошук" />
+      <SearchInput placeholder="Пошук" {...props} $squared={squared}/>
       <SearchIcon>
         <img src={searchIcon} alt="Пошук" />
       </SearchIcon>
@@ -18,9 +18,10 @@ const SearchWrapper = styled.div`
 
 const SearchInput = styled.input`
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1.25rem 0.75rem 1rem;
   border: none;
-  border-radius: 100rem;
+  
+  border-radius:${({$squared})=> $squared ? "0.5rem":"100rem"} ;
   font-size: 1rem;
   background-color: #faf4e1;
 `;

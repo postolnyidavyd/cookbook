@@ -1,7 +1,6 @@
 import { useActionState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-// import { register } from '../store/authSlice.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   validate,
@@ -13,12 +12,13 @@ import {
 import { Card } from '../ui/ContentCard.jsx';
 import { WideFocusButton } from '../ui/buttons/WideFocusButton.jsx';
 import { Input, PasswordInput, InputError, Field } from '../ui/inputs/index.js';
+import { useRegisterMutation } from '../store/api/authApi.js';
 
 const RegisterPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const submitAction = (prevState, formData) => {
+  const [register] = useRegisterMutation();
+  const submitAction = async (prevState, formData) => {
     const formValues = Object.fromEntries(formData.entries());
 
     const errors = validate(formValues, {
@@ -37,9 +37,24 @@ const RegisterPage = () => {
     if (Object.keys(errors).length > 0) {
       return { values: formValues, errors };
     }
-    const { email, surname, name, password } = formValues;
-    // dispatch(register({ userName: `${surname} ${name}`, email }));
-    navigate(location.state?.from || '/');
+
+    try {
+      const { email, surname, name, password } = formValues;
+      await register({
+        email,
+        password,
+        username: `${surname} ${name} `,
+      }).unwrap();
+
+      navigate(location.state?.from || '/');
+    } catch (error) {
+      if (error.data?.message) {
+        errors.server = error.data?.message;
+      } else {
+        errors.server = 'Невідома помилка спробуйте пізніше';
+      }
+      return { values: formValues, errors };
+    }
   };
 
   const [{ values, errors }, formAction] = useActionState(submitAction, {
@@ -51,7 +66,7 @@ const RegisterPage = () => {
     <Page>
       <RegisterCard $width="32rem">
         <Title>Реєстрація</Title>
-        <Form method="post" action={formAction}>
+        <Form action={formAction}>
           <Field>
             <Label htmlFor="register-email">Електронна пошта</Label>
             <Input
@@ -97,6 +112,11 @@ const RegisterPage = () => {
             />
             {errors?.password && <InputError>{errors.password}</InputError>}
           </Field>
+          {errors?.server && (
+            <Field>
+              <InputError>{errors?.server}</InputError>
+            </Field>
+          )}
           <WideFocusButton type="submit">Зареєструватися</WideFocusButton>
           <HelperText>
             Маєте акаунт? <HelperLink type="button">Увійти</HelperLink>

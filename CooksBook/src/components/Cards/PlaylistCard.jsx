@@ -14,43 +14,50 @@ import {
   MetaInfo,
   MetaItemWrapper,
 } from './SharedComponents.jsx';
+import { useSelector } from 'react-redux';
+import { selectLikedPlaylistsIdsSet } from '../../store/selectors/authSelectors.js';
+import { generateUrl } from '../../shared/utils/generateUrl.js';
+import useAuthAction from '../../shared/hooks/useAuthAction.js';
+import { useLikePlaylistMutation } from '../../store/api/playlistApi.js';
 
 export const PlaylistCard = ({ playlist }) => {
-  const {
-    id,
-    title,
-    author,
-    authorAvatar,
-    recipeCount,
-    views,
-    cover,
-    isLiked,
-  } = playlist;
+  const { id, name, coverImage, views, owner, recipesCount } = playlist;
+  const { name: ownerName, avatar } = owner;
+  const likedPlaylistsSet = useSelector(selectLikedPlaylistsIdsSet);
+  const isLiked = likedPlaylistsSet.has(id);
+
+  const withAuth = useAuthAction();
+  const [likePlaylist] = useLikePlaylistMutation();
+
+  const handleLikeButtonClick = withAuth(() => {
+    likePlaylist({ id, like: !isLiked });
+  });
   return (
     <PlayListCard>
       <CardLink to={`/playlists/${id}`}>
-        <Image src={cover} alt={title} />
+        <Image src={generateUrl(coverImage)} alt={name} />
         <Overlay>
           <CardContent $gap="2rem">
-            <Title>{title}</Title>
+            <Title>{name}</Title>
             <MetaInfo>
               <MetaItemWrapper>
-                <MetaAvatar src={authorAvatar} />
-                <p>{author}</p>
+                <MetaAvatar src={generateUrl(avatar)} />
+                <p>{ownerName}</p>
               </MetaItemWrapper>
               <MetaItemWrapper>
-                <MetaImg src={book} alt="Книга" />{' '}
-                <p>{recipeCount} рецептів</p>{' '}
+                <MetaImg src={book} alt="Книга" />
+                <p>{recipesCount} рецептів</p>
               </MetaItemWrapper>
               <MetaItemWrapper>
-                <MetaImg src={eye} alt="Око" /> <p>{views} переглядів</p>
+                <MetaImg src={eye} alt="Око" />
+                <p>{views} переглядів</p>
               </MetaItemWrapper>
             </MetaInfo>
           </CardContent>
         </Overlay>
       </CardLink>
       <ActionButtons style={{ zIndex: '2' }}>
-        <IconButton>
+        <IconButton onClick={handleLikeButtonClick}>
           <img src={isLiked ? filledHeart : hollowHeart} alt="Уподобати" />
         </IconButton>
       </ActionButtons>
@@ -78,7 +85,7 @@ const Overlay = styled.div`
 `;
 const Title = styled.h3`
   color: #000;
-  font-size: 32px;
+  font-size: 1.5rem;
   font-weight: 600;
 `;
 const MetaImg = styled.img`

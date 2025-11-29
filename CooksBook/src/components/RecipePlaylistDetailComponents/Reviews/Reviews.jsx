@@ -27,7 +27,7 @@ const Reviews = ({ reviews, rating }) => {
       </StatsRow>
       <ReviewsList>
         {reviews.map((review) => (
-          <Review key={`${review.author}.${review.rating}`} review={review} />
+          <Review key={review.id} review={review} />
         ))}
       </ReviewsList>
     </Section>

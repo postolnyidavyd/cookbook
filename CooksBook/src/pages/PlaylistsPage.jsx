@@ -1,18 +1,62 @@
 import BrowserLayout from '../components/BrowserLayout/BrowserLayout.jsx';
-import { PLAYLISTS_MOCK } from '../shared/utils/mockData.js';
 import { Container, PageContainer } from '../ui/Container.jsx';
-
+import { useFilterParams } from '../shared/hooks/useFilterParams.js';
+import { useGetPlaylistsQuery } from '../store/api/playlistApi.js';
+import { Tags } from '../components/BrowserLayout/Tags.jsx';
+import PageNavigation from '../components/CardFeed/PageNavigation.jsx';
+import DataRenderer from '../components/BrowserLayout/DataRenderer.jsx';
+import { PlayListFilter } from '../components/BrowserLayout/PlayListFilter.jsx';
+import { PlaylistCard } from '../components/Cards/PlaylistCard.jsx';
+const DEFAULT_FILTERS = {
+  page: 1,
+  limit: 12,
+  input: '',
+  tags: '',
+  sortBy: 'popularity',
+}
 const PlaylistsPage = () => {
+  const {queryParams,handleParamChange,getListParam}= useFilterParams(DEFAULT_FILTERS);
+  const {data,isLoading,isFetching, isError, error} = useGetPlaylistsQuery(queryParams);
+  const { items = [], totalPages = 1, page = 1 } = data || {};
+  const tags = getListParam("tags");
   return (
-    <PageContainer $padding="0 5rem">
-      <BrowserLayout
-        type="playlist"
-        maxNumberOfCards={9}
-        playlists={PLAYLISTS_MOCK}
-        showPageNavigation={true}
-        playlistVariant="grid"
+  <PageContainer $padding="0 5rem">
+    <BrowserLayout
+      padding="5rem 0"
+      filterSlot={
+        <PlayListFilter values={queryParams} onChange={handleParamChange} />
+      }
+      tagsSlot={
+        <Tags
+          tags={tags}
+          onChange={handleParamChange}
+          filterKey={'tags'}
+        />
+      }
+      endSlot={
+        !isLoading &&
+        !isFetching &&
+        items.length > 0 &&
+        totalPages > 1 && (
+          <PageNavigation
+            pageCount={totalPages}
+            activePage={page}
+            onChange={(newPage) => handleParamChange('page', newPage)}
+          />
+        )
+      }
+    >
+      <DataRenderer
+        isLoading={isLoading}
+        isFetching={isFetching}
+        isError={isError}
+        error={error}
+        data={items}
+        skeletonCount={12}
+        renderItemFn={(playlist) => <PlaylistCard playlist={playlist} key={playlist.id}/>}
       />
-    </PageContainer>
+    </BrowserLayout>
+  </PageContainer>
   );
 };
 
