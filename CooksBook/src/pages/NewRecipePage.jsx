@@ -1,4 +1,3 @@
-import styled, { css } from 'styled-components';
 import { PageContainer } from '../ui/Container.jsx';
 import { Card } from '../ui/ContentCard.jsx';
 import cameraIcon from '../assets/camera.svg';
@@ -7,19 +6,19 @@ import rubishIcon from '../assets/trash.svg';
 import { Input, SelectInput } from '../ui/inputs/index.js';
 import { Wrapper } from '../ui/Wrapper.jsx';
 import { FocusButton } from '../ui/buttons/FocusButton.jsx';
-import { useEffect, useState } from 'react';
 import { TextButton } from '../ui/buttons/TextButton.jsx';
 import { WideFocusButton } from '../ui/buttons/WideFocusButton.jsx';
 import { DIFFICULTIES } from '../shared/utils/selectInputsValues.js';
+import styled, { css } from 'styled-components';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCreateRecipeMutation } from '../store/api/recipesApi.js';
+import {
+  useCreateRecipeMutation
+} from '../store/api/recipesApi.js';
+import { useUploadImageMutation } from '../store/api/uploadsApi.js';
 
 const CATEGORIES = [
-  {
-    id: 1,
-    name: 'Для основної страви',
-    items: [],
-  },
+  { id: 1, name: 'Для основної страви', items: [] },
   { id: 2, name: 'Для соусу', items: [] },
 ];
 const STEPS = [
@@ -29,18 +28,19 @@ const STEPS = [
 
 const NewRecipePage = () => {
   const navigate = useNavigate();
-  const [createRecipe, {isLoading}] = useCreateRecipeMutation();
-  // -------- Загальна інформація
+  const [createRecipe, { isLoading: isCreating }] = useCreateRecipeMutation();
+  const [uploadImage] = useUploadImageMutation();
+
+  // -------- Стейт --------
   const [recipeName, setRecipeName] = useState('');
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState('');
   const [difficulty, setDifficulty] = useState(DIFFICULTIES[0]);
   const [servings, setServings] = useState(1);
 
-  // Обкладинка з превʼю
   const [coverFile, setCoverFile] = useState(null);
-  console.log(coverFile);
   const [coverPreview, setCoverPreview] = useState('');
+
   useEffect(() => {
     if (!coverFile) return;
     const url = URL.createObjectURL(coverFile);
@@ -48,7 +48,7 @@ const NewRecipePage = () => {
     return () => URL.revokeObjectURL(url);
   }, [coverFile]);
 
-  // -------- Категорії/інгредієнти
+  // -------- Категорії --------
   const [categoryName, setCategoryName] = useState('');
   const [categories, setCategories] = useState(CATEGORIES);
 
@@ -58,11 +58,9 @@ const NewRecipePage = () => {
     setCategories((prev) => [...prev, { id: Date.now(), name: n, items: [] }]);
     setCategoryName('');
   };
-
   const handleRemoveCategory = (categoryId) => {
     setCategories((prev) => prev.filter((c) => c.id !== categoryId));
   };
-
   const handleAddIngredient = (categoryId, item) => {
     if (!item?.name?.trim()) return;
     setCategories((prev) =>
@@ -75,7 +73,7 @@ const NewRecipePage = () => {
                 {
                   name: item.name.trim(),
                   amount: (item.amount ?? '').trim(),
-                  unit: (item.unit.trim() ?? '').trim(),
+                  unit: (item.unit ?? '').trim(),
                 },
               ],
             }
@@ -83,7 +81,6 @@ const NewRecipePage = () => {
       )
     );
   };
-
   const handleEditIngredient = (categoryId, idx, patch) => {
     setCategories((prev) =>
       prev.map((c) => {
@@ -94,7 +91,6 @@ const NewRecipePage = () => {
       })
     );
   };
-
   const handleDeleteIngredient = (categoryId, idx) => {
     setCategories((prev) =>
       prev.map((c) => {
@@ -106,9 +102,9 @@ const NewRecipePage = () => {
     );
   };
 
-  // -------- Кроки приготування
+  // -------- Кроки --------
   const [steps, setSteps] = useState(STEPS);
-  const [stepPreviews, setStepPreviews] = useState({}); // {index: objectUrl}
+  const [stepPreviews, setStepPreviews] = useState({});
 
   const addStep = () =>
     setSteps((prev) => [...prev, { name: '', description: '' }]);
@@ -137,6 +133,9 @@ const NewRecipePage = () => {
       if (prev[index]) URL.revokeObjectURL(prev[index]);
       return { ...prev, [index]: URL.createObjectURL(file) };
     });
+    setSteps((prev) =>
+      prev.map((step, i) => (i === index ? { ...step, imageFile: file } : step))
+    );
   };
 
   useEffect(() => {
@@ -145,19 +144,96 @@ const NewRecipePage = () => {
     };
   }, [stepPreviews]);
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!recipeName.trim() || !cookingTime || !difficulty || !coverFile) {
+      alert("Будь ласка, заповніть обов'язкові поля!");
+      return;
+    }
+
+    try {
+      // Promise.all для парарельного завантаження всіх фото
+      const processedSteps = await Promise.all(
+        steps.map(async (step) => {
+          let imageUrl = null;
+
+          if (step.imageFile) {
+            try {
+              const uploadRes = await uploadImage(step.imageFile).unwrap();
+              imageUrl = uploadRes.url;
+            } catch (err) {
+              console.error('Помилка завантаження фото кроку:', err);
+              // Продовжуємо без фото, щоб не ламати весь процес
+            }
+          }
+          //Змінюємо структуру кроків щоб метчити бекенд
+          return {
+            title: step.name.trim(),
+            text: step.description.trim(),
+            imageUrl: imageUrl,
+          };
+        })
+      );
+
+      // Фільтруємо пусті кроки
+      const validSteps = processedSteps.filter((s) => s.title && s.text);
+
+      const ingredientsData = categories
+        .map((cat) => ({
+          title: cat.name.trim(),
+
+          items: cat.items.map((item) => ({
+            name: item.name.trim(),
+            amount: Number(item.amount) || 0,
+            unit: item.unit?.trim() || '',
+          })),
+        }))
+        .filter((cat) => cat.items.length > 0);
+
+
+      const formData = new FormData();
+      formData.append('title', recipeName.trim());
+      formData.append('description', description.trim());
+      formData.append('timeMinutes', cookingTime);
+      formData.append('difficulty', difficulty);
+      formData.append('servings', servings);
+
+      formData.append('image', coverFile);
+
+
+      formData.append('ingredients', JSON.stringify(ingredientsData));
+      formData.append('steps', JSON.stringify(validSteps));
+
+      // 5. Відправка
+      const data = await createRecipe(formData).unwrap();
+
+      const navigateTo = data?.id ? `/recipes/${data?.id}`  : "/profile"
+      navigate(navigateTo);
+    } catch (err) {
+      console.error('Помилка при створенні рецепту:', err);
+      alert('Помилка при створенні рецепту. Перевірте дані.');
+    }
+  };
+
   return (
-    <ProfilePage $padding="0 2rem" as="form">
+    <ProfilePage $padding="0 2rem" as="form" onSubmit={handleSubmit}>
       <Title>Додавання рецепту</Title>
 
       <Card $padding="1.25rem" $width="fit-content">
+        {/* ... (Контент картки без змін) ... */}
         <CardTitle>Загальна інформація</CardTitle>
-
         <GeneralInfoGrid>
           <ImageInput
             img={coverPreview}
             onAdd={(e) => {
               const f = e.target.files?.[0];
               if (f) setCoverFile(f);
+            }}
+            onRemove={() => {
+              // Додано можливість видалити фото
+              setCoverFile(null);
+              setCoverPreview('');
             }}
           />
           <GeneralInfoInputs>
@@ -169,14 +245,16 @@ const NewRecipePage = () => {
               value={recipeName}
               onChange={(e) => setRecipeName(e.target.value)}
             />
-            <InputField
-              id="recipe-description"
-              type="textarea"
-              label="Опис рецепту"
-              width="100%"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+            <FieldContainer $width="100%">
+              <label htmlFor="recipe-desc">Опис рецепту</label>
+              <TextArea
+                id="recipe-desc"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                style={{ height: '6rem' }}
+              />
+            </FieldContainer>
+            {/* ... cookingTime, difficulty ... */}
             <InputField
               id="cooking-time"
               type="text"
@@ -200,6 +278,7 @@ const NewRecipePage = () => {
       </Card>
 
       <Card $padding="1.25rem">
+        {/* ... (Інгредієнти) ... */}
         <FormWrapper $margin="0 0 1.25rem">
           <CardTitle $noMargin>Інгредієнти</CardTitle>
           <span>
@@ -258,7 +337,10 @@ const NewRecipePage = () => {
         />
       </Card>
 
-      <CreateRecipeButton>Створити рецепт</CreateRecipeButton>
+      {/* Кнопка Сабміту */}
+      <CreateRecipeButton type="submit" disabled={isCreating}>
+        {isCreating ? 'Створення...' : 'Створити рецепт'}
+      </CreateRecipeButton>
     </ProfilePage>
   );
 };
@@ -268,8 +350,6 @@ const ProfilePage = styled(PageContainer)`
   flex-direction: column;
   gap: 3.75rem;
 `;
-
-
 
 const Steps = ({
   steps,
@@ -380,8 +460,6 @@ const CardsLayout = styled.div`
   gap: 1.5rem;
 `;
 
-
-
 const IngredientCategory = ({
   categ,
   onRemoveCategory,
@@ -391,15 +469,15 @@ const IngredientCategory = ({
 }) => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
-  const [unit , setUnit] = useState('');
+  const [unit, setUnit] = useState('');
   // інлайн редагування інгредієнтів
   const [editIdx, setEditIdx] = useState(null);
   const [editName, setEditName] = useState('');
   const [editAmount, setEditAmount] = useState('');
-  const [editUnit,setEditUnit] = useState('');
+  const [editUnit, setEditUnit] = useState('');
   const add = () => {
     if (!name.trim()) return;
-    onAddItem({ name, amount, unit});
+    onAddItem({ name, amount, unit });
     setName('');
     setAmount('');
     setUnit('');
@@ -409,7 +487,7 @@ const IngredientCategory = ({
     setEditIdx(idx);
     setEditName(item.name);
     setEditAmount(item.amount ?? '');
-    setEditUnit(item.unit?? '');
+    setEditUnit(item.unit ?? '');
   };
 
   const cancelEdit = () => {
@@ -421,7 +499,11 @@ const IngredientCategory = ({
 
   const saveEdit = () => {
     if (!editName.trim()) return;
-    onEditItem(editIdx, { name: editName.trim(), amount: editAmount.trim(), unit: editUnit });
+    onEditItem(editIdx, {
+      name: editName.trim(),
+      amount: editAmount.trim(),
+      unit: editUnit,
+    });
     cancelEdit();
   };
 
@@ -513,7 +595,7 @@ const IngredientCategory = ({
               <>
                 <p>
                   {item.amount ? `${item.amount} ` : ''}
-                  {item.unit ? `${item.unit} `: '' }
+                  {item.unit ? `${item.unit} ` : ''}
                   {item.name}
                 </p>
                 <Wrapper $gap="1">
@@ -533,10 +615,10 @@ const IngredientCategory = ({
   );
 };
 const InlineEdit = styled.div`
-    display: grid;
-    grid-template-columns: 2fr 1fr 0.8fr;
-    gap: 0.5rem;
-    width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 0.8fr;
+  gap: 0.5rem;
+  width: 100%;
 `;
 
 const IngredientsList = styled.ul`
@@ -565,10 +647,10 @@ const IngredientsList = styled.ul`
 `;
 
 const IngredientsInputsGrid = styled.div`
-    display: grid;
-    grid-template-columns: 2fr 1fr 0.8fr 1fr;
-    gap: 0.75rem;
-    align-items: end;
+  display: grid;
+  grid-template-columns: 2fr 1fr 0.8fr 1fr;
+  gap: 0.75rem;
+  align-items: end;
 `;
 
 const DeleteButton = styled.button`
@@ -661,7 +743,7 @@ const GeneralInfoGrid = styled.div`
   align-items: center;
 `;
 
-export const ImageInput = ({ img, onAdd, onRemove, size }) => {
+export const ImageInput = ({ img, onAdd, onRemove, size,...props }) => {
   const handleClick = (event) => {
     if (img && onRemove) {
       event.preventDefault();
@@ -675,7 +757,7 @@ export const ImageInput = ({ img, onAdd, onRemove, size }) => {
       ) : (
         <img src={cameraIcon} className="icon" alt="Додати рецепт" />
       )}
-      <input type="file" accept="image/*" onChange={onAdd} />
+      <input type="file" accept="image/*" onChange={onAdd} {...props}/>
     </ImageCover>
   );
 };

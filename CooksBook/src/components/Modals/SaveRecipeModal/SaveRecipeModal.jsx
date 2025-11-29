@@ -1,12 +1,10 @@
 import Modal from '../Modal.jsx';
-import { Card } from '../../../ui/ContentCard.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSaveRecipeModal } from '../../../store/selectors/uiSelectors.js';
 import { setSaveRecipeModal } from '../../../store/uiSlice.js';
 import { useEffect, useState } from 'react';
 import PlaylistSelectionView from './PlaylistSelectionView.jsx';
 import CreatePlaylistView from './CreatePlaylistView.jsx';
-import styled from 'styled-components';
 const SaveRecipeModal = () => {
   const dispatch = useDispatch();
   const { isOpen, recipeId } = useSelector(selectSaveRecipeModal);

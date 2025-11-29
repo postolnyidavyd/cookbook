@@ -14,7 +14,7 @@ export const Review = ({ review }) => {
   const {name, avatar} = author;
 
   return (
-    <li>
+    <ReviewLi>
       <Wrapper $margin="0 0 0.5rem 0">
         <BigAvatarImage src={generateUrl(avatar)} alt={author} />
         <div>
@@ -23,11 +23,12 @@ export const Review = ({ review }) => {
         </div>
       </Wrapper>
       <Comment>{text}</Comment>
-    </li>
+    </ReviewLi>
   );
 };
 const ReviewLi = styled.li`
   list-style: none;
+  margin-bottom: 1.5rem ;
 `;
 const Comment = styled.p`
   font-size: 24px;

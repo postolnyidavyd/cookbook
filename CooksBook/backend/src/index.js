@@ -8,7 +8,7 @@ const morgan = require('morgan');
 const { connectDB } = require('./db');
 const { PORT, FRONTEND_ORIGIN } = require('./config');
 
-// routes
+// рути
 const authRoutes = require('./routes/auth');
 const uploadRoutes = require('./routes/uploads');
 const recipeRoutes = require('./routes/recipes');
@@ -45,7 +45,7 @@ async function main() {
   app.use('/api/recipes', recipeRoutes);
   app.use('/api/playlists', playlistRoutes);
 
-  app.use((req, res) => res.status(404).json({ message: 'Not found' }));
+  app.use((req, res) => res.status(404).json({ message: 'Не знайдено' }));
 
   app.listen(PORT, () => {
     console.log(`API running at http://localhost:${PORT}`);

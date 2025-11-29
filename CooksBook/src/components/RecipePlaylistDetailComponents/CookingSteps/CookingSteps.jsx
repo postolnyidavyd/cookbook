@@ -12,7 +12,7 @@ const CookingSteps = ({ steps }) => {
 
       <StepsList>
         {steps.map((step, index) => {
-          const { title, text, image } = step;
+          const { title, text, imageUrl } = step;
           return (
             <StepItem key={step.title}>
               <StepContent>
@@ -22,9 +22,9 @@ const CookingSteps = ({ steps }) => {
 
                 {text && <StepText>{text}</StepText>}
 
-                {image && (
+                {imageUrl && (
                   <StepImageWrapper>
-                    <StepImage src={generateUrl(image)} alt={title} />
+                    <StepImage src={generateUrl(imageUrl)} alt={title} />
                   </StepImageWrapper>
                 )}
               </StepContent>

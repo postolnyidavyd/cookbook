@@ -9,7 +9,6 @@ import { WideFocusButton } from '../../../ui/buttons/WideFocusButton.jsx';
 import { useCreatePlaylistMutation } from '../../../store/api/playlistApi.js';
 
 import arrowIcon from '../../../assets/arrowLeft.svg';
-import closeIcon from '../../../assets/close.svg';
 import hashIcon from "../../../assets/hash.svg"
 const CreatePlaylistView = ({ onCreate, onClose }) => {
   const [values, setValues] = useState({

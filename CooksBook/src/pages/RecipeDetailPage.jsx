@@ -50,7 +50,7 @@ const RecipeDetailPage = () => {
       </HeroComponent>
       <Ingredients ingredients={ingredients} defaultServings={servings} />
       <CookingSteps steps={steps} />
-      <ReviewForm />
+      <ReviewForm recipeId={id}/>
       <Reviews reviews={reviews} rating={rating} />
     </PageContainer>
   );

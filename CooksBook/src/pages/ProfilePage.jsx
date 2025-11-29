@@ -13,13 +13,23 @@ import { TextLink } from '../components/CarouselItem/CarouselItem.jsx';
 
 import RecipeCarouselSection from '../components/Carousel/RecipeCarouselSection.jsx';
 import PlaylistCarouselSection from '../components/Carousel/PlaylistCarouselSection.jsx';
+import EditUserModal from '../components/Modals/EditUserModal.jsx';
+import { useState } from 'react';
 
 const ProfilePage = () => {
   const user = useSelector(selectUser);
   const surname = user.username.split(' ')[0];
   const name = user.username.split(' ')[1];
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
   return (
     <ProfilePageContainer $padding="0 2rem">
+      <EditUserModal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        user={{ surname, name, email: user.email, avatar: user.avatar }}
+      />
       <HeaderProfileContainer $width="fit-content" $padding="2rem 1.25rem">
         <MetaContainer $gap="1rem">
           <Wrapper>
@@ -31,7 +41,9 @@ const ProfilePage = () => {
           </Wrapper>
           <Paragraph>Пошта: {user.email}</Paragraph>
         </MetaContainer>
-        <FocusButton>Змінити дані</FocusButton>
+        <FocusButton onClick={() => setEditModalOpen(true)} type="button">
+          Змінити дані
+        </FocusButton>
       </HeaderProfileContainer>
       <ProfileContainer $padding="1rem 1rem">
         <RecipeCarouselSection queryParams={{ authorId: user.id }}>
