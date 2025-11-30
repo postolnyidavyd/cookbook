@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Recipe = require('../models/Recipe');
 const Review = require('../models/Review');
 const User = require('../models/User');
+const Playlist = require('../models/Playlist');
 
 const { requireAuth } = require('../auth/requireAuth');
 const { upload } = require('../utils/upload');
@@ -39,19 +40,8 @@ async function recomputeRecipeRating(recipeId) {
     $set: { ratingAverage, ratingCount },
   });
 }
+
 // Отримання рецептів /api/recipes
-// params {
-//  page?:number,
-//  limit?:number,
-//  input?: string,
-//  ingredients?: string (через кому: "борошно,молоко"),
-//  difficulty?: string |"Легко"|"Помірно"|"Складно"
-//  time?: "underThirtyMinutes" | "underAnHour" | "overAnHour",
-//  sortBy?: "popularity" | "rating" | "reviewsAmount",
-//  authorId?: string (ObjectId),
-//  likedBy?: string (ObjectId користувача),
-//  ids?: string (через кому: "id1,id2,id3")
-// }
 router.get('/', async (req, res) => {
   try {
     const {
@@ -86,10 +76,7 @@ router.get('/', async (req, res) => {
     //Пошук по назві title
     if (input && input.trim()) {
       const trimmedText = input.trim();
-      //Екрануємо, для того щоб правильно інтерпретувати строку,
-      //наприклад, "*" без екранації поверне всі записи
       const editted = trimmedText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      //'i' без урахування регістру
       filter.title = new RegExp(editted, 'i');
     }
 
@@ -102,10 +89,8 @@ router.get('/', async (req, res) => {
     if (time) {
       const timeParsed = String(time).trim();
       if (timeParsed === 'underThirtyMinutes') {
-        //$lt - less than
         filter.timeMinutes = { $lt: 30 };
       } else if (timeParsed === 'underAnHour') {
-        // greater than equal / less than equal
         filter.timeMinutes = { $gte: 30, $lte: 60 };
       } else if (timeParsed === 'overAnHour') {
         filter.timeMinutes = { $gt: 60 };
@@ -123,26 +108,22 @@ router.get('/', async (req, res) => {
         .filter((id) => mongoose.isValidObjectId(id));
 
       if (idsArray.length > 0) {
-        // $in - в масиві, $nin - не в масиві
         filter._id = { $in: idsArray };
       }
     }
 
-    //Інгредієнти
+    // Інгредієнти (Враховуємо групи)
     if (ingredients) {
       const ingredientsArray = String(ingredients)
         .split(',')
         .map((s) => s.trim())
-        .filter(Boolean); // видаляє пусті рядки бо "" =>  false
+        .filter(Boolean);
 
       if (ingredientsArray.length > 0) {
-        const ingredientConditions = ingredientNames.map((name) => ({
-          ingredients: {
-            $elemMatch: {
-              //^ та $ для точного збігу
-              name: new RegExp(`^${name}$`, 'i'),
-            },
-          },
+        // Ми використовуємо dot notation: 'ingredients.items.name'
+        // Mongo вміє шукати всередині масиву (ingredients), всередині якого є масив (items)
+        const ingredientConditions = ingredientsArray.map((name) => ({
+          'ingredients.items.name': new RegExp(`^${name}$`, 'i'),
         }));
         andParts.push(...ingredientConditions);
       }
@@ -151,7 +132,6 @@ router.get('/', async (req, res) => {
     //Повертає рецепти які лайкнув певний користувач за ід
     if (likedBy && mongoose.isValidObjectId(likedBy)) {
       const user = await User.findById(likedBy).select('likedRecipes');
-      //Якщо юсер не зберіг відразу вертаєм пустий масив
       if (!user || !user.likedRecipes || user.likedRecipes.length === 0) {
         return res.status(200).json({
           items: [],
@@ -220,7 +200,6 @@ router.get('/:id', async (req, res) => {
   }
 
   const recipe = await Recipe.findById(id)
-    //populate вказує що треба по ід поля author перейти і взяти 2 поля - username avatar
     .populate('author', 'username avatar')
     .lean();
 
@@ -229,11 +208,11 @@ router.get('/:id', async (req, res) => {
   }
 
   const reviewDocs = await Review.find({ recipe: id })
-    .sort({ createdAt: -1 }) // нові спочатку
+    .sort({ createdAt: -1 })
     .populate('author', 'username avatar')
     .lean();
 
-  const reviews = reviewsDocs.map((review) => ({
+  const reviews = reviewDocs.map((review) => ({
     id: review._id.toString(),
     rating: review.rating,
     text: review.text || '',
@@ -243,7 +222,7 @@ router.get('/:id', async (req, res) => {
       avatar: review.author.avatar,
     },
   }));
-  // мапимо під твій фронт
+
   const response = {
     id: recipe._id.toString(),
     title: recipe.title,
@@ -252,19 +231,21 @@ router.get('/:id', async (req, res) => {
     time: recipe.timeMinutes,
     servings: recipe.servings,
     difficulty: recipe.difficulty,
-    rating: recipe.ratingAverage, // середній рейтинг
+    rating: recipe.ratingAverage,
     author: {
       id: recipe.author._id.toString(),
       name: recipe.author.username,
       avatar: recipe.author.avatar || null,
     },
-    ingredients: recipe.ingredients || [], // [{ name, amount, unit}]
-    steps: recipe.steps || [], // [{ title, text, imageUrl }]
+
+    ingredients: recipe.ingredients || [],
+    steps: recipe.steps || [],
     reviews,
   };
 
   return res.status(200).json(response);
 });
+
 //Додавання рецепту /api/recipes/
 router.post('/', requireAuth, upload.single('image'), async (req, res) => {
   const {
@@ -294,31 +275,37 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
       .json({ message: 'Кількість порцій має бути додатнім числом' });
   }
 
+
   const ingredientsParsed = safeJsonParse(ingredients, []);
   const stepsParsed = safeJsonParse(steps, []);
 
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-  const recipe = await Recipe.create({
-    title: title.trim(),
-    description: (description || '').trim(),
-    timeMinutes: timeNum,
-    servings: servingsNum,
-    difficulty: difficulty.trim(),
-    ingredients: ingredientsParsed,
-    steps: stepsParsed,
-    imageUrl,
-    author: req.user.id,
-  });
+  try {
+    const recipe = await Recipe.create({
+      title: title.trim(),
+      description: (description || '').trim(),
+      timeMinutes: timeNum,
+      servings: servingsNum,
+      difficulty: difficulty.trim(),
+      ingredients: ingredientsParsed, // Mongoose перевірить структуру за схемою
+      steps: stepsParsed,
+      imageUrl,
+      author: req.user.id,
+    });
 
-  return res.status(201).json({
-    id: recipe._id.toString(),
-    title: recipe.title,
-    image: recipe.imageUrl,
-    time: recipe.timeMinutes,
-    difficulty: recipe.difficulty,
-    rating: recipe.ratingAverage,
-  });
+    return res.status(201).json({
+      id: recipe._id.toString(),
+      title: recipe.title,
+      image: recipe.imageUrl,
+      time: recipe.timeMinutes,
+      difficulty: recipe.difficulty,
+      rating: recipe.ratingAverage,
+    });
+  } catch (err) {
+    console.error("Create recipe error:", err);
+    return res.status(400).json({ message: 'Помилка при створенні рецепта (перевірте дані)' });
+  }
 });
 
 // лайк/анлайк рецепта /api/recipes/:id/like
@@ -425,10 +412,10 @@ router.post('/:id/reviews', requireAuth, async (req, res) => {
     createdAt: review.createdAt,
     author: review.author
       ? {
-          id: review.author._id.toString(),
-          name: review.author.username,
-          avatar: review.author.avatar || null,
-        }
+        id: review.author._id.toString(),
+        name: review.author.username,
+        avatar: review.author.avatar || null,
+      }
       : null,
   });
 });

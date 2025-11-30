@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Card = styled.section`
+  box-sizing: border-box;
   width: ${({ $width }) => $width || 'auto'};
   padding: ${({ $padding }) => $padding || '0'};
   margin: ${({ $margin }) => $margin || '0'};

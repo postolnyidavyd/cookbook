@@ -4,78 +4,167 @@ const mongoose = require('mongoose');
 const Playlist = require('../models/Playlist');
 const User = require('../models/User');
 const { requireAuth } = require('../auth/requireAuth');
+const { upload } = require('../utils/upload');
+
+function safeJsonParse(value, fallback) {
+  if (!value) return fallback;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+}
 
 const router = express.Router();
 
 //
-// Отримання рецептів
-// query:
-//  - page?: number
-//  - limit?: number
-//  - sortBy?: "popularity" | "newest" (default "newest")
-//  - ownerId?: ObjectId
-//  - withRecipe?: ObjectId
-//
+/*
+ * page,
+ * limit,
+ * input,
+ * tags,
+ * sortBy = 'likesCount',
+ * ownerId,
+ * withRecipe,
+ * ids,
+ * likedBy,
+ * */
 router.get('/', async (req, res) => {
   try {
-    const { page, limit, sortBy = 'newest', ownerId, withRecipe } = req.query;
+    const {
+      page,
+      limit,
+      input,
+      tags,
+      sortBy = 'newest',
+      ownerId,
+      withRecipe,
+      ids,
+      likedBy,
+    } = req.query;
 
-    let usePagination = false;
     let pageNum = null;
     let limitNum = null;
-    let skip = null;
+    let skipAmount = null;
+    let usePagination = false;
 
     if (page !== undefined || limit !== undefined) {
       usePagination = true;
       pageNum = Math.max(1, Number(page) || 1);
       limitNum = Math.max(1, Math.min(50, Number(limit) || 20));
-      skip = (pageNum - 1) * limitNum;
+      skipAmount = (pageNum - 1) * limitNum;
     }
 
     const filter = {};
+    const andParts = [];
+
+    if (input && input.trim()) {
+      const trimmedText = input.trim();
+      const editted = trimmedText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      filter.name = new RegExp(editted, 'i');
+    }
+
     if (ownerId && mongoose.isValidObjectId(ownerId)) {
       filter.owner = ownerId;
     }
 
-    let sort = { createdAt: -1, _id: -1 }; // newest
-    if (sortBy === 'popularity') {
-      sort = { likesCount: -1, _id: -1 };
+    if (ids) {
+      const idsArray = String(ids)
+        .split(',')
+        .map((id) => id.trim())
+        .filter((id) => mongoose.isValidObjectId(id));
+
+      if (idsArray.length > 0) {
+        filter._id = { $in: idsArray };
+      }
     }
 
+    if (likedBy && mongoose.isValidObjectId(likedBy)) {
+      const user = await User.findById(likedBy).select('likedPlaylists');
+
+      if (!user || !user.likedPlaylists || user.likedPlaylists.length === 0) {
+        return res.status(200).json({
+          items: [],
+          total: 0,
+          page: usePagination ? pageNum || 1 : 1,
+          totalPages: usePagination ? 0 : 1,
+        });
+      }
+      filter._id = { $in: user.likedPlaylists };
+    }
+
+    if (tags) {
+      const tagsArray = String(tags)
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      if (tagsArray.length > 0) {
+        const tagConditions = tagsArray.map((tagName) => ({
+          tags: new RegExp(`^${tagName}$`, 'i'),
+        }));
+        andParts.push(...tagConditions);
+      }
+    }
+
+    if (andParts.length > 0) {
+      filter.$and = andParts;
+    }
+
+    const sortMap = {
+      popularity: 'likesCount',
+      viewsAmount: 'views',
+      newest: 'createdAt',
+    };
+
+    let sortField = sortMap[sortBy] || 'createdAt';
+    let sortOptions = { [sortField]: -1, _id: -1 };
+
+    //Формування запиту
     let query = Playlist.find(filter)
-      .sort(sort)
-      .select('name coverImage description likesCount recipes owner createdAt');
+      .sort(sortOptions)
+      .select('name coverImage views recipes owner createdAt tags'); // додав tags в select
 
     if (usePagination) {
-      query = query.skip(skip).limit(limitNum);
+      query = query.skip(skipAmount).limit(limitNum);
     }
 
     const [rawLists, total] = await Promise.all([
-      query.lean(),
-      Playlist.countDocuments(filter)
+      query.populate('owner', 'username avatar').lean(),
+      Playlist.countDocuments(filter),
     ]);
 
     let having = new Set();
 
     if (withRecipe && mongoose.isValidObjectId(withRecipe)) {
+      const currentIds = rawLists.map((p) => p._id);
+
       const havingDocs = await Playlist.find({
-        ...filter,
-        recipes: withRecipe
+        _id: { $in: currentIds },
+        recipes: withRecipe,
       }).select('_id');
 
       having = new Set(havingDocs.map((d) => d._id.toString()));
     }
 
-    const items = rawLists.map((pl) => ({
-      id: pl._id.toString(),
-      name: pl.name,
-      coverImage: pl.coverImage || null,
-      description: pl.description || '',
-      likesCount: pl.likesCount || 0,
-      recipesCount: Array.isArray(pl.recipes) ? pl.recipes.length : 0,
-      ownerId: pl.owner?.toString(),
-      hasRecipe: having.has(pl._id.toString()),
-      createdAt: pl.createdAt
+    const items = rawLists.map((playlist) => ({
+      id: playlist._id.toString(),
+      name: playlist.name,
+      coverImage: playlist.coverImage || null,
+      views: playlist.views || 0,
+      recipesCount: Array.isArray(playlist.recipes)
+        ? playlist.recipes.length
+        : 0,
+      owner: playlist.owner
+        ? {
+            id: playlist.owner._id.toString(),
+            name: playlist.owner.username,
+            avatar: playlist.owner.avatar,
+          }
+        : null,
+      hasRecipe: having.has(playlist._id.toString()),
+      createdAt: playlist.createdAt,
+      tags: playlist.tags || [],
     }));
 
     const totalPages = usePagination ? Math.ceil(total / (limitNum || 1)) : 1;
@@ -83,8 +172,8 @@ router.get('/', async (req, res) => {
     return res.status(200).json({
       items,
       total,
-      page: usePagination ? pageNum : 1,
-      totalPages
+      page: usePagination ? pageNum || 1 : 1,
+      totalPages,
     });
   } catch (err) {
     console.error('GET /api/playlists error:', err);
@@ -100,11 +189,15 @@ router.get('/:id', async (req, res) => {
     return res.status(400).json({ message: 'Невалідний id плейлиста' });
   }
 
-  const playlist = await Playlist.findById(id)
+  const playlist = await Playlist.findByIdAndUpdate(
+    id,
+    { $inc: { views: 1 } },
+    { new: true }
+  )
     .populate('owner', 'username avatar')
     .populate({
       path: 'recipes',
-      select: 'title imageUrl timeMinutes difficulty ratingAverage'
+      select: '_id',
     })
     .lean();
 
@@ -112,65 +205,74 @@ router.get('/:id', async (req, res) => {
     return res.status(404).json({ message: 'Плейлист не знайдено' });
   }
 
-  const recipes = (playlist.recipes || []).map((r) => ({
-    id: r._id.toString(),
-    title: r.title,
-    image: r.imageUrl || null,
-    time: r.timeMinutes,
-    difficulty: r.difficulty,
-    rating: r.ratingAverage
-  }));
+  const recipes = (playlist.recipes || []).map((recipe) =>
+    recipe._id.toString()
+  );
 
   return res.status(200).json({
     id: playlist._id.toString(),
     name: playlist.name,
     description: playlist.description || '',
     coverImage: playlist.coverImage || null,
-    likesCount: playlist.likesCount || 0,
+    views: playlist.views || 0,
     recipesCount: recipes.length,
     owner: playlist.owner
       ? {
-        id: playlist.owner._id.toString(),
-        name: playlist.owner.username,
-        avatar: playlist.owner.avatar || null
-      }
+          id: playlist.owner._id.toString(),
+          name: playlist.owner.username,
+          avatar: playlist.owner.avatar || null,
+        }
       : null,
+    tags: playlist.tags || [],
     recipes,
-    createdAt: playlist.createdAt
+    createdAt: playlist.createdAt,
   });
 });
 
 // Створення плейлиста /api/playlists
-router.post('/', requireAuth, async (req, res) => {
-  const { name, description } = req.body || {};
+router.post('/', requireAuth, upload.single('image'), async (req, res) => {
+  try {
+    // Бажано додати try-catch, хоча у вас може бути глобальний обробник
+    const { name, description, tags } = req.body || {};
 
-  if (!name || !name.trim()) {
-    return res.status(400).json({ message: 'Назва обовʼязкова' });
+    if (!name || !name.trim()) {
+      return res.status(400).json({ message: 'Назва обовʼязкова' });
+    }
+
+    const trimmedName = name.trim();
+    if (trimmedName.length < 3 || trimmedName.length > 50) {
+      return res.status(400).json({ message: 'Назва має бути 3–50 символів' });
+    }
+
+    const tagsParsed = safeJsonParse(tags, []);
+
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+    const playlist = await Playlist.create({
+      name: trimmedName,
+      description: (description || '').trim(),
+      owner: req.user.id,
+      coverImage: imageUrl,
+      recipes: [],
+      likesCount: 0,
+      tags: tagsParsed,
+    });
+
+    return res.status(201).json({
+      id: playlist._id.toString(),
+      name: playlist.name,
+      description: playlist.description,
+      coverImage: playlist.coverImage,
+      likesCount: playlist.likesCount,
+      recipesCount: 0,
+      ownerId: playlist.owner.toString(),
+      createdAt: playlist.createdAt,
+      tags: playlist.tags,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Помилка створення плейлиста' });
   }
-
-  const trimmedName = name.trim();
-  if (trimmedName.length < 3 || trimmedName.length > 50) {
-    return res.status(400).json({ message: 'Назва має бути 3–50 символів' });
-  }
-
-  const playlist = await Playlist.create({
-    name: trimmedName,
-    description: (description || '').trim(),
-    owner: req.user.id,
-    recipes: [],
-    likesCount: 0
-  });
-
-  return res.status(201).json({
-    id: playlist._id.toString(),
-    name: playlist.name,
-    description: playlist.description,
-    coverImage: playlist.coverImage || null,
-    likesCount: playlist.likesCount,
-    recipesCount: 0,
-    ownerId: playlist.owner.toString(),
-    createdAt: playlist.createdAt
-  });
 });
 
 // Змінити дані /api/playlists/:id
@@ -218,7 +320,7 @@ router.patch('/:id', requireAuth, async (req, res) => {
     likesCount: playlist.likesCount || 0,
     recipesCount: Array.isArray(playlist.recipes) ? playlist.recipes.length : 0,
     ownerId: playlist.owner.toString(),
-    createdAt: playlist.createdAt
+    createdAt: playlist.createdAt,
   });
 });
 
@@ -232,7 +334,7 @@ router.delete('/:id', requireAuth, async (req, res) => {
 
   const deleted = await Playlist.findOneAndDelete({
     _id: id,
-    owner: req.user.id
+    owner: req.user.id,
   });
 
   if (!deleted) {
@@ -287,7 +389,7 @@ router.post('/:id/like', requireAuth, async (req, res) => {
     return res.status(200).json({
       playlistId: id,
       like: set.has(id),
-      likesCount: playlist.likesCount
+      likesCount: playlist.likesCount,
     });
   }
 
@@ -297,7 +399,7 @@ router.post('/:id/like', requireAuth, async (req, res) => {
   return res.status(200).json({
     playlistId: id,
     like: like === true,
-    likesCount: playlist.likesCount
+    likesCount: playlist.likesCount,
   });
 });
 

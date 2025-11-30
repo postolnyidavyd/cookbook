@@ -2,27 +2,36 @@ import { Wrapper } from '../../ui/Wrapper.jsx';
 import SmallText from '../../ui/texts/SmallText.jsx';
 import styled, { css } from 'styled-components';
 import closeIcon from '../../assets/close.svg';
-export const Tags = ({ tags }) => {
+export const Tags = ({ tags, filterKey, onChange }) => {
+  if (!tags || tags.length === 0) return null;
+  const handleClear = () => onChange(filterKey, '');
+  const handleRemove = (tagToRemove) => {
+    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
+
+    onChange(filterKey, updatedTags.join(','));
+  };
   return (
-    <Wrapper $gap="0.75" style={{ margin: '1rem 0rem', flexWrap: 'wrap' }}>
+    <Wrapper $gap="0.75" $margin="1rem 0rem" style={{ flexWrap: 'wrap' }}>
       {tags && (
         <>
-          <TagButton $main>
+          <TagButton $main onClick={handleClear}>
             <SmallText>Очистити все</SmallText>
-          </TagButton>{' '}
+          </TagButton>
           {tags.map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
+            <Tag key={tag} onRemove={() => handleRemove(tag)}>
+              {tag}
+            </Tag>
           ))}
         </>
       )}
     </Wrapper>
   );
 };
-const Tag = ({ children }) => {
+const Tag = ({ children, onRemove }) => {
   return (
-    <TagButton>
+    <TagButton onClick={onRemove} type="button">
       <SmallText>{children}</SmallText>
-      <img src={closeIcon} alt="Закрити" />
+      <img src={closeIcon} alt="Видалити" />
     </TagButton>
   );
 };

@@ -1,10 +1,9 @@
-import styled from 'styled-components';
 import clockIcon from '../../../assets/clock.svg';
 import whiteHeart from '../../../assets/heartWhite.svg';
+import filledHeart from '../../../assets/filledHeart.svg';
 import bookmark from '../../../assets/bookmarkBig.svg';
+import filledBookmark from '../../../assets/filledBookmark.svg';
 import share from '../../../assets/share.svg';
-import { Container } from '../../../ui/Container.jsx';
-import { Display } from '../../../ui/texts/Display.jsx';
 import { WideFocusButton } from '../../../ui/buttons/WideFocusButton.jsx';
 import { Wrapper } from '../../../ui/Wrapper.jsx';
 import { MetaContainer, MetaParagraph, SideBarContainer } from './Shared.jsx';
@@ -14,9 +13,59 @@ import {
   MetaImage,
   Rating,
 } from '../SharedComponents/SharedComponents.jsx';
+import { setSaveRecipeModal } from '../../../store/uiSlice.js';
+import useAuthAction from '../../../shared/hooks/useAuthAction.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLikeRecipeMutation } from '../../../store/api/recipesApi.js';
+import {
+  selectLikedRecipesIdsSet,
+  selectSavedInPlaylistRecipesIdsSet,
+} from '../../../store/selectors/authSelectors.js';
+import { useState } from 'react';
+const RecipeSideBar = ({
+  recipeId,
+  rating,
+  avatar,
+  authorName,
+  time,
+  difficulty,
+}) => {
+  const [shareButtonState, setShareButtonState] = useState("Поділитися");
+  const dispatch = useDispatch();
+  const [likeRecipe] = useLikeRecipeMutation();
+  const likedSet = useSelector(selectLikedRecipesIdsSet);
+  const savedInPlaylist = useSelector(selectSavedInPlaylistRecipesIdsSet);
 
+  const isLiked = likedSet.has(recipeId);
+  const isSaved = savedInPlaylist.has(recipeId);
 
-const RecipeSideBar = ({ rating, avatar, authorName, time, difficulty }) => {
+  const withAuth = useAuthAction();
+  
+  const handleLikeButtonClick = withAuth(() => {
+    likeRecipe({ id: recipeId, like: !isLiked });
+  });
+  const handleSaveButtonClick = withAuth(() => {
+    dispatch(setSaveRecipeModal({isOpen: true, recipeId}));
+  });
+
+  const handleShareButtonClick = async() => {
+    try{
+    setShareButtonState("Копіємо..."); 
+    const text = window.location.href;
+    await navigator.clipboard.writeText(text);
+    setShareButtonState("Скопійовано!")
+    setTimeout(() => {
+      setShareButtonState("Поділитися");
+    }, 2000);
+    }catch{
+      setShareButtonState("Помилка копіювання")
+      setTimeout(() => {
+        setShareButtonState("Поділитися");
+      }, 2000);
+    }
+
+  };
+
   return (
     <SideBarContainer>
       <MetaContainer>
@@ -35,17 +84,17 @@ const RecipeSideBar = ({ rating, avatar, authorName, time, difficulty }) => {
         </Wrapper>
       </MetaContainer>
       <MetaContainer $gap="0.625rem">
-        <WideFocusButton>
-          <MetaImage src={whiteHeart} />
-          Зберегти рецепт
+        <WideFocusButton onClick={handleLikeButtonClick}>
+          <MetaImage src={isLiked ? filledHeart : whiteHeart} />
+          {isLiked ? "Вподобано" : "Вподобати рецепт"}
         </WideFocusButton>
-        <WideFocusButton $minWidth="100%">
-          <MetaImage src={bookmark} />
+        <WideFocusButton $minWidth="100%" onClick={handleSaveButtonClick}>
+          <MetaImage src={isSaved ? filledBookmark : bookmark} />
           Додати до плейлиста
         </WideFocusButton>
-        <WideFocusButton $minWidth="100%">
+        <WideFocusButton $minWidth="100%" onClick={handleShareButtonClick}>
           <MetaImage src={share} />
-          Поділитися
+          {shareButtonState}
         </WideFocusButton>
       </MetaContainer>
     </SideBarContainer>

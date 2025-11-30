@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice.js';
-import { setCredentials, logout } from '../authSlice';
+import { setCredentials, logout, setUser } from '../authSlice';
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,7 +7,7 @@ export const authApi = apiSlice.injectEndpoints({
       query: (body) => ({
         url: '/auth/register',
         method: 'POST',
-        body
+        body,
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
@@ -15,14 +15,14 @@ export const authApi = apiSlice.injectEndpoints({
           dispatch(setCredentials(data));
         } catch {}
       },
-      invalidatesTags: ['Me']
+      invalidatesTags: ['Me'],
     }),
 
     login: builder.mutation({
       query: (body) => ({
         url: '/auth/login',
         method: 'POST',
-        body
+        body,
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
@@ -30,21 +30,26 @@ export const authApi = apiSlice.injectEndpoints({
           dispatch(setCredentials(data));
         } catch {}
       },
-      invalidatesTags: ['Me']
+      invalidatesTags: ['Me'],
     }),
 
     getMe: builder.query({
       query: () => ({ url: '/auth/me', method: 'GET' }),
-      providesTags: ['Me']
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setUser(data));
+        } catch {}
+      },
     }),
 
     updateMe: builder.mutation({
       query: (formData) => ({
         url: '/auth/me',
         method: 'PATCH',
-        body: formData
+        body: formData,
       }),
-      invalidatesTags: ['Me']
+      invalidatesTags: ['Me'],
     }),
 
     logoutUser: builder.mutation({
@@ -56,10 +61,10 @@ export const authApi = apiSlice.injectEndpoints({
           dispatch(logout());
         }
       },
-      invalidatesTags: ['Me', 'RecipeList', 'PlaylistList', 'Playlist']
-    })
+      invalidatesTags: ['Me', 'RecipeList', 'PlaylistList', 'Playlist'],
+    }),
   }),
-  overrideExisting: false
+  overrideExisting: false,
 });
 
 export const {
@@ -67,5 +72,5 @@ export const {
   useLoginMutation,
   useGetMeQuery,
   useUpdateMeMutation,
-  useLogoutUserMutation
+  useLogoutUserMutation,
 } = authApi;

@@ -1,20 +1,28 @@
 import { apiSlice } from './apiSlice.js';
+import { setLikePlaylist } from '../authSlice.js';
 
 export const playlistsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+
     getPlaylists: builder.query({
       query: (params) => ({
         url: '/playlists',
         method: 'GET',
         params
       }),
-      providesTags: (result) =>
-        result?.items
-          ? [
-            ...result.items.map((p) => ({ type: 'Playlist', id: p.id })),
-            { type: 'PlaylistList', id: 'LIST' }
-          ]
-          : [{ type: 'PlaylistList', id: 'LIST' }]
+      providesTags: (result, error, arg) => {
+        const tags = result?.items
+          ? result.items.map((p) => ({ type: 'Playlist', id: p.id }))
+          : [];
+
+        if (arg?.likedBy) {
+          tags.push({ type: 'PlaylistList', id: 'LIKED_LIST' });
+        } else {
+          tags.push({ type: 'PlaylistList', id: 'MAIN_LIST' });
+        }
+
+        return tags;
+      }
     }),
 
     getPlaylistById: builder.query({
@@ -23,12 +31,12 @@ export const playlistsApi = apiSlice.injectEndpoints({
     }),
 
     createPlaylist: builder.mutation({
-      query: (body) => ({
+      query: (formData) => ({
         url: '/playlists',
         method: 'POST',
-        body
+        body: formData,
       }),
-      invalidatesTags: [{ type: 'PlaylistList', id: 'LIST' }]
+      invalidatesTags: [{ type: 'PlaylistList', id: 'MAIN_LIST' }]
     }),
 
     updatePlaylist: builder.mutation({
@@ -39,7 +47,7 @@ export const playlistsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, { id }) => [
         { type: 'Playlist', id },
-        { type: 'PlaylistList', id: 'LIST' }
+        { type: 'PlaylistList', id: 'MAIN_LIST' }
       ]
     }),
 
@@ -50,7 +58,8 @@ export const playlistsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, id) => [
         { type: 'Playlist', id },
-        { type: 'PlaylistList', id: 'LIST' }
+        { type: 'PlaylistList', id: 'MAIN_LIST' },
+        { type: 'PlaylistList', id: 'LIKED_LIST' }
       ]
     }),
 
@@ -60,10 +69,19 @@ export const playlistsApi = apiSlice.injectEndpoints({
         method: 'POST',
         body: { like }
       }),
+
       invalidatesTags: (result, error, { id }) => [
-        { type: 'Playlist', id },
-        { type: 'PlaylistList', id: 'LIST' }
-      ]
+        { type: 'PlaylistList', id: 'LIKED_LIST' }
+      ],
+
+      async onQueryStarted({ id, like }, { dispatch, queryFulfilled }) {
+        dispatch(setLikePlaylist({ playlistId: id, like }));
+        try {
+          await queryFulfilled;
+        } catch {
+          dispatch(setLikePlaylist({ playlistId: id, like: !like }));
+        }
+      }
     })
   }),
   overrideExisting: false

@@ -3,13 +3,23 @@ import logoSvg from '../../assets/sitelogo.svg';
 import { Wrapper } from '../../ui/Wrapper.jsx';
 import { TextButton } from '../../ui/buttons/TextButton.jsx';
 import { HollowButton } from '../../ui/buttons/HollowButton.jsx';
+import {
+  AvatarImage,
+  BigAvatarImage,
+} from '../RecipePlaylistDetailComponents/SharedComponents/SharedComponents.jsx';
 import useScrollDirection from '../../shared/hooks/useScrollDirection.js';
+
 import styled, { css } from 'styled-components';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoginModal } from '../../store/uiSlice.js';
-import { logout } from '../../store/authSlice.js';
-import { AvatarImage, BigAvatarImage } from '../RecipePlaylistDetailComponents/SharedComponents/SharedComponents.jsx';
+import {
+  selectAvatar,
+  selectIsAuthenticated,
+} from '../../store/selectors/authSelectors.js';
+import { useLogoutUserMutation } from '../../store/api/authApi.js';
+import { StyledLink } from '../../ui/StyledLink.jsx';
+import { generateUrl } from '../../shared/utils/generateUrl.js';
 
 const NAV_ITEMS = [
   { key: '', label: 'Головна' },
@@ -19,16 +29,21 @@ const NAV_ITEMS = [
 ];
 
 const Navbar = () => {
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const avatar = useSelector(state=> state.auth.user.avatar);
+  const location = useLocation();
+  const isAuth = useSelector(selectIsAuthenticated);
+  const avatar = useSelector(selectAvatar);
   const dispatch = useDispatch();
+  const [logout, {isLoading}] = useLogoutUserMutation();
   const scrollDirection = useScrollDirection();
+
+  const handleLogin = () => dispatch(toggleLoginModal());
+  const handleLogout = () => logout();
+
 
   let navbarClasses = `${navbar.navbar}`;
   if (scrollDirection === 'down') navbarClasses += ` ${navbar.hidden}`;
 
-  const handleLogin = () => dispatch(toggleLoginModal());
-  const handleLogout = ()=> dispatch(logout());
+  const redirectLocation = location.state?.from || location;
   return (
     <nav className={navbarClasses}>
       <LogoLink to="/">
@@ -48,27 +63,35 @@ const Navbar = () => {
         ))}
       </Wrapper>
       {isAuth ? (
-        <Wrapper $gap='1.25'>
-          <HollowButton type="button" $isMain={true} onClick={handleLogout} title="Вийти у вікно">
+        <Wrapper $gap="1.25">
+          <HollowButton
+            type="button"
+            $isMain={true}
+            onClick={handleLogout}
+            title="Вийти у вікно"
+            disabled={isLoading}
+          >
             Вийти
           </HollowButton>
-          <LogoLink to="/profile"><BigAvatarImage src={avatar} alt="Аватар"/></LogoLink>
-
+          <LogoLink to="/profile">
+            <BigAvatarImage src={generateUrl(avatar)} alt="Аватар" />
+          </LogoLink>
         </Wrapper>
       ) : (
         <Wrapper $gap="1.25">
-          <HollowButton type="button">Зареєструватися</HollowButton>
+          <HollowButton type="button">
+            <TextLink
+              to="/register"
+              state={{ from: redirectLocation }}
+            >
+              Зареєструватися
+            </TextLink>
+          </HollowButton>
           <HollowButton $isMain={true} type="button" onClick={handleLogin}>
             Ввійти
           </HollowButton>
         </Wrapper>
       )}
-      {/*<Wrapper $gap="1.25">*/}
-      {/*  <HollowButton type="button">Зареєструватися</HollowButton>*/}
-      {/*  <HollowButton $isMain={true} type="button" onClick={handleLogin}>*/}
-      {/*    Ввійти*/}
-      {/*  </HollowButton>*/}
-      {/*</Wrapper>*/}
     </nav>
   );
 };
@@ -85,7 +108,7 @@ export const LogoLink = styled(Link)`
   &:hover {
     color: #1e1e1e;
   }
-  & img{
+  & img {
     width: 3rem;
     height: 3rem;
   }
