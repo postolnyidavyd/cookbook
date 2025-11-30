@@ -1,5 +1,5 @@
 import Modal from './Modal.jsx';
-import { Card } from '../../ui/ContentCard.jsx';
+import { Card } from '../../ui/styledBlocks/ContentCard.jsx';
 import {
   Input,
   PasswordInput,

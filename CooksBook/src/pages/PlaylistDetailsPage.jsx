@@ -1,9 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { Container, PageContainer } from '../ui/Container.jsx';
+import { Container, PageContainer } from '../ui/styledBlocks/Container.jsx';
 import HeroComponent from '../components/RecipePlaylistDetailComponents/HeroSection/HeroComponent.jsx';
 import PlaylistSideBar from '../components/RecipePlaylistDetailComponents/HeroSection/PlaylistSideBar.jsx';
-import BrowserLayout from '../components/BrowserLayout/BrowserLayout.jsx';
-import { RECIPES_MOCK } from '../shared/utils/mockData.js';
 import { useGetPlaylistByIdQuery } from '../store/api/playlistApi.js';
 import LoadingPage from './LoadingPage.jsx';
 import PlaylistsRecipeBrowser from '../components/PlaylistsRecipeBrowser.jsx';

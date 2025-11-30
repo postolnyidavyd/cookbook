@@ -1,5 +1,5 @@
 import { ControlElementRow, Heading } from '../SharedModalComponents.js';
-import { Card } from '../../../ui/ContentCard.jsx';
+import { Card } from '../../../ui/styledBlocks/ContentCard.jsx';
 import { useSelector } from 'react-redux';
 import { selectUserId } from '../../../store/selectors/authSelectors.js';
 import { useGetPlaylistsQuery } from '../../../store/api/playlistApi.js';
@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react';
 import { useSaveRecipeToPlaylistsMutation } from '../../../store/api/recipesApi.js';
 import { SearchInput } from '../../../ui/inputs/index.js';
 import styled from 'styled-components';
-import { Wrapper } from '../../../ui/Wrapper.jsx';
+import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
 import bookIcon from '../../../assets/book.svg';
 import { WideFocusButton } from '../../../ui/buttons/WideFocusButton.jsx';
 

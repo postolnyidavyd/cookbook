@@ -1,6 +1,6 @@
 import navbar from './Navbar.module.css';
 import logoSvg from '../../assets/sitelogo.svg';
-import { Wrapper } from '../../ui/Wrapper.jsx';
+import { Wrapper } from '../../ui/texts/Wrapper.jsx';
 import { TextButton } from '../../ui/buttons/TextButton.jsx';
 import { HollowButton } from '../../ui/buttons/HollowButton.jsx';
 import {

@@ -1,8 +1,8 @@
-import { Wrapper } from '../../../ui/Wrapper.jsx';
+import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
 import starBigFilled from '../../../assets/starBigFilled.svg';
 import starBigUnfilled from '../../../assets/starBigUnfilled.svg';
 import styled, { css } from 'styled-components';
-import { Difficulty } from '../../Cards/RecipeCard.jsx';
+import { Difficulty } from '../../Cards/RecipeCard/RecipeCard.jsx';
 
 export const Rating = ({ rating, small = false }) => {
   const filledHeartCount = Math.round(rating);

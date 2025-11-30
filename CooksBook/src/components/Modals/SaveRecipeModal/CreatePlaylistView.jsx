@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Card } from '../../../ui/ContentCard.jsx';
+import { Card } from '../../../ui/styledBlocks/ContentCard.jsx';
 import { Field, Input, InputError } from '../../../ui/inputs/index.js';
-import { ImageInput } from '../../../pages/NewRecipePage.jsx';
 import { FocusButton } from '../../../ui/buttons/FocusButton.jsx';
 import { ControlElementRow } from '../SharedModalComponents.js';
 import { WideFocusButton } from '../../../ui/buttons/WideFocusButton.jsx';
@@ -10,6 +9,7 @@ import { useCreatePlaylistMutation } from '../../../store/api/playlistApi.js';
 
 import arrowIcon from '../../../assets/arrowLeft.svg';
 import hashIcon from "../../../assets/hash.svg"
+import { ImageInput } from '../../../ui/inputs/index.js';
 const CreatePlaylistView = ({ onCreate, onClose }) => {
   const [values, setValues] = useState({
     name: '',

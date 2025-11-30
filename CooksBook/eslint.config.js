@@ -3,29 +3,19 @@ import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import cypress from 'eslint-plugin-cypress';
 
 export default [
   {
-    ignores: [
-      'dist/**',
-      'node_modules/**',
-      'cypress/**',
-      'backend/**',
-      'husky/**',
-    ],
+    ignores: ['dist/**', 'node_modules/**', 'backend/**'],
   },
 
-  //Базові правила ESLint
+  // 2. Базові налаштування JS
   js.configs.recommended,
 
-  //Конфігурація для React
+  //Налаштування для React
   {
-    files: ['**/*.{js,jsx}'],
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
+    files: ['src/**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -33,29 +23,47 @@ export default [
         ...globals.browser,
       },
       parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
+        ecmaFeatures: { jsx: true },
       },
     },
     settings: {
-      react: {
-        version: 'detect',
-      },
+      react: { version: 'detect' },
+    },
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
     },
     rules: {
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      // Власні правила
-      'react/react-in-jsx-scope': 'off', //Щоб не ругалося що не імпортується реакт в кожному файлі
-      'react/prop-types': 0,
-      'no-unused-vars': [
-        'error',
-        { varsIgnorePattern: '^[A-Z_]', args: 'none' }, // ігнор невикористаних компонентів та приватних змінних
-      ],
-      'prefer-const': 'error',
-      'no-var': 'error',
+      'react/react-in-jsx-scope': 'off', // Не потрібно імпортувати react в файлах з jsx
+      'react/prop-types': 'off', //
       'react-refresh/only-export-components': 'warn',
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    },
+  },
+
+  // Налаштування для Cypress
+  {
+    files: ['cypress/**/*.{js,jsx}', '**/*.cy.{js,jsx}'],
+    plugins: {
+      cypress,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.mocha,
+
+        cy: 'readonly',
+        Cypress: 'readonly',
+        expect: 'readonly',
+        assert: 'readonly',
+      },
+    },
+    rules: {
+      ...cypress.configs.recommended.rules,
+      'no-unused-vars': 'off',
     },
   },
 ];

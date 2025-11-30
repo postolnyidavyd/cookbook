@@ -1,9 +1,12 @@
 import { defineConfig } from "cypress";
-
+import codeCoverageTask from "@cypress/code-coverage/task";
 export default defineConfig({
+  viewportWidth: 1000,
+  viewportHeight: 600,
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      codeCoverageTask(on,config); // регіструємо таск покриття коду
+      return config;
     },
   },
 

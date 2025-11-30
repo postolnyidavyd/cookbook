@@ -1,4 +1,4 @@
-import { Wrapper } from '../Wrapper.jsx';
+import { Wrapper } from '../texts/Wrapper.jsx';
 import Input from './Input.jsx';
 import { useState } from 'react';
 import styled from 'styled-components';

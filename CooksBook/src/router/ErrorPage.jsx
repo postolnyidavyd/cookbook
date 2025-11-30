@@ -1,5 +1,5 @@
 import { useRouteError } from 'react-router-dom';
-import { Container } from '../ui/Container.jsx';
+import { Container } from '../ui/styledBlocks/Container.jsx';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar/Navbar.jsx';
 import { Display } from '../ui/texts/Display.jsx';

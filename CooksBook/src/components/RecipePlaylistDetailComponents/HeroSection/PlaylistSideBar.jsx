@@ -1,5 +1,5 @@
 import { MetaContainer, SideBarContainer } from './Shared.jsx';
-import { Wrapper } from '../../../ui/Wrapper.jsx';
+import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
 import {
   AvatarImage,
   MetaImage,

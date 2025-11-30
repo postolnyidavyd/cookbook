@@ -1,9 +1,9 @@
-import BrowserLayout from './BrowserLayout/BrowserLayout.jsx';
-import { RecipeFilter } from './BrowserLayout/RecipeFilter.jsx';
-import { Tags } from './BrowserLayout/Tags.jsx';
-import PageNavigation from './CardFeed/PageNavigation.jsx';
-import DataRenderer from './BrowserLayout/DataRenderer.jsx';
-import { RecipeCard } from './Cards/RecipeCard.jsx';
+import BrowserLayout from './RecipePlaylistBrowser/BrowserLayout/BrowserLayout.jsx';
+import { RecipeFilter } from './RecipePlaylistBrowser/RecipeFilter/RecipeFilter.jsx';
+import { Tags } from './RecipePlaylistBrowser/Tags/Tags.jsx';
+import PageNavigation from './RecipePlaylistBrowser/PageNavigation/PageNavigation.jsx';
+import DataRenderer from './RecipePlaylistBrowser/DataRenderer/DataRenderer.jsx';
+import { RecipeCard } from './Cards/RecipeCard/RecipeCard.jsx';
 import { useFilterParams } from '../shared/hooks/useFilterParams.js';
 import { useGetRecipesQuery } from '../store/api/recipesApi.js';
 

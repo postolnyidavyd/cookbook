@@ -1,8 +1,7 @@
 import Modal from './Modal.jsx';
-import { Card } from '../../ui/ContentCard.jsx';
+import { Card } from '../../ui/styledBlocks/ContentCard.jsx';
 import { Heading } from './SharedModalComponents.js';
 import { Field, Input, InputError } from '../../ui/inputs/index.js';
-import { ImageInput } from '../../pages/NewRecipePage.jsx';
 import { WideFocusButton } from '../../ui/buttons/WideFocusButton.jsx';
 import styled from 'styled-components';
 import {
@@ -15,6 +14,7 @@ import { generateUrl } from '../../shared/utils/generateUrl.js';
 import { useUpdateMeMutation } from '../../store/api/authApi.js';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../store/authSlice.js';
+import { ImageInput } from '../../ui/inputs/index.js';
 
 const EditUserModal = ({ isOpen, onClose, user }) => {
   const [updateMe, {isLoading}] = useUpdateMeMutation();
@@ -88,7 +88,7 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} >
-      <Card $padding="3.25rem 3.5rem" onMo>
+      <Card $padding="3.25rem 3.5rem">
         <Heading>Зміна даних користувача</Heading>
         <EditUserForm action={formAction}>
           <Field>

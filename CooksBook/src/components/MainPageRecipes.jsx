@@ -1,13 +1,13 @@
-import { RecipeFilter } from './BrowserLayout/RecipeFilter.jsx';
-import { Tags } from './BrowserLayout/Tags.jsx';
-import BrowserLayout from './BrowserLayout/BrowserLayout.jsx';
+import { RecipeFilter } from './RecipePlaylistBrowser/RecipeFilter/RecipeFilter.jsx';
+import { Tags } from './RecipePlaylistBrowser/Tags/Tags.jsx';
+import BrowserLayout from './RecipePlaylistBrowser/BrowserLayout/BrowserLayout.jsx';
 import { useGetRecipesQuery } from '../store/api/recipesApi.js';
 import styled, { keyframes } from 'styled-components';
-import { RecipeCard } from './Cards/RecipeCard.jsx';
+import { RecipeCard } from './Cards/RecipeCard/RecipeCard.jsx';
 import { Link} from 'react-router-dom';
 import refreshIcon from '../assets/refresh.svg';
 import { useFilterParams } from '../shared/hooks/useFilterParams.js';
-import DataRenderer from './BrowserLayout/DataRenderer.jsx';
+import DataRenderer from './RecipePlaylistBrowser/DataRenderer/DataRenderer.jsx';
 const DEFAULT_FILTERS = {
   limit: 6,
   input: '',

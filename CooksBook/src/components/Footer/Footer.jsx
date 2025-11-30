@@ -1,6 +1,6 @@
-import { Wrapper } from '../../ui/Wrapper.jsx';
+import { Wrapper } from '../../ui/texts/Wrapper.jsx';
 import footerStyles from './Footer.module.css';
-import { TextButton } from '../../ui/buttons/TextButton.jsx';
+
 import logoSvg from '../../assets/sitelogo.svg';
 import instagramIcon from '../../assets/instagram.svg';
 import facebookIcon from '../../assets/facebook.svg';
@@ -24,10 +24,10 @@ const Footer = () => {
         <OutLink href="https://www.instagram.com/">
           <Icon src={instagramIcon} alt="Інстаграм" />
         </OutLink>
-        <OutLink href="https://www.instagram.com/">
+        <OutLink href="https://www.facebook.com/">
           <Icon src={facebookIcon} alt="Фейсбук" />
         </OutLink>
-        <OutLink href="https://www.instagram.com/">
+        <OutLink href="https://www.youtube.com/">
           <Icon src={youtubeIcon} alt="Ютуб" />
         </OutLink>
       </Wrapper>

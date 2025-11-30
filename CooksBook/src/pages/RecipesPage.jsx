@@ -1,15 +1,13 @@
 import { useFilterParams } from '../shared/hooks/useFilterParams.js';
 import { useGetRecipesQuery } from '../store/api/recipesApi.js';
 
-import BrowserLayout, {
-  PageNavigation as PageNavigationBrowser,
-} from '../components/BrowserLayout/BrowserLayout.jsx';
-import { PageContainer } from '../ui/Container.jsx';
-import { RecipeFilter } from '../components/BrowserLayout/RecipeFilter.jsx';
-import { Tags } from '../components/BrowserLayout/Tags.jsx';
-import DataRenderer from '../components/BrowserLayout/DataRenderer.jsx';
-import { RecipeCard } from '../components/Cards/RecipeCard.jsx';
-import PageNavigation from '../components/CardFeed/PageNavigation.jsx';
+import BrowserLayout from '../components/RecipePlaylistBrowser/BrowserLayout/BrowserLayout.jsx';
+import { PageContainer } from '../ui/styledBlocks/Container.jsx';
+import { RecipeFilter } from '../components/RecipePlaylistBrowser/RecipeFilter/RecipeFilter.jsx';
+import { Tags } from '../components/RecipePlaylistBrowser/Tags/Tags.jsx';
+import DataRenderer from '../components/RecipePlaylistBrowser/DataRenderer/DataRenderer.jsx';
+import { RecipeCard } from '../components/Cards/RecipeCard/RecipeCard.jsx';
+import PageNavigation from '../components/RecipePlaylistBrowser/PageNavigation/PageNavigation.jsx';
 const DEFAULT_FILTERS = {
   page: 1,
   limit: 12,
