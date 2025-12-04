@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 const LoadingPage = () => {
   return (
-    <FullScreenWrapper>
+    <FullScreenWrapper data-testid="loading-page">
       <Spinner $size="64px" />
     </FullScreenWrapper>
   );

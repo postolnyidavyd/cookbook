@@ -6,7 +6,7 @@ import {
 } from '../SharedComponents/SharedComponents.jsx';
 import { FocusButton } from '../../../ui/buttons/FocusButton.jsx';
 import styled from 'styled-components';
-import { Wrapper } from '../../../ui/Wrapper.jsx';
+import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
 import { generateUrl } from '../../../shared/utils/generateUrl.js';
 
 export const Review = ({ review }) => {

@@ -3,7 +3,7 @@ import {
   Section,
   SectionTitle,
 } from '../SharedComponents/SharedComponents.jsx';
-import { Wrapper } from '../../../ui/Wrapper.jsx';
+import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
 import { FocusButton } from '../../../ui/buttons/FocusButton.jsx';
 import styled from 'styled-components';
 import { Review } from './Review.jsx';

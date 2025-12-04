@@ -1,12 +1,12 @@
-import BrowserLayout from '../components/BrowserLayout/BrowserLayout.jsx';
-import { Container, PageContainer } from '../ui/Container.jsx';
+import BrowserLayout from '../components/RecipePlaylistBrowser/BrowserLayout/BrowserLayout.jsx';
+import {PageContainer } from '../ui/styledBlocks/Container.jsx';
 import { useFilterParams } from '../shared/hooks/useFilterParams.js';
 import { useGetPlaylistsQuery } from '../store/api/playlistApi.js';
-import { Tags } from '../components/BrowserLayout/Tags.jsx';
-import PageNavigation from '../components/CardFeed/PageNavigation.jsx';
-import DataRenderer from '../components/BrowserLayout/DataRenderer.jsx';
-import { PlayListFilter } from '../components/BrowserLayout/PlayListFilter.jsx';
-import { PlaylistCard } from '../components/Cards/PlaylistCard.jsx';
+import { Tags } from '../components/RecipePlaylistBrowser/Tags/Tags.jsx';
+import PageNavigation from '../components/RecipePlaylistBrowser/PageNavigation/PageNavigation.jsx';
+import DataRenderer from '../components/RecipePlaylistBrowser/DataRenderer/DataRenderer.jsx';
+import { PlayListFilter } from '../components/RecipePlaylistBrowser/PlaylistFilter/PlayListFilter.jsx';
+import { PlaylistCard } from '../components/Cards/PlaylistCard/PlaylistCard.jsx';
 const DEFAULT_FILTERS = {
   page: 1,
   limit: 12,

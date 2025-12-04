@@ -1,5 +1,5 @@
 import { useLoaderData, useParams } from 'react-router-dom';
-import { PageContainer } from '../ui/Container.jsx';
+import { PageContainer } from '../ui/styledBlocks/Container.jsx';
 
 import HeroComponent from '../components/RecipePlaylistDetailComponents/HeroSection/HeroComponent.jsx';
 import RecipeSideBar from '../components/RecipePlaylistDetailComponents/HeroSection/RecipeSideBar.jsx';

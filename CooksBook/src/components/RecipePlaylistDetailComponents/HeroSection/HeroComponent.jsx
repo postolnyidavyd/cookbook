@@ -1,4 +1,4 @@
-import { Container } from '../../../ui/Container.jsx';
+import { Container } from '../../../ui/styledBlocks/Container.jsx';
 import { Display } from '../../../ui/texts/Display.jsx';
 import styled from 'styled-components';
 import { Description } from '../SharedComponents/SharedComponents.jsx';

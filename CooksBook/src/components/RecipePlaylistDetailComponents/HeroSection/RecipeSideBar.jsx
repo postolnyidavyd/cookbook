@@ -5,7 +5,7 @@ import bookmark from '../../../assets/bookmarkBig.svg';
 import filledBookmark from '../../../assets/filledBookmark.svg';
 import share from '../../../assets/share.svg';
 import { WideFocusButton } from '../../../ui/buttons/WideFocusButton.jsx';
-import { Wrapper } from '../../../ui/Wrapper.jsx';
+import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
 import { MetaContainer, MetaParagraph, SideBarContainer } from './Shared.jsx';
 import {
   AvatarImage,

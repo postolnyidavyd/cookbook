@@ -1,6 +1,5 @@
 import { useActionState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   validate,
@@ -9,7 +8,7 @@ import {
   minLengthHelper,
 } from '../shared/utils/validation.js';
 
-import { Card } from '../ui/ContentCard.jsx';
+import { Card } from '../ui/styledBlocks/ContentCard.jsx';
 import { WideFocusButton } from '../ui/buttons/WideFocusButton.jsx';
 import { Input, PasswordInput, InputError, Field } from '../ui/inputs/index.js';
 import { useRegisterMutation } from '../store/api/authApi.js';

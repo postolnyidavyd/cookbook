@@ -23,12 +23,14 @@
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.10.0",
     "@eslint/js": "^9.37.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.1",
     "@vitejs/plugin-react": "^5.0.4",
     "cypress": "^15.4.0",
     "eslint": "^9.36.0",
+    "eslint-plugin-cypress": "^5.2.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
@@ -36,7 +38,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
     "prettier": "3.6.2",
-    "vite": "^7.1.7"
+    "vite": "^7.1.7",
+    "vite-plugin-istanbul": "^7.2.1"
   },
   "lint-staged": {
     "*.{js,jsx}": [

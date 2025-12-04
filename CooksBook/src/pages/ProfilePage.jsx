@@ -3,16 +3,16 @@ import { selectUser } from '../store/selectors/authSelectors.js';
 import { useSelector } from 'react-redux';
 import { generateUrl } from '../shared/utils/generateUrl.js';
 
-import { Container, PageContainer } from '../ui/Container.jsx';
+import { Container, PageContainer } from '../ui/styledBlocks/Container.jsx';
 import { BigAvatarImage } from '../components/RecipePlaylistDetailComponents/SharedComponents/SharedComponents.jsx';
 import { Paragraph } from '../ui/texts/Paragraph.jsx';
 import { FocusButton } from '../ui/buttons/FocusButton.jsx';
-import { Wrapper } from '../ui/Wrapper.jsx';
+import { Wrapper } from '../ui/texts/Wrapper.jsx';
 import { MetaContainer } from '../components/RecipePlaylistDetailComponents/HeroSection/Shared.jsx';
-import { TextLink } from '../components/CarouselItem/CarouselItem.jsx';
+import { TextLink } from '../components/Carousel/HeroCarousel/CarouselItem/CarouselItem.jsx';
 
-import RecipeCarouselSection from '../components/Carousel/RecipeCarouselSection.jsx';
-import PlaylistCarouselSection from '../components/Carousel/PlaylistCarouselSection.jsx';
+import RecipeCarouselSection from '../components/Carousel/CardCarousels/CarouselWrappers/RecipeCarouselSection.jsx';
+import PlaylistCarouselSection from '../components/Carousel/CardCarousels/CarouselWrappers/PlaylistCarouselSection.jsx';
 import EditUserModal from '../components/Modals/EditUserModal.jsx';
 import { useState } from 'react';
 

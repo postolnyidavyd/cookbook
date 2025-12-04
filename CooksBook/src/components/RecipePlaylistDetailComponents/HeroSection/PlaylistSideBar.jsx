@@ -1,5 +1,5 @@
 import { MetaContainer, SideBarContainer } from './Shared.jsx';
-import { Wrapper } from '../../../ui/Wrapper.jsx';
+import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
 import {
   AvatarImage,
   MetaImage,
@@ -37,7 +37,7 @@ const PlaylistSideBar = ({
   });
   const handleShareButtonClick = async () => {
     try {
-      setShareButtonState('Копіємо...');
+      setShareButtonState('Копіюємо...');
       const text = window.location.href;
       await navigator.clipboard.writeText(text);
       setShareButtonState('Скопійовано!');

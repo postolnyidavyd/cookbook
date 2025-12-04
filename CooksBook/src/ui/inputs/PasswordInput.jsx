@@ -1,4 +1,4 @@
-import { Wrapper } from '../Wrapper.jsx';
+import { Wrapper } from '../texts/Wrapper.jsx';
 import Input from './Input.jsx';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -10,11 +10,11 @@ const PasswordInput = ({ ...props }) => {
   return (
     <InputWrapper >
       <Input type={showPassword ? 'text' : 'password'} {...props} />
-      <ShowButton type="button">
+      <ShowButton type="button" aria-label={showPassword ? "Сховати пароль" : "Показати пароль"}> 
         <IconImage
           onClick={handleClick}
           src={showPassword ? openedEye : closedEye}
-          alt="Показати пароль"
+          alt={showPassword ? "Сховати пароль" : "Показати пароль"}
         />
       </ShowButton>
     </InputWrapper>
