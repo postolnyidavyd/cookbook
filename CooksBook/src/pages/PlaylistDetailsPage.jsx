@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
-import { Container, PageContainer } from '../ui/styledBlocks/Container.jsx';
+import { PageContainer } from '../ui/styledBlocks/Container.jsx';
 import HeroComponent from '../components/RecipePlaylistDetailComponents/HeroSection/HeroComponent.jsx';
 import PlaylistSideBar from '../components/RecipePlaylistDetailComponents/HeroSection/PlaylistSideBar.jsx';
 import { useGetPlaylistByIdQuery } from '../store/api/playlistApi.js';
 import LoadingPage from './LoadingPage.jsx';
-import PlaylistsRecipeBrowser from '../components/PlaylistsRecipeBrowser.jsx';
+import PlaylistsRecipeBrowser from '../components/PlaylistsRecipeBrowser/PlaylistsRecipeBrowser.jsx';
 import { generateUrl } from '../shared/utils/generateUrl.js';
 import styled from 'styled-components';
 

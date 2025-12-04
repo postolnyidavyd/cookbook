@@ -1,5 +1,5 @@
 import BrowserLayout from '../components/RecipePlaylistBrowser/BrowserLayout/BrowserLayout.jsx';
-import { Container, PageContainer } from '../ui/styledBlocks/Container.jsx';
+import {PageContainer } from '../ui/styledBlocks/Container.jsx';
 import { useFilterParams } from '../shared/hooks/useFilterParams.js';
 import { useGetPlaylistsQuery } from '../store/api/playlistApi.js';
 import { Tags } from '../components/RecipePlaylistBrowser/Tags/Tags.jsx';

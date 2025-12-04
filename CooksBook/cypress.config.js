@@ -15,5 +15,9 @@ export default defineConfig({
       framework: "react",
       bundler: "vite",
     },
+    setupNodeEvents(on, config) {
+      codeCoverageTask(on, config);
+      return config;
+    },
   },
 });

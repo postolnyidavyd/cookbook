@@ -1,12 +1,7 @@
-import React from 'react';
 import HeroCarousel from '../components/Carousel/HeroCarousel/HeroCarousel.jsx';
-import BrowserLayout from '../components/RecipePlaylistBrowser/BrowserLayout/BrowserLayout.jsx';
-import { CardCarousel } from '../components/Carousel/CardCarousels/BaseCarousel/CardCarousel.jsx';
-import { PLAYLISTS_MOCK, RECIPES_MOCK } from '../shared/utils/mockData.js';
 import { Container, PageContainer } from '../ui/styledBlocks/Container.jsx';
 import { Display } from '../ui/texts/Display.jsx';
-import MainPageRecipes from '../components/MainPageRecipes.jsx';
-import RecipeCarouselSection from '../components/Carousel/CardCarousels/CarouselWrappers/RecipeCarouselSection.jsx';
+import MainPageRecipes from '../components/MainPageRecipes/MainPageRecipes.jsx';
 import PlaylistCarouselSection from '../components/Carousel/CardCarousels/CarouselWrappers/PlaylistCarouselSection.jsx';
 const MainPage = () => {
   return (

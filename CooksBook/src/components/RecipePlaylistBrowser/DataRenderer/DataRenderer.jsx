@@ -20,7 +20,7 @@ const DataRenderer = ({
   }
   if (isLoading || isFetching) {
     return Array.from({ length: skeletonCount }).map((_item, index) => (
-      <SkeletonCard key={index} />
+      <SkeletonCard key={index} data-testid="skeleton"/>
     ));
   }
   if (!data || data.length === 0) {

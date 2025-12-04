@@ -1,10 +1,8 @@
 import { useRouteError } from 'react-router-dom';
-import { Container } from '../ui/styledBlocks/Container.jsx';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar/Navbar.jsx';
 import { Display } from '../ui/texts/Display.jsx';
 import { Paragraph } from '../ui/texts/Paragraph.jsx';
-import Footer from '../components/Footer/Footer.jsx';
 
 const ErrorPage = () => {
   const error = useRouteError();

@@ -37,7 +37,7 @@ const PlaylistSideBar = ({
   });
   const handleShareButtonClick = async () => {
     try {
-      setShareButtonState('Копіємо...');
+      setShareButtonState('Копіюємо...');
       const text = window.location.href;
       await navigator.clipboard.writeText(text);
       setShareButtonState('Скопійовано!');
