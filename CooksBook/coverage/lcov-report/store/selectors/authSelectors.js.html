@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.2% </span>
+                <span class="strong">68.96% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/29</span>
+                <span class='fraction'>20/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">28.57% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/14</span>
+                <span class='fraction'>4/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">35.71% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>10/14</span>
+                <span class='fraction'>5/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>19/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -104,40 +104,40 @@
 <a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">1949x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">106x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">409x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">518x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">325x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
-<span class="cline-any cline-yes">518x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">71x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">193x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">71x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">135x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">296x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">167x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createSelector } from '@reduxjs/toolkit';
 &nbsp;
@@ -145,21 +145,21 @@
 const EMPTY_ARRAY = [];
 //Базові селектори
 export const selectAuth = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.auth;</span>
-export const selectUser = (state) =&gt; state.auth.user;
+export const selectUser = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.auth.user;</span>
 export const selectAccessToken = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.auth.accessToken;</span>
 export const selectIsAuthenticated = (state) =&gt; state.auth.isAuthenticated;
 //Селектори юзера
 export const selectEmail = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.auth.user?.email ?? null;</span>
 export const selectUserName = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.auth.user?.username ?? null;</span>
-export const selectAvatar = (state) =&gt; state.auth.user?.avatar ?? null;
-export const selectUserId = state =&gt; state.auth.user?.id ?? null;
+export const selectAvatar = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.auth.user?.avatar ?? null;</span>
+export const selectUserId = <span class="fstat-no" title="function not covered" >state </span>=&gt; <span class="cstat-no" title="statement not covered" >state.auth.user?.id ?? null;</span>
 &nbsp;
 //Селектори вподобаних/збережених рецептів/плейлистів
 export const selectLikedRecipesIds = (state) =&gt;
   state.auth.user?.likedRecipes ?? EMPTY_ARRAY;
 &nbsp;
-export const selectLikedPlaylistsIds = (state) =&gt;
-  state.auth.user?.likedPlaylists ?? EMPTY_ARRAY;
+export const selectLikedPlaylistsIds = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt;
+<span class="cstat-no" title="statement not covered" >  state.auth.user?.likedPlaylists ?? EMPTY_ARRAY;</span>
 &nbsp;
 export const selectSavedInPlaylistRecipesIds = (state) =&gt;
   state.auth.user?.savedInPlaylistRecipes ?? EMPTY_ARRAY;
@@ -171,7 +171,7 @@ export const selectLikedRecipesIdsSet = createSelector(
 );
 export const selectLikedPlaylistsIdsSet = createSelector(
   [selectLikedPlaylistsIds],
-  (ids) =&gt; new Set(ids)
+<span class="fstat-no" title="function not covered" >  (i</span>ds) =&gt; <span class="cstat-no" title="statement not covered" >new Set(ids)</span>
 );
 export const selectSavedInPlaylistRecipesIdsSet = createSelector(
   [selectSavedInPlaylistRecipesIds],
@@ -184,7 +184,7 @@ export const selectSavedInPlaylistRecipesIdsSet = createSelector(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-03T13:08:31.336Z
+                at 2025-12-04T13:21:02.815Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

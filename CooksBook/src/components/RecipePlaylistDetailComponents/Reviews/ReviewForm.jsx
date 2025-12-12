@@ -83,6 +83,7 @@ const ReviewForm = ({ recipeId }) => {
         </Description>
         <Field>
           <ReviewTextArea
+            id="review-text"
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             placeholder="Поділіться своїми враженнями..."
