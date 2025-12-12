@@ -89,7 +89,7 @@ const RecipeSideBar = ({
           {isLiked ? "Вподобано" : "Вподобати рецепт"}
         </WideFocusButton>
         <WideFocusButton $minWidth="100%" onClick={handleSaveButtonClick}>
-          <MetaImage src={isSaved ? filledBookmark : bookmark} />
+          <MetaImage src={isSaved ? filledBookmark : bookmark} alt={isSaved? "Збережено" : "Зберегти"}/>
           Додати до плейлиста
         </WideFocusButton>
         <WideFocusButton $minWidth="100%" onClick={handleShareButtonClick}>
