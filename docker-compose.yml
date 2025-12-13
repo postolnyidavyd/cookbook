@@ -1,0 +1,41 @@
+# docker-compose.yml
+
+# Використовуємо версію з підтримкою нових функцій
+version: '3.8'
+
+services:
+  # Бекенд
+  server:
+    container_name: cookbook-server
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    # Відкриваємо порти Зовнішні:Внутрішні
+    # Зовнішній порт 4000 для доступу до 4000 всередині контейнера
+    ports:
+      - "4000:4000"  # Проксі для доступу до бекенду ззовні
+    # Змінні оточення
+    env_file:
+      - ./backend/.env
+    environment:
+        - NODE_ENV=production
+        - PORT=4000
+        - FRONTEND_ORIGIN=http://localhost:3000
+  # Фронтенд
+  client:
+    container_name: cookbook-client
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      #Передаємо аргумент Vite для збірки
+      args:
+        - VITE_API_URL=http://localhost:4000
+    # Відкриваємо порти Зовнішні:Внутрішні
+    # Зовнішній порт 3000 для доступу до 80 всередині контейнера
+    ports:
+      - "3000:80"  # Проксі для доступу до фронтен
+    # Не запускаємо фронтенд поки не запуститься бек
+    depends_on:
+      - server
+    # Перезапускаємо контейнер якщо впав
+    restart: on-failure
