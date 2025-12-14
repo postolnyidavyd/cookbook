@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -16,18 +16,22 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    avatar: { type: String , default:'/uploads/default_avatar.png'},
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/du3ytr3rx/image/upload/v1765661390/default-avatar_ekcdcn.png",
+    },
 
     tokenVersion: { type: Number, default: 0 },
 
-    likedRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
-    likedPlaylists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Playlist' }],
+    likedRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }],
+    likedPlaylists: [{ type: mongoose.Schema.Types.ObjectId, ref: "Playlist" }],
 
     savedInPlaylistRecipes: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' },
+      { type: mongoose.Schema.Types.ObjectId, ref: "Recipe" },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

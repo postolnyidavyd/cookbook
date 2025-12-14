@@ -30,7 +30,7 @@ const PlaylistSchema = new mongoose.Schema(
 
     coverImage: {
       type: String,
-      default: "/uploads/default_img.jpg"
+      default: "https://res.cloudinary.com/du3ytr3rx/image/upload/v1765662154/default-playlist_telrbo.jpg"
     },
 
     views: {

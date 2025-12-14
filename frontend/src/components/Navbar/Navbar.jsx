@@ -19,7 +19,6 @@ import {
 } from '../../store/selectors/authSelectors.js';
 import { useLogoutUserMutation } from '../../store/api/authApi.js';
 import { StyledLink } from '../../ui/StyledLink.jsx';
-import { generateUrl } from '../../shared/utils/generateUrl.js';
 
 const NAV_ITEMS = [
   { key: '', label: 'Головна' },
@@ -74,7 +73,7 @@ const Navbar = () => {
             Вийти
           </HollowButton>
           <LogoLink to="/profile">
-            <BigAvatarImage src={generateUrl(avatar)} alt="Аватар" />
+            <BigAvatarImage src={avatar} alt="Аватар" />
           </LogoLink>
         </Wrapper>
       ) : (

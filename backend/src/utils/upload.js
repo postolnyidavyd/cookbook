@@ -28,4 +28,4 @@ const upload = multer({
     callback(null, true);
   },
 });
-module.exports = { upload };
+module.exports = { upload, cloudinary };

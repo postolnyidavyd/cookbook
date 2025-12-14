@@ -9,7 +9,7 @@ import ReviewForm from '../components/RecipePlaylistDetailComponents/Reviews/Rev
 import Reviews from '../components/RecipePlaylistDetailComponents/Reviews/Reviews.jsx';
 import { useGetRecipeByIdQuery } from '../store/api/recipesApi.js';
 import LoadingPage from './LoadingPage.jsx';
-import { generateUrl } from '../shared/utils/generateUrl.js';
+
 
 const RecipeDetailPage = () => {
   const { recipeId } = useParams();
@@ -36,13 +36,13 @@ const RecipeDetailPage = () => {
     <PageContainer $padding="0 2rem 0 5rem" $margin="0 0 5rem 0">
       <HeroComponent
         title={title}
-        image={generateUrl(cover)}
+        image={cover}
         description={description}
       >
         <RecipeSideBar
           recipeId={id}
           time={time}
-          avatar={generateUrl(author.avatar)}
+          avatar={author.avatar}
           authorName={author.name}
           rating={rating}
           difficulty={difficulty}

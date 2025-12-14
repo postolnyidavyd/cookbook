@@ -7,7 +7,7 @@ import {
 import { FocusButton } from '../../../ui/buttons/FocusButton.jsx';
 import styled from 'styled-components';
 import { Wrapper } from '../../../ui/texts/Wrapper.jsx';
-import { generateUrl } from '../../../shared/utils/generateUrl.js';
+
 
 export const Review = ({ review }) => {
   const { rating, text, author } = review;
@@ -16,7 +16,7 @@ export const Review = ({ review }) => {
   return (
     <ReviewLi>
       <Wrapper $margin="0 0 0.5rem 0">
-        <BigAvatarImage src={generateUrl(avatar)} alt={author} />
+        <BigAvatarImage src={avatar} alt={author} />
         <div>
           <Username>{name}</Username>
           <Rating rating={rating} small />

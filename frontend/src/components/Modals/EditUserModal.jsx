@@ -10,7 +10,6 @@ import {
   validEmail,
 } from '../../shared/utils/validation.js';
 import { useActionState, useEffect, useState } from 'react';
-import { generateUrl } from '../../shared/utils/generateUrl.js';
 import { useUpdateMeMutation } from '../../store/api/authApi.js';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../store/authSlice.js';
@@ -20,7 +19,7 @@ const EditUserModal = ({ isOpen, onClose, user }) => {
   const [updateMe, {isLoading}] = useUpdateMeMutation();
   const dispatch = useDispatch();
   const { surname, name, email, avatar } = user || {};
-  const initialAvatarUrl = generateUrl(avatar);
+  const initialAvatarUrl = avatar;
 
   const [imagePreview,setImagePreview] = useState(initialAvatarUrl);
 

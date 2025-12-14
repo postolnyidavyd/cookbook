@@ -246,11 +246,11 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
 
     const tagsParsed = safeJsonParse(tags, []);
 
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+    const imageUrl = req.file ? req.file.path : undefined;
 
     const playlist = await Playlist.create({
       name: trimmedName,
-      description: (description || '').trim(),
+      description: (description || "").trim(),
       owner: req.user.id,
       coverImage: imageUrl,
       recipes: [],

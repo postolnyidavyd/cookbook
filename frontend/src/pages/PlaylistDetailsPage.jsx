@@ -5,7 +5,6 @@ import PlaylistSideBar from '../components/RecipePlaylistDetailComponents/HeroSe
 import { useGetPlaylistByIdQuery } from '../store/api/playlistApi.js';
 import LoadingPage from './LoadingPage.jsx';
 import PlaylistsRecipeBrowser from '../components/PlaylistsRecipeBrowser/PlaylistsRecipeBrowser.jsx';
-import { generateUrl } from '../shared/utils/generateUrl.js';
 import styled from 'styled-components';
 
 const PlaylistDetailsPage = () => {
@@ -45,11 +44,11 @@ const PlaylistDetailsPage = () => {
       <HeroComponent
         title={name}
         description={description}
-        image={generateUrl(coverImage)}
+        image={coverImage}
       >
         <PlaylistSideBar
           playlistId={playlistId}
-          avatar={generateUrl(owner.avatar)}
+          avatar={owner.avatar}
           authorName={owner.name}
           recipesCount={recipesCount}
           views={views}

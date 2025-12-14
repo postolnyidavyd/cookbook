@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { selectUser } from '../store/selectors/authSelectors.js';
 import { useSelector } from 'react-redux';
-import { generateUrl } from '../shared/utils/generateUrl.js';
 
 import { Container, PageContainer } from '../ui/styledBlocks/Container.jsx';
 import { BigAvatarImage } from '../components/RecipePlaylistDetailComponents/SharedComponents/SharedComponents.jsx';
@@ -33,7 +32,7 @@ const ProfilePage = () => {
       <HeaderProfileContainer $width="fit-content" $padding="2rem 1.25rem">
         <MetaContainer $gap="1rem">
           <Wrapper>
-            <BigAvatarImage src={generateUrl(user.avatar)} alt="Аватар" />
+            <BigAvatarImage src={user.avatar} alt="Аватар" />
             <NameContainer>
               <Paragraph>{surname}</Paragraph>
               <Paragraph>{name}</Paragraph>

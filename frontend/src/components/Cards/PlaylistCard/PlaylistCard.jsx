@@ -16,7 +16,6 @@ import {
 } from '../SharedComponents.jsx';
 import { useSelector } from 'react-redux';
 import { selectLikedPlaylistsIdsSet } from '../../../store/selectors/authSelectors.js';
-import { generateUrl } from '../../../shared/utils/generateUrl.js';
 import useAuthAction from '../../../shared/hooks/useAuthAction.js';
 import { useLikePlaylistMutation } from '../../../store/api/playlistApi.js';
 
@@ -35,13 +34,13 @@ export const PlaylistCard = ({ playlist }) => {
   return (
     <PlayListCard>
       <CardLink to={`/playlists/${id}`}>
-        <Image src={generateUrl(coverImage)} alt={name} />
+        <Image src={coverImage} alt={name} />
         <Overlay>
           <CardContent $gap="2rem">
             <Title>{name}</Title>
             <MetaInfo>
               <MetaItemWrapper>
-                <MetaAvatar src={generateUrl(avatar)} />
+                <MetaAvatar src={avatar} />
                 <p>{ownerName}</p>
               </MetaItemWrapper>
               <MetaItemWrapper>

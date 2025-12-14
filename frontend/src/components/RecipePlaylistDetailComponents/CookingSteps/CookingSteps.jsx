@@ -3,7 +3,7 @@ import {
   SectionTitle,
 } from '../SharedComponents/SharedComponents.jsx';
 import styled from 'styled-components';
-import { generateUrl } from '../../../shared/utils/generateUrl.js';
+
 
 const CookingSteps = ({ steps }) => {
   return (
@@ -24,7 +24,7 @@ const CookingSteps = ({ steps }) => {
 
                 {imageUrl && (
                   <StepImageWrapper>
-                    <StepImage src={generateUrl(imageUrl)} alt={title} />
+                    <StepImage src={imageUrl} alt={title} />
                   </StepImageWrapper>
                 )}
               </StepContent>
