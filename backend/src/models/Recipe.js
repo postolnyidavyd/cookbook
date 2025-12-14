@@ -39,7 +39,7 @@ const RecipeSchema = new mongoose.Schema(
       enum: ['Легко', 'Помірно', 'Складно'],
       required: true
     },
-    imageUrl: { type: String, default: "/uploads/default_img.jpg" },
+    imageUrl: { type: String, default: "https://res.cloudinary.com/du3ytr3rx/image/upload/v1765664838/default-recipe_xjj5fv.jpg" },
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     
     ingredients: [IngredientGroupSchema],

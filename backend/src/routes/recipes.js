@@ -279,7 +279,7 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
   const ingredientsParsed = safeJsonParse(ingredients, []);
   const stepsParsed = safeJsonParse(steps, []);
 
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+  const imageUrl = req.file ? req.file.path : undefined;
 
   try {
     const recipe = await Recipe.create({

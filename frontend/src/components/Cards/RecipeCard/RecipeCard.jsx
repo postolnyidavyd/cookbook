@@ -21,7 +21,6 @@ import {
   selectLikedRecipesIdsSet,
   selectSavedInPlaylistRecipesIdsSet,
 } from '../../../store/selectors/authSelectors.js';
-import { generateUrl } from '../../../shared/utils/generateUrl.js';
 import useAuthAction from '../../../shared/hooks/useAuthAction.js';
 import { useLikeRecipeMutation } from '../../../store/api/recipesApi.js';
 import { setSaveRecipeModal } from '../../../store/uiSlice.js';
@@ -49,7 +48,7 @@ export const RecipeCard = ({ recipe }) => {
     <Card>
       <CardLink to={`/recipes/${id}`}>
         <ImageWrapper>
-          <Image src={generateUrl(image)} alt={title} />
+          <Image src={image} alt={title} />
         </ImageWrapper>
         <CardContent>
           <Title>{title}</Title>
